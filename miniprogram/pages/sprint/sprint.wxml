@@ -1,0 +1,63 @@
+<view class="container">
+  <!-- 顶部进度 -->
+  <view class="sprint-header">
+    <text class="sprint-title">🚀 消灭错题冲刺</text>
+    <view class="sprint-stats">
+      <text class="sprint-remain">剩余 {{remainingCount}} 题</text>
+      <text class="sprint-progress">{{progress}}%</text>
+    </view>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+  </view>
+
+  <!-- 题目卡片 -->
+  <view class="quiz-card" wx:if="{{currentQuestion}}">
+    <view class="q-header">
+      <text class="q-index">第 {{currentIndex + 1}} 题</text>
+      <text class="q-knowledge">{{currentQuestion.knowledgePoint || ''}}</text>
+    </view>
+
+    <text class="q-stem">{{currentQuestion.stem}}</text>
+
+    <!-- 选项 -->
+    <view class="options-list">
+      <view
+        wx:for="{{currentQuestion.options}}"
+        wx:key="index"
+        wx:if="{{item}}"
+        class="option-item {{selectedAnswer === optLetter ? 'selected' : ''}} {{isSubmitted && optLetter === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === optLetter && !isCorrect ? 'wrong' : ''}}"
+        bindtap="selectAnswer"
+        data-value="{{optLetter}}"
+      >
+        <text class="opt-letter">{{optLetter}}</text>
+        <text class="opt-text">{{item}}</text>
+      </view>
+    </view>
+
+    <button class="btn-primary submit-btn" bindtap="submitAnswer" wx:if="{{!isSubmitted}}" disabled="{{!selectedAnswer}}">
+      提交答案
+    </button>
+
+    <!-- 反馈 -->
+    <view class="feedback" wx:if="{{isSubmitted}}">
+      <view class="fb-result {{isCorrect ? 'correct' : 'wrong'}}">
+        <text class="fb-icon">{{isCorrect ? '✅' : '❌'}}</text>
+        <text>{{isCorrect ? '答对了！此题已从错题本移除' : '答错了，此题保留在错题本'}}</text>
+      </view>
+
+      <view class="fb-answer">
+        <text class="fb-label">正确答案：</text>
+        <text class="fb-value">{{currentQuestion.answer}}</text>
+      </view>
+
+      <view class="fb-explanation" wx:if="{{currentQuestion.explanation}}">
+        <text>{{currentQuestion.explanation}}</text>
+      </view>
+
+      <button class="btn-primary next-btn" bindtap="nextQuestion">
+        {{remainingCount > 0 ? '下一题' : '完成冲刺'}}
+      </button>
+    </view>
+  </view>
+</view>

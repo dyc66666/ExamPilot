@@ -1,0 +1,99 @@
+<view class="container">
+  <!-- 未开始状态 -->
+  <view class="start-screen" wx:if="{{!isQuizStarted}}">
+    <view class="start-card">
+      <text class="start-icon">📝</text>
+      <text class="start-title">快速测评模式</text>
+      <text class="start-desc">
+        每题记录你的自信度{'\n'}AI 实时分析知识掌握情况{'\n'}高自信答错会触发认知冲突提醒
+      </text>
+      <button class="btn-primary start-btn" bindtap="startQuiz" disabled="{{questions.length === 0}}">
+        {{questions.length === 0 ? '暂无题目，请先导入' : '开始测评'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 测评中 -->
+  <view class="quiz-screen" wx:if="{{isQuizStarted}}">
+    <!-- 进度条 -->
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{(currentIndex / questions.length) * 100}}%"></view>
+      <text class="progress-text">{{currentIndex + 1}} / {{questions.length}}</text>
+    </view>
+
+    <!-- 题目卡片 -->
+    <view class="quiz-card">
+      <view class="q-stem-wrap">
+        <text class="q-index">Q{{currentIndex + 1}}</text>
+        <text class="q-stem">{{currentQuestion.stem}}</text>
+      </view>
+
+      <!-- 选项 -->
+      <view class="options-list">
+        <view
+          wx:for="{{currentQuestion.options}}"
+          wx:key="index"
+          wx:if="{{item}}"
+          class="option-item {{selectedAnswer === optLetter ? 'selected' : ''}} {{isSubmitted && optLetter === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === optLetter && !isCorrect ? 'wrong' : ''}}"
+          bindtap="selectAnswer"
+          data-value="{{optLetter}}"
+        >
+          <text class="opt-letter">{{optLetter}}</text>
+          <text class="opt-text">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 自信度选择 -->
+      <view class="confidence-section" wx:if="{{!isSubmitted}}">
+        <text class="conf-label">我对这道题的把握：</text>
+        <view class="conf-options">
+          <view class="conf-btn {{confidence === 'sure' ? 'active sure' : ''}}" bindtap="selectConfidence" data-value="sure">
+            <text>💪</text>
+            <text>很确定</text>
+          </view>
+          <view class="conf-btn {{confidence === 'unsure' ? 'active unsure' : ''}}" bindtap="selectConfidence" data-value="unsure">
+            <text>🤔</text>
+            <text>有点印象</text>
+          </view>
+          <view class="conf-btn {{confidence === 'guess' ? 'active guess' : ''}}" bindtap="selectConfidence" data-value="guess">
+            <text>🎲</text>
+            <text>猜的</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 提交按钮 -->
+      <button class="btn-primary submit-btn" bindtap="submitAnswer" wx:if="{{!isSubmitted}}" disabled="{{!selectedAnswer || !confidence}}">
+        提交答案
+      </button>
+
+      <!-- 提交后反馈 -->
+      <view class="feedback" wx:if="{{isSubmitted}}">
+        <view class="fb-result {{isCorrect ? 'correct' : 'wrong'}}">
+          <text class="fb-icon">{{isCorrect ? '✅' : '❌'}}</text>
+          <text class="fb-text">{{isCorrect ? '回答正确！' : '回答错误'}}</text>
+        </view>
+
+        <!-- 认知冲突 -->
+        <view class="conflict-alert" wx:if="{{conflict}}">
+          <text class="conflict-icon">⚠️</text>
+          <text class="conflict-text">认知冲突：你非常确定但答错了！这表明你对这个知识点存在误解，建议仔细阅读解析。</text>
+        </view>
+
+        <view class="fb-answer">
+          <text class="fb-label">正确答案：</text>
+          <text class="fb-value">{{currentQuestion.answer}}</text>
+        </view>
+
+        <view class="fb-explanation" wx:if="{{currentQuestion.explanation}}">
+          <text class="fb-label">解析：</text>
+          <text class="fb-exp-text">{{currentQuestion.explanation}}</text>
+        </view>
+
+        <button class="btn-primary next-btn" bindtap="nextQuestion">
+          {{currentIndex + 1 < questions.length ? '下一题' : '完成测评'}}
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

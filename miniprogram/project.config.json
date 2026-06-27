@@ -1,0 +1,15 @@
+{
+  "appid": "your-appid-here",
+  "projectname": "ExamPilot",
+  "description": "AI智能考试冲刺系统",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "libVersion": "3.6.5"
+}

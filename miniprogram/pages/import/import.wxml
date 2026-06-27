@@ -1,0 +1,80 @@
+<view class="container">
+  <!-- 题库统计 -->
+  <view class="banner">
+    <text class="banner-num">{{questions.length}}</text>
+    <text class="banner-label">道题目已入库</text>
+  </view>
+
+  <!-- 导入方式选择 -->
+  <view class="card">
+    <text class="card-title">导入方式</text>
+    <view class="import-options">
+      <view class="import-option">
+        <text class="import-icon">📄</text>
+        <text>PDF 文档</text>
+      </view>
+      <view class="import-option">
+        <text class="import-icon">🖼️</text>
+        <text>拍照识别</text>
+      </view>
+      <view class="import-option" bindtap="showForm">
+        <text class="import-icon">✏️</text>
+        <text>手动录入</text>
+      </view>
+      <view class="import-option">
+        <text class="import-icon">📋</text>
+        <text>Excel 模板</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 手动录入表单 -->
+  <view class="card" wx:if="{{showAddForm}}">
+    <text class="card-title">手动录入题目</text>
+
+    <view class="form-group">
+      <text class="form-label">题干</text>
+      <textarea class="form-textarea" placeholder="请输入题目内容..." value="{{newQuestion.stem}}" bindinput="onStemInput" />
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">选项</text>
+      <view class="option-row" wx:for="{{newQuestion.options}}" wx:key="index">
+        <text class="option-label">{{String.fromCharCode(65 + index)}}</text>
+        <input class="form-input" placeholder="选项 {{String.fromCharCode(65 + index)}}" value="{{item}}" bindinput="onOptionInput" data-index="{{index}}" />
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">正确答案</text>
+      <input class="form-input" placeholder="如：A" value="{{newQuestion.answer}}" bindinput="onAnswerInput" />
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">解析</text>
+      <textarea class="form-textarea short" placeholder="请输入解析..." value="{{newQuestion.explanation}}" bindinput="onExplanationInput" />
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">知识点</text>
+      <input class="form-input" placeholder="如：数据结构-二叉树" value="{{newQuestion.knowledgePoint}}" bindinput="onKnowledgeInput" />
+    </view>
+
+    <view class="form-buttons">
+      <button class="btn-cancel" bindtap="hideForm">取消</button>
+      <button class="btn-primary btn-save" bindtap="saveQuestion">保存入库</button>
+    </view>
+  </view>
+
+  <!-- 已入库题目列表 -->
+  <view class="card" wx:if="{{questions.length > 0}}">
+    <text class="card-title">题目列表</text>
+    <view class="question-item" wx:for="{{questions}}" wx:key="id">
+      <view class="q-header">
+        <text class="q-tag">{{item.knowledgePoint || '未分类'}}</text>
+        <text class="q-status {{item.status === 'mastered' ? 'green' : ''}}">{{item.status === 'mastered' ? '已掌握' : '待测评'}}</text>
+      </view>
+      <text class="q-stem">{{item.stem}}</text>
+    </view>
+  </view>
+</view>

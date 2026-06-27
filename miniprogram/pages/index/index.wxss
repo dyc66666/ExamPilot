@@ -1,0 +1,67 @@
+.container {
+  padding-bottom: 40rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  padding: 80rpx 40rpx 60rpx;
+  text-align: center;
+}
+
+.logo { font-size: 64rpx; display: block; margin-bottom: 16rpx; }
+.title { font-size: 44rpx; font-weight: 700; color: #fff; display: block; }
+.subtitle { font-size: 26rpx; color: rgba(255,255,255,0.8); display: block; margin-top: 8rpx; }
+
+.stats-row {
+  display: flex;
+  margin: -30rpx 24rpx 0;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  margin: 0 6rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.08);
+}
+
+.stat-num { font-size: 40rpx; font-weight: 700; color: #1a1a1a; display: block; }
+.stat-num.green { color: #10B981; }
+.stat-num.red { color: #EF4444; }
+.stat-num.blue { color: #4F46E5; }
+.stat-label { font-size: 22rpx; color: #999; margin-top: 6rpx; display: block; }
+
+.section { margin: 32rpx 24rpx 0; }
+.section-title { font-size: 32rpx; font-weight: 700; display: block; margin-bottom: 20rpx; }
+
+.action-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.action-card {
+  width: calc(50% - 8rpx);
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+}
+
+.action-icon { font-size: 44rpx; display: block; margin-bottom: 12rpx; }
+.action-title { font-size: 30rpx; font-weight: 600; display: block; margin-bottom: 6rpx; }
+.action-desc { font-size: 24rpx; color: #999; display: block; }
+
+.feature-list { background: #fff; border-radius: 16rpx; padding: 32rpx; }
+.feature-item { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f0f0f0; font-size: 28rpx; }
+.feature-item:last-child { border-bottom: none; }
+.feature-dot {
+  width: 40rpx; height: 40rpx;
+  background: #EEF2FF; color: #4F46E5;
+  border-radius: 50%; text-align: center; line-height: 40rpx;
+  font-size: 24rpx; font-weight: 700; margin-right: 20rpx; flex-shrink: 0;
+}

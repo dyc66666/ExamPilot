@@ -1,0 +1,48 @@
+<view class="container">
+  <!-- 头部统计 -->
+  <view class="banner">
+    <text class="banner-num">{{wrongQuestions.length}}</text>
+    <text class="banner-label">道错题待攻克</text>
+  </view>
+
+  <!-- 冲刺入口 -->
+  <view class="sprint-entry" wx:if="{{wrongQuestions.length > 0}}" bindtap="startSprint">
+    <text class="sprint-icon">🚀</text>
+    <view class="sprint-info">
+      <text class="sprint-title">消灭错题 · 冲刺模式</text>
+      <text class="sprint-desc">AI 针对性出题，直到全部掌握</text>
+    </view>
+    <text class="sprint-arrow">›</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{wrongQuestions.length === 0}}">
+    <text class="empty-icon">🎉</text>
+    <text class="empty-title">错题本为空</text>
+    <text class="empty-desc">继续保持！</text>
+  </view>
+
+  <!-- 按知识点分组 -->
+  <view class="card" wx:for="{{groupedQuestions}}" wx:key="name">
+    <view class="group-header">
+      <text class="group-name">{{item.name}}</text>
+      <text class="group-count">{{item.count}} 题</text>
+    </view>
+    <view class="group-question" wx:for="{{item.questions}}" wx:key="id" wx:for-item="q">
+      <view class="gq-header">
+        <text class="gq-confidence" data-type="{{q.confidenceWhenWrong}}">
+          {{q.confidenceWhenWrong === 'sure' ? '💪 高估' : q.confidenceWhenWrong === 'unsure' ? '🤔 模糊' : '🎲 猜测'}}
+        </text>
+        <text class="gq-count">错 {{q.wrongCount || 1}} 次</text>
+      </view>
+      <text class="gq-stem">{{q.stem}}</text>
+      <text class="gq-answer">答案：{{q.answer}}</text>
+      <text class="gq-exp" wx:if="{{q.explanation}}">{{q.explanation}}</text>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-bar" wx:if="{{wrongQuestions.length > 0}}">
+    <button class="btn-clear" bindtap="clearErrors">清空错题本</button>
+  </view>
+</view>

@@ -1,0 +1,54 @@
+.container { min-height: 100vh; }
+
+.sprint-header {
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  padding: 40rpx 32rpx 32rpx;
+  color: #fff;
+}
+.sprint-title { font-size: 36rpx; font-weight: 700; display: block; margin-bottom: 20rpx; }
+.sprint-stats { display: flex; justify-content: space-between; margin-bottom: 16rpx; }
+.sprint-remain { font-size: 26rpx; opacity: 0.9; }
+.sprint-progress { font-size: 26rpx; font-weight: 600; }
+.progress-bar { height: 8rpx; background: rgba(255,255,255,0.3); border-radius: 4rpx; overflow: hidden; }
+.progress-fill { height: 100%; background: #34D399; border-radius: 4rpx; transition: width 0.3s; }
+
+.q-header { display: flex; justify-content: space-between; margin-bottom: 16rpx; }
+.q-index { font-size: 24rpx; color: #999; }
+.q-knowledge { font-size: 22rpx; background: #EEF2FF; color: #4F46E5; padding: 4rpx 12rpx; border-radius: 6rpx; }
+
+/* 复用测评页样式 */
+.quiz-card { background: #fff; border-radius: 16rpx; margin: 24rpx; padding: 32rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.q-stem { font-size: 32rpx; line-height: 1.6; display: block; margin-bottom: 32rpx; }
+
+.options-list { margin-bottom: 24rpx; }
+.option-item {
+  display: flex; align-items: center;
+  padding: 24rpx; margin-bottom: 16rpx;
+  background: #F9FAFB; border-radius: 12rpx;
+  border: 2rpx solid transparent;
+}
+.option-item.selected { background: #EEF2FF; border-color: #4F46E5; }
+.option-item.correct { background: #ECFDF5; border-color: #10B981; }
+.option-item.wrong { background: #FEF2F2; border-color: #EF4444; }
+.opt-letter {
+  width: 48rpx; height: 48rpx; background: #E5E7EB;
+  border-radius: 8rpx; text-align: center; line-height: 48rpx;
+  font-weight: 700; margin-right: 20rpx; flex-shrink: 0;
+}
+.option-item.selected .opt-letter { background: #4F46E5; color: #fff; }
+.option-item.correct .opt-letter { background: #10B981; color: #fff; }
+.option-item.wrong .opt-letter { background: #EF4444; color: #fff; }
+.opt-text { font-size: 28rpx; flex: 1; }
+
+.submit-btn { width: 100%; }
+.next-btn { width: 100%; margin-top: 24rpx; }
+
+.feedback { margin-top: 32rpx; padding-top: 32rpx; border-top: 1rpx solid #f0f0f0; }
+.fb-result { text-align: center; padding: 24rpx; border-radius: 12rpx; margin-bottom: 20rpx; font-size: 26rpx; }
+.fb-result.correct { background: #ECFDF5; }
+.fb-result.wrong { background: #FEF2F2; }
+.fb-icon { font-size: 40rpx; display: block; margin-bottom: 8rpx; }
+.fb-answer { margin-bottom: 12rpx; }
+.fb-label { font-size: 26rpx; color: #666; }
+.fb-value { font-size: 28rpx; font-weight: 600; color: #10B981; }
+.fb-explanation { font-size: 26rpx; color: #333; line-height: 1.6; }

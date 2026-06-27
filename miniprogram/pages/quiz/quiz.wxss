@@ -1,0 +1,84 @@
+.container { min-height: 100vh; }
+
+.start-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 40rpx; }
+.start-card { text-align: center; width: 100%; }
+.start-icon { font-size: 100rpx; display: block; margin-bottom: 32rpx; }
+.start-title { font-size: 40rpx; font-weight: 700; display: block; margin-bottom: 24rpx; }
+.start-desc { font-size: 28rpx; color: #666; display: block; line-height: 1.8; white-space: pre-wrap; margin-bottom: 60rpx; }
+.start-btn { width: 80%; margin: 0 auto; }
+
+/* 进度条 */
+.progress-bar {
+  height: 8rpx; background: #E5E7EB; position: relative;
+  margin: 0 24rpx; border-radius: 4rpx; overflow: hidden;
+}
+.progress-fill { height: 100%; background: #4F46E5; border-radius: 4rpx; transition: width 0.3s; }
+.progress-text { position: absolute; right: 0; top: -40rpx; font-size: 24rpx; color: #999; }
+
+/* 题目卡片 */
+.quiz-card { background: #fff; border-radius: 16rpx; margin: 24rpx; padding: 32rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+
+.q-stem-wrap { display: flex; margin-bottom: 32rpx; }
+.q-index { font-size: 32rpx; font-weight: 700; color: #4F46E5; margin-right: 16rpx; flex-shrink: 0; }
+.q-stem { font-size: 32rpx; line-height: 1.6; }
+
+/* 选项 */
+.options-list { margin-bottom: 24rpx; }
+.option-item {
+  display: flex; align-items: center;
+  padding: 24rpx; margin-bottom: 16rpx;
+  background: #F9FAFB; border-radius: 12rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+.option-item.selected { background: #EEF2FF; border-color: #4F46E5; }
+.option-item.correct { background: #ECFDF5; border-color: #10B981; }
+.option-item.wrong { background: #FEF2F2; border-color: #EF4444; }
+.opt-letter {
+  width: 48rpx; height: 48rpx; background: #E5E7EB;
+  border-radius: 8rpx; text-align: center; line-height: 48rpx;
+  font-weight: 700; margin-right: 20rpx; flex-shrink: 0;
+}
+.option-item.selected .opt-letter { background: #4F46E5; color: #fff; }
+.option-item.correct .opt-letter { background: #10B981; color: #fff; }
+.option-item.wrong .opt-letter { background: #EF4444; color: #fff; }
+.opt-text { font-size: 28rpx; flex: 1; }
+
+/* 自信度 */
+.confidence-section { margin-bottom: 24rpx; }
+.conf-label { font-size: 26rpx; color: #666; display: block; margin-bottom: 16rpx; }
+.conf-options { display: flex; gap: 16rpx; }
+.conf-btn {
+  flex: 1; text-align: center; padding: 20rpx 0;
+  background: #F5F7FA; border-radius: 12rpx; font-size: 26rpx;
+  border: 2rpx solid transparent;
+}
+.conf-btn.active.sure { background: #ECFDF5; border-color: #10B981; }
+.conf-btn.active.unsure { background: #FEF3C7; border-color: #F59E0B; }
+.conf-btn.active.guess { background: #FEE2E2; border-color: #EF4444; }
+
+/* 提交按钮 */
+.submit-btn { width: 100%; margin-top: 8rpx; }
+
+/* 反馈区域 */
+.feedback { margin-top: 32rpx; padding-top: 32rpx; border-top: 1rpx solid #f0f0f0; }
+.fb-result { text-align: center; padding: 24rpx; border-radius: 12rpx; margin-bottom: 20rpx; }
+.fb-result.correct { background: #ECFDF5; }
+.fb-result.wrong { background: #FEF2F2; }
+.fb-icon { font-size: 48rpx; display: block; margin-bottom: 8rpx; }
+.fb-text { font-size: 32rpx; font-weight: 700; }
+
+.conflict-alert {
+  background: #FFFBEB; border: 2rpx solid #F59E0B;
+  border-radius: 12rpx; padding: 20rpx; margin-bottom: 20rpx;
+  display: flex; align-items: flex-start;
+}
+.conflict-icon { font-size: 32rpx; margin-right: 12rpx; flex-shrink: 0; }
+.conflict-text { font-size: 26rpx; color: #92400E; line-height: 1.6; }
+
+.fb-answer, .fb-explanation { margin-bottom: 12rpx; }
+.fb-label { font-size: 26rpx; color: #666; margin-right: 8rpx; }
+.fb-value { font-size: 28rpx; font-weight: 600; color: #10B981; }
+.fb-exp-text { font-size: 26rpx; color: #333; line-height: 1.6; }
+
+.next-btn { width: 100%; margin-top: 24rpx; }
