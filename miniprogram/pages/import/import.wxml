@@ -1,3 +1,9 @@
+<wxs module="L">
+var letters = ['A','B','C','D','E','F','G','H'];
+var get = function(idx) { return letters[idx] || ''; };
+module.exports = { get: get };
+</wxs>
+
 <view class="container">
   <!-- 题库统计 -->
   <view class="banner">
@@ -39,9 +45,9 @@
 
     <view class="form-group">
       <text class="form-label">选项</text>
-      <view class="option-row" wx:for="{{newQuestion.options}}" wx:key="index">
-        <text class="option-label">{{String.fromCharCode(65 + index)}}</text>
-        <input class="form-input" placeholder="选项 {{String.fromCharCode(65 + index)}}" value="{{item}}" bindinput="onOptionInput" data-index="{{index}}" />
+      <view class="option-row" wx:for="{{newQuestion.options}}" wx:for-index="idx" wx:key="index">
+        <text class="option-label">{{L.get(idx)}}</text>
+        <input class="form-input" placeholder="选项 {{L.get(idx)}}" value="{{item}}" bindinput="onOptionInput" data-index="{{idx}}" />
       </view>
     </view>
 

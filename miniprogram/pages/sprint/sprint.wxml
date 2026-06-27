@@ -1,3 +1,9 @@
+<wxs module="L">
+var letters = ['A','B','C','D','E','F','G','H'];
+var get = function(idx) { return letters[idx] || ''; };
+module.exports = { get: get };
+</wxs>
+
 <view class="container">
   <!-- 顶部进度 -->
   <view class="sprint-header">
@@ -26,11 +32,11 @@
         wx:for="{{currentQuestion.options}}"
         wx:key="index"
         wx:if="{{item}}"
-        class="option-item {{selectedAnswer === optLetter ? 'selected' : ''}} {{isSubmitted && optLetter === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === optLetter && !isCorrect ? 'wrong' : ''}}"
+        class="option-item {{selectedAnswer === L.get(index) ? 'selected' : ''}} {{isSubmitted && L.get(index) === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === L.get(index) && !isCorrect ? 'wrong' : ''}}"
         bindtap="selectAnswer"
-        data-value="{{optLetter}}"
+        data-value="{{L.get(index)}}"
       >
-        <text class="opt-letter">{{optLetter}}</text>
+        <text class="opt-letter">{{L.get(index)}}</text>
         <text class="opt-text">{{item}}</text>
       </view>
     </view>

@@ -1,12 +1,20 @@
+<wxs module="L">
+var letters = ['A','B','C','D','E','F','G','H'];
+var get = function(idx) { return letters[idx] || ''; };
+module.exports = { get: get };
+</wxs>
+
 <view class="container">
   <!-- 未开始状态 -->
   <view class="start-screen" wx:if="{{!isQuizStarted}}">
     <view class="start-card">
       <text class="start-icon">📝</text>
       <text class="start-title">快速测评模式</text>
-      <text class="start-desc">
-        每题记录你的自信度{'\n'}AI 实时分析知识掌握情况{'\n'}高自信答错会触发认知冲突提醒
-      </text>
+      <view class="desc-lines">
+        <text class="start-desc">每题记录你的自信度</text>
+        <text class="start-desc">AI 实时分析知识掌握情况</text>
+        <text class="start-desc">高自信答错触发认知冲突提醒</text>
+      </view>
       <button class="btn-primary start-btn" bindtap="startQuiz" disabled="{{questions.length === 0}}">
         {{questions.length === 0 ? '暂无题目，请先导入' : '开始测评'}}
       </button>
@@ -14,7 +22,7 @@
   </view>
 
   <!-- 测评中 -->
-  <view class="quiz-screen" wx:if="{{isQuizStarted}}">
+  <view class="quiz-screen" wx:if="{{isQuizStarted && currentQuestion}}">
     <!-- 进度条 -->
     <view class="progress-bar">
       <view class="progress-fill" style="width: {{(currentIndex / questions.length) * 100}}%"></view>
@@ -34,11 +42,11 @@
           wx:for="{{currentQuestion.options}}"
           wx:key="index"
           wx:if="{{item}}"
-          class="option-item {{selectedAnswer === optLetter ? 'selected' : ''}} {{isSubmitted && optLetter === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === optLetter && !isCorrect ? 'wrong' : ''}}"
+          class="option-item {{selectedAnswer === L.get(index) ? 'selected' : ''}} {{isSubmitted && L.get(index) === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === L.get(index) && !isCorrect ? 'wrong' : ''}}"
           bindtap="selectAnswer"
-          data-value="{{optLetter}}"
+          data-value="{{L.get(index)}}"
         >
-          <text class="opt-letter">{{optLetter}}</text>
+          <text class="opt-letter">{{L.get(index)}}</text>
           <text class="opt-text">{{item}}</text>
         </view>
       </view>
@@ -74,7 +82,6 @@
           <text class="fb-text">{{isCorrect ? '回答正确！' : '回答错误'}}</text>
         </view>
 
-        <!-- 认知冲突 -->
         <view class="conflict-alert" wx:if="{{conflict}}">
           <text class="conflict-icon">⚠️</text>
           <text class="conflict-text">认知冲突：你非常确定但答错了！这表明你对这个知识点存在误解，建议仔细阅读解析。</text>
