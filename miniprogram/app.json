@@ -11,35 +11,5 @@
     "navigationBarBackgroundColor": "#4F46E5",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F5F5F5"
-  },
-  "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#4F46E5",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home-active.png"
-      },
-      {
-        "pagePath": "pages/import/import",
-        "text": "题库",
-        "iconPath": "images/import.png",
-        "selectedIconPath": "images/import-active.png"
-      },
-      {
-        "pagePath": "pages/quiz/quiz",
-        "text": "测评",
-        "iconPath": "images/quiz.png",
-        "selectedIconPath": "images/quiz-active.png"
-      },
-      {
-        "pagePath": "pages/errors/errors",
-        "text": "错题本",
-        "iconPath": "images/error.png",
-        "selectedIconPath": "images/error-active.png"
-      }
-    ]
   }
 }

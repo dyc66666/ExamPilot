@@ -28,15 +28,15 @@ Page({
   },
 
   goToQuiz() {
-    wx.switchTab({ url: '/pages/quiz/quiz' })
+    wx.navigateTo({ url: '/pages/quiz/quiz' })
   },
 
   goToImport() {
-    wx.switchTab({ url: '/pages/import/import' })
+    wx.navigateTo({ url: '/pages/import/import' })
   },
 
   goToErrors() {
-    wx.switchTab({ url: '/pages/errors/errors' })
+    wx.navigateTo({ url: '/pages/errors/errors' })
   },
 
   goToSprint() {
