@@ -11,5 +11,7 @@
     "postcss": true,
     "minified": true
   },
-  "libVersion": "3.6.5"
+  "libVersion": "3.6.5",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

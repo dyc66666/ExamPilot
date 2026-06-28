@@ -9,3 +9,5 @@ project.private.config.json
 # Claude Code 本地配置
 .claude/
 .agents/
+# 云函数含 API Key，不入库
+miniprogram/cloudfunctions/
