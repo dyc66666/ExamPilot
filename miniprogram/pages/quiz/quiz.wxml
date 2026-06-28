@@ -10,10 +10,16 @@
         <text>答题顺序：{{sortMode === 'sequential' ? '顺序' : '随机'}}</text>
         <text class="sort-hint">点击切换</text>
       </view>
-      <ui-button variant="primary" block="{{true}}" disabled="{{questions.length === 0}}" bind:tap="startQuiz">
-        {{questions.length === 0 ? '暂无题目，请先导入' : '开始测评'}}
-      </ui-button>
-      <view class="secondary-link" bindtap="goToImport" wx:if="{{questions.length === 0}}">去导入题库</view>
+      <block wx:if="{{hasProgress}}">
+        <ui-button variant="primary" block="{{true}}" bind:tap="resumeQuiz">继续测评</ui-button>
+        <view class="secondary-link" bindtap="startQuiz">重新开始</view>
+      </block>
+      <block wx:else>
+        <ui-button variant="primary" block="{{true}}" disabled="{{questions.length === 0}}" bind:tap="startQuiz">
+          {{questions.length === 0 ? '暂无题目，请先导入' : '开始测评'}}
+        </ui-button>
+        <view class="secondary-link" bindtap="goToImport" wx:if="{{questions.length === 0}}">去导入题库</view>
+      </block>
     </ui-card>
   </view>
 
@@ -58,7 +64,8 @@
         </view>
         <view class="explanation-box" wx:if="{{!isCorrect || currentQuestion.explanation}}">
           <text class="explanation-label">解析</text>
-          <text class="explanation-text">{{currentQuestion.explanation || '暂无解析'}}</text>
+          <text class="explanation-text" wx:if="{{explanationLoading}}">AI 正在生成解析...</text>
+          <text class="explanation-text" wx:else>{{currentQuestion.explanation || '暂无解析'}}</text>
         </view>
         <view class="next-btn" bindtap="nextQuestion">下一题</view>
       </view>
