@@ -2,14 +2,63 @@
   "pages": [
     "pages/index/index",
     "pages/import/import",
+    "pages/assistant/assistant",
     "pages/quiz/quiz",
     "pages/errors/errors",
+    "pages/profile/profile",
     "pages/sprint/sprint"
   ],
   "window": {
+    "navigationStyle": "custom",
     "navigationBarTitleText": "ExamPilot",
-    "navigationBarBackgroundColor": "#4F46E5",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#F5F5F5"
+    "navigationBarBackgroundColor": "#F7F8FA",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F7F8FA"
+  },
+  "tabBar": {
+    "custom": false,
+    "color": "#9A9AA0",
+    "selectedColor": "#4E7BFF",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/import/import",
+        "text": "题库",
+        "iconPath": "images/import.png",
+        "selectedIconPath": "images/import-active.png"
+      },
+      {
+        "pagePath": "pages/assistant/assistant",
+        "text": "AI助手",
+        "iconPath": "images/assistant.png",
+        "selectedIconPath": "images/assistant-active.png"
+      },
+      {
+        "pagePath": "pages/errors/errors",
+        "text": "错题本",
+        "iconPath": "images/error.png",
+        "selectedIconPath": "images/error-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "ui-button": "/components/ui-button/ui-button",
+    "ui-card": "/components/ui-card/ui-card",
+    "ui-input": "/components/ui-input/ui-input",
+    "ui-navbar": "/components/ui-navbar/ui-navbar",
+    "ui-tabs": "/components/ui-tabs/ui-tabs"
   }
 }

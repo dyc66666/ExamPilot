@@ -1,0 +1,22 @@
+.ui-tabs {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.ui-tabs__item {
+  min-height: 56rpx;
+  padding: 0 20rpx;
+  border-radius: 999rpx;
+  color: var(--text-secondary);
+  font-size: 28rpx;
+  font-weight: 500;
+  line-height: 56rpx;
+}
+
+.ui-tabs__item--active {
+  background: #EEF3FF;
+  color: var(--primary);
+}

@@ -1,106 +1,46 @@
-<wxs module="L">
-var letters = ['A','B','C','D','E','F','G','H'];
-var get = function(idx) { return letters[idx] || ''; };
-module.exports = { get: get };
-</wxs>
-
-<view class="container">
-  <!-- 未开始状态 -->
-  <view class="start-screen" wx:if="{{!isQuizStarted}}">
-    <view class="start-card">
-      <text class="start-icon">📝</text>
-      <text class="start-title">快速测评模式</text>
-      <view class="desc-lines">
-        <text class="start-desc">每题记录你的自信度</text>
-        <text class="start-desc">AI 实时分析知识掌握情况</text>
-        <text class="start-desc">高自信答错触发认知冲突提醒</text>
+<view class="page quiz-page">
+  <view wx:if="{{!isQuizStarted}}">
+    <ui-navbar title="学习" subtitle="校对题目与快速测评" />
+    <ui-card>
+      <view class="start-visual"><view class="start-orb">✓</view></view>
+      <text class="start-title">快速测评</text>
+      <text class="start-desc">根据你的答题表现和自信度，识别知识盲区。</text>
+      <view class="start-points">
+        <view class="start-point"><text class="point-index">1</text><text class="point-text">先选择答案，再标记自信度。</text></view>
+        <view class="start-point"><text class="point-index">2</text><text class="point-text">高自信答错会触发知识幻觉提醒。</text></view>
       </view>
-      <button class="btn-primary start-btn" bindtap="startQuiz" disabled="{{questions.length === 0}}">
-        {{questions.length === 0 ? '暂无题目，请先导入' : '开始测评'}}
-      </button>
-    </view>
+      <ui-button variant="primary" block="{{true}}" disabled="{{questions.length === 0}}" bind:tap="startQuiz">{{questions.length === 0 ? '暂无题目，请先导入' : '开始测评'}}</ui-button>
+      <view class="secondary-link" bindtap="goToImport" wx:if="{{questions.length === 0}}">去导入题库</view>
+    </ui-card>
   </view>
 
-  <!-- 测评中 -->
-  <view class="quiz-screen" wx:if="{{isQuizStarted && currentQuestion}}">
-    <!-- 进度条 -->
-    <view class="progress-bar">
-      <view class="progress-fill" style="width: {{(currentIndex / questions.length) * 100}}%"></view>
-      <text class="progress-text">{{currentIndex + 1}} / {{questions.length}}</text>
-    </view>
-
-    <!-- 题目卡片 -->
-    <view class="quiz-card">
-      <view class="q-stem-wrap">
-        <text class="q-index">Q{{currentIndex + 1}}</text>
-        <text class="q-stem">{{currentQuestion.stem}}</text>
-      </view>
-
-      <!-- 选项 -->
+  <view wx:if="{{isQuizStarted && currentQuestion}}">
+    <ui-navbar title="校对题目" subtitle="{{progressText}}" back="{{true}}" bind:back="stopQuiz" />
+    <ui-card>
+      <view class="quiz-meta"><text class="tag tag--success">{{currentQuestion.knowledgePoint || '未归类'}}</text><text class="caption">{{progressText}}</text></view>
+      <view class="progress-track"><view class="progress-fill {{progressClass}}"></view></view>
+      <text class="question-stem">{{currentIndex + 1}}. {{currentQuestion.stem}}</text>
       <view class="options-list">
-        <view
-          wx:for="{{currentQuestion.options}}"
-          wx:key="index"
-          wx:if="{{item}}"
-          class="option-item {{selectedAnswer === L.get(index) ? 'selected' : ''}} {{isSubmitted && L.get(index) === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === L.get(index) && !isCorrect ? 'wrong' : ''}}"
-          bindtap="selectAnswer"
-          data-value="{{L.get(index)}}"
-        >
-          <text class="opt-letter">{{L.get(index)}}</text>
-          <text class="opt-text">{{item}}</text>
+        <view wx:for="{{currentQuestion.optionItems}}" wx:key="label" class="option-item {{selectedAnswer === item.label ? 'option-item--selected' : ''}} {{isSubmitted && item.label === currentQuestion.answer ? 'option-item--correct' : ''}} {{isSubmitted && selectedAnswer === item.label && !isCorrect ? 'option-item--wrong' : ''}}" data-value="{{item.label}}" bindtap="selectAnswer">
+          <view class="option-radio"></view><text class="option-label">{{item.label}}</text><text class="option-text">{{item.text}}</text>
         </view>
       </view>
-
-      <!-- 自信度选择 -->
       <view class="confidence-section" wx:if="{{!isSubmitted}}">
-        <text class="conf-label">我对这道题的把握：</text>
-        <view class="conf-options">
-          <view class="conf-btn {{confidence === 'sure' ? 'active sure' : ''}}" bindtap="selectConfidence" data-value="sure">
-            <text>💪</text>
-            <text>很确定</text>
-          </view>
-          <view class="conf-btn {{confidence === 'unsure' ? 'active unsure' : ''}}" bindtap="selectConfidence" data-value="unsure">
-            <text>🤔</text>
-            <text>有点印象</text>
-          </view>
-          <view class="conf-btn {{confidence === 'guess' ? 'active guess' : ''}}" bindtap="selectConfidence" data-value="guess">
-            <text>🎲</text>
-            <text>猜的</text>
-          </view>
+        <text class="confidence-title">自信度</text>
+        <view class="confidence-grid">
+          <view class="confidence-chip {{confidence === 'sure' ? 'confidence-chip--active' : ''}}" bindtap="selectConfidence" data-value="sure">很确定</view>
+          <view class="confidence-chip {{confidence === 'unsure' ? 'confidence-chip--active' : ''}}" bindtap="selectConfidence" data-value="unsure">有点印象</view>
+          <view class="confidence-chip {{confidence === 'guess' ? 'confidence-chip--active' : ''}}" bindtap="selectConfidence" data-value="guess">猜测</view>
         </view>
       </view>
-
-      <!-- 提交按钮 -->
-      <button class="btn-primary submit-btn" bindtap="submitAnswer" wx:if="{{!isSubmitted}}" disabled="{{!selectedAnswer || !confidence}}">
-        提交答案
-      </button>
-
-      <!-- 提交后反馈 -->
-      <view class="feedback" wx:if="{{isSubmitted}}">
-        <view class="fb-result {{isCorrect ? 'correct' : 'wrong'}}">
-          <text class="fb-icon">{{isCorrect ? '✅' : '❌'}}</text>
-          <text class="fb-text">{{isCorrect ? '回答正确！' : '回答错误'}}</text>
-        </view>
-
-        <view class="conflict-alert" wx:if="{{conflict}}">
-          <text class="conflict-icon">⚠️</text>
-          <text class="conflict-text">认知冲突：你非常确定但答错了！这表明你对这个知识点存在误解，建议仔细阅读解析。</text>
-        </view>
-
-        <view class="fb-answer">
-          <text class="fb-label">正确答案：</text>
-          <text class="fb-value">{{currentQuestion.answer}}</text>
-        </view>
-
-        <view class="fb-explanation" wx:if="{{currentQuestion.explanation}}">
-          <text class="fb-label">解析：</text>
-          <text class="fb-exp-text">{{currentQuestion.explanation}}</text>
-        </view>
-
-        <button class="btn-primary next-btn" bindtap="nextQuestion">
-          {{currentIndex + 1 < questions.length ? '下一题' : '完成测评'}}
-        </button>
+      <view wx:if="{{isSubmitted}}" class="answer-panel">
+        <view class="answer-result {{isCorrect ? 'answer-result--correct' : 'answer-result--wrong'}}"><text class="answer-result__title">{{isCorrect ? '回答正确' : '回答错误'}}</text><text class="answer-result__desc">正确答案：{{currentQuestion.answer}}</text></view>
+        <view class="explanation-box" wx:if="{{currentQuestion.explanation}}"><text class="explanation-label">解析</text><text class="explanation-text">{{currentQuestion.explanation}}</text></view>
       </view>
-    </view>
+      <view class="quiz-actions">
+        <ui-button variant="ghost" bind:tap="stopQuiz">退出</ui-button>
+        <ui-button variant="primary" disabled="{{!selectedAnswer || (!isSubmitted && !confidence)}}" bind:tap="handlePrimaryAction">{{isSubmitted ? nextButtonText : '提交答案'}}</ui-button>
+      </view>
+    </ui-card>
   </view>
 </view>

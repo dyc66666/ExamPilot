@@ -1,0 +1,12 @@
+<view class="ui-navbar">
+  <view class="ui-navbar__left">
+    <view class="ui-navbar__back" wx:if="{{back}}" bindtap="handleBack">‹</view>
+    <view class="ui-navbar__brand" wx:if="{{logo}}">
+      <text class="ui-navbar__logo">✦</text>
+    </view>
+    <view>
+      <text class="ui-navbar__title">{{title}}</text>
+      <text class="ui-navbar__subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+    </view>
+  </view>
+</view>

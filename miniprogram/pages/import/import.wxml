@@ -1,86 +1,48 @@
-<wxs module="L">
-var letters = ['A','B','C','D','E','F','G','H'];
-var get = function(idx) { return letters[idx] || ''; };
-module.exports = { get: get };
-</wxs>
+<view class="page page--tab import-page">
+  <ui-navbar title="题库" subtitle="导入题库" />
 
-<view class="container">
-  <!-- 题库统计 -->
-  <view class="banner">
-    <text class="banner-num">{{questions.length}}</text>
-    <text class="banner-label">道题目已入库</text>
+  <ui-card title="导入题库" subtitle="支持多种格式，AI 智能解析结构化">
+    <view class="upload-panel" bindtap="showForm">
+      <view class="upload-icon">⇧</view>
+      <text class="upload-title">点击上传或手动录入题目</text>
+      <text class="upload-desc">支持 PDF / 图片 / Word / PPT / Excel</text>
+    </view>
+  </ui-card>
+
+  <view class="section-tight">
+    <ui-card title="导入说明">
+      <view class="notice-box"><text class="notice-dot"></text><text class="notice-text">建议清晰的题目和答案区域，提高解析准确率。</text></view>
+      <view class="notice-box"><text class="notice-dot"></text><text class="notice-text">导入后可进入学习页确认题目内容。</text></view>
+    </ui-card>
   </view>
 
-  <!-- 导入方式选择 -->
-  <view class="card">
-    <text class="card-title">导入方式</text>
-    <view class="import-options">
-      <view class="import-option">
-        <text class="import-icon">📄</text>
-        <text>PDF 文档</text>
+  <view class="section-tight" wx:if="{{showAddForm}}">
+    <ui-card title="手动录入题目" subtitle="用于快速补充单题">
+      <view class="form-stack">
+        <ui-input label="题干" placeholder="请输入题目内容" value="{{newQuestion.stem}}" multiline="{{true}}" bind:input="onStemInput" />
+        <view class="option-field" wx:for="{{optionLabels}}" wx:key="label">
+          <text class="option-label">{{item.label}}</text>
+          <ui-input placeholder="选项 {{item.label}}" value="{{newQuestion.options[index]}}" data-index="{{index}}" bind:input="onOptionInput" />
+        </view>
+        <ui-input label="正确答案" placeholder="如：A" value="{{newQuestion.answer}}" bind:input="onAnswerInput" />
+        <ui-input label="解析" placeholder="请输入解析" value="{{newQuestion.explanation}}" multiline="{{true}}" bind:input="onExplanationInput" />
+        <ui-input label="知识点" placeholder="如：高等数学 · 导数" value="{{newQuestion.knowledgePoint}}" bind:input="onKnowledgeInput" />
+        <view class="form-actions">
+          <ui-button variant="ghost" block="{{true}}" bind:tap="hideForm">取消</ui-button>
+          <ui-button variant="primary" block="{{true}}" bind:tap="saveQuestion">保存入库</ui-button>
+        </view>
       </view>
-      <view class="import-option">
-        <text class="import-icon">🖼️</text>
-        <text>拍照识别</text>
-      </view>
-      <view class="import-option" bindtap="showForm">
-        <text class="import-icon">✏️</text>
-        <text>手动录入</text>
-      </view>
-      <view class="import-option">
-        <text class="import-icon">📋</text>
-        <text>Excel 模板</text>
-      </view>
-    </view>
+    </ui-card>
   </view>
 
-  <!-- 手动录入表单 -->
-  <view class="card" wx:if="{{showAddForm}}">
-    <text class="card-title">手动录入题目</text>
-
-    <view class="form-group">
-      <text class="form-label">题干</text>
-      <textarea class="form-textarea" placeholder="请输入题目内容..." value="{{newQuestion.stem}}" bindinput="onStemInput" />
-    </view>
-
-    <view class="form-group">
-      <text class="form-label">选项</text>
-      <view class="option-row" wx:for="{{newQuestion.options}}" wx:for-index="idx" wx:key="index">
-        <text class="option-label">{{L.get(idx)}}</text>
-        <input class="form-input" placeholder="选项 {{L.get(idx)}}" value="{{item}}" bindinput="onOptionInput" data-index="{{idx}}" />
+  <view class="section-tight" wx:if="{{questions.length > 0}}">
+    <ui-card title="已入库题目" subtitle="{{questions.length}} 道题目已准备学习">
+      <view class="question-list">
+        <view class="question-row" wx:for="{{questions}}" wx:key="id">
+          <view class="question-row__top"><text class="tag">{{item.knowledgePoint || '未分类'}}</text><text class="caption">{{item.status === 'mastered' ? '已掌握' : '待学习'}}</text></view>
+          <text class="question-row__stem">{{item.stem}}</text>
+        </view>
       </view>
-    </view>
-
-    <view class="form-group">
-      <text class="form-label">正确答案</text>
-      <input class="form-input" placeholder="如：A" value="{{newQuestion.answer}}" bindinput="onAnswerInput" />
-    </view>
-
-    <view class="form-group">
-      <text class="form-label">解析</text>
-      <textarea class="form-textarea short" placeholder="请输入解析..." value="{{newQuestion.explanation}}" bindinput="onExplanationInput" />
-    </view>
-
-    <view class="form-group">
-      <text class="form-label">知识点</text>
-      <input class="form-input" placeholder="如：数据结构-二叉树" value="{{newQuestion.knowledgePoint}}" bindinput="onKnowledgeInput" />
-    </view>
-
-    <view class="form-buttons">
-      <button class="btn-cancel" bindtap="hideForm">取消</button>
-      <button class="btn-primary btn-save" bindtap="saveQuestion">保存入库</button>
-    </view>
-  </view>
-
-  <!-- 已入库题目列表 -->
-  <view class="card" wx:if="{{questions.length > 0}}">
-    <text class="card-title">题目列表</text>
-    <view class="question-item" wx:for="{{questions}}" wx:key="id">
-      <view class="q-header">
-        <text class="q-tag">{{item.knowledgePoint || '未分类'}}</text>
-        <text class="q-status {{item.status === 'mastered' ? 'green' : ''}}">{{item.status === 'mastered' ? '已掌握' : '待测评'}}</text>
-      </view>
-      <text class="q-stem">{{item.stem}}</text>
-    </view>
+    </ui-card>
   </view>
 </view>

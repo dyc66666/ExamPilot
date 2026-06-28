@@ -1,0 +1,253 @@
+.assistant-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.assistant-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  pointer-events: none;
+}
+
+.assistant-top-card {
+  flex: 0 0 auto;
+  padding: 28rpx;
+  border: 2rpx solid rgba(232, 236, 243, 0.86);
+  border-radius: var(--radius-card);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-card);
+}
+
+.assistant-hero {
+  display: flex;
+  align-items: center;
+}
+
+.assistant-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 28rpx;
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.assistant-hero-copy {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
+}
+
+.assistant-title {
+  display: block;
+  color: var(--text-primary);
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.assistant-desc {
+  display: block;
+  margin-top: 6rpx;
+  color: var(--text-secondary);
+  font-size: 26rpx;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 12rpx;
+  overflow-x: auto;
+  margin-top: 28rpx;
+  white-space: nowrap;
+}
+
+.quick-chip {
+  min-height: 56rpx;
+  padding: 0 20rpx;
+  border-radius: 999rpx;
+  background: #EEF3FF;
+  color: var(--primary);
+  font-size: 26rpx;
+  font-weight: 500;
+  line-height: 56rpx;
+}
+
+.quick-chip--muted {
+  background: #F2F4F8;
+  color: var(--text-secondary);
+}
+
+.chat-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 24rpx;
+}
+
+.chat-content {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 20rpx;
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.message-row--assistant {
+  justify-content: flex-start;
+}
+
+.message-row--user {
+  justify-content: flex-end;
+}
+
+.message-bubble {
+  max-width: 86%;
+  padding: 24rpx;
+  border: 2rpx solid rgba(232, 236, 243, 0.94);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-card);
+}
+
+.message-row--user .message-bubble {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.message-text {
+  display: block;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+.message-files {
+  display: grid;
+  gap: 10rpx;
+  margin-top: 16rpx;
+}
+
+.message-file {
+  padding: 12rpx 16rpx;
+  border-radius: 16rpx;
+  background: #F4F7FF;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+}
+
+.result-card {
+  margin-top: 18rpx;
+  padding: 20rpx;
+  border-radius: 22rpx;
+  background: #F7F9FE;
+}
+
+.result-title {
+  display: block;
+  color: var(--text-primary);
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.result-desc {
+  display: block;
+  margin: 8rpx 0 18rpx;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.assistant-composer {
+  flex: 0 0 auto;
+  padding: 16rpx;
+  border: 2rpx solid rgba(232, 236, 243, 0.95);
+  border-radius: 32rpx;
+  background: #FFFFFF;
+  box-shadow: 0 12rpx 48rpx rgba(0, 0, 0, 0.10);
+}
+
+.attached-list {
+  display: flex;
+  gap: 10rpx;
+  overflow-x: auto;
+  margin-bottom: 12rpx;
+}
+
+.attached-item {
+  display: flex;
+  align-items: center;
+  max-width: 300rpx;
+  padding: 8rpx 12rpx;
+  border-radius: 999rpx;
+  background: #F4F7FF;
+}
+
+.attached-name {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attached-remove {
+  margin-left: 10rpx;
+  color: var(--error);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.composer-row {
+  display: grid;
+  grid-template-columns: 72rpx minmax(0, 1fr) 104rpx;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.upload-button,
+.send-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72rpx;
+  padding: 0;
+  border-radius: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.upload-button {
+  background: #F4F7FF;
+  color: var(--primary);
+}
+
+.send-button {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.composer-input {
+  width: 100%;
+  height: 72rpx;
+  padding: 0 22rpx;
+  border: 2rpx solid var(--border);
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-size: 28rpx;
+}

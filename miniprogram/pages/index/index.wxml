@@ -1,77 +1,73 @@
-<view class="container">
-  <!-- 顶部标题区 -->
-  <view class="header">
-    <text class="logo">🎯</text>
-    <text class="title">ExamPilot AI</text>
-    <text class="subtitle">智能考试冲刺系统</text>
+<view class="page page--tab home-page">
+  <ui-navbar title="ExamPilot AI" subtitle="智能考试冲刺系统" logo="{{true}}" />
+
+  <ui-card compact="{{true}}">
+    <view class="hero-card">
+      <view>
+        <text class="hero-label">距离考试还有</text>
+        <view class="hero-days">
+          <text class="hero-number">{{overview.daysLeft}}</text>
+          <text class="hero-unit">天</text>
+        </view>
+        <text class="hero-plan">今日计划 {{overview.plan}}</text>
+      </view>
+      <view class="hero-action" bindtap="goToQuiz">开始学习</view>
+    </view>
+  </ui-card>
+
+  <view class="section-tight">
+    <text class="section-title">学习数据</text>
+    <view class="metric-grid">
+      <ui-card compact="{{true}}">
+        <text class="metric-label">题库总量</text>
+        <text class="metric-value">{{stats.totalQuestions}}</text>
+        <text class="metric-caption">题</text>
+      </ui-card>
+      <ui-card compact="{{true}}">
+        <text class="metric-label">掌握率</text>
+        <text class="metric-value">{{stats.accuracy}}%</text>
+        <text class="metric-caption">已掌握</text>
+      </ui-card>
+      <ui-card compact="{{true}}">
+        <text class="metric-label">已消化</text>
+        <text class="metric-value">{{stats.masteredCount}}</text>
+        <text class="metric-caption">题</text>
+      </ui-card>
+    </view>
   </view>
 
-  <!-- 数据概览卡片 -->
-  <view class="stats-row">
-    <view class="stat-card">
-      <text class="stat-num">{{stats.totalQuestions}}</text>
-      <text class="stat-label">题库总数</text>
-    </view>
-    <view class="stat-card">
-      <text class="stat-num green">{{stats.masteredCount}}</text>
-      <text class="stat-label">已掌握</text>
-    </view>
-    <view class="stat-card">
-      <text class="stat-num red">{{stats.wrongCount}}</text>
-      <text class="stat-label">待攻克</text>
-    </view>
-    <view class="stat-card">
-      <text class="stat-num blue">{{stats.accuracy}}%</text>
-      <text class="stat-label">正确率</text>
-    </view>
+  <view class="section-tight">
+    <ui-card title="知识掌握分布">
+      <view class="knowledge-layout">
+        <view class="donut"><view class="donut-hole"></view></view>
+        <view class="legend-list">
+          <view class="legend-item"><text class="legend-dot legend-dot--blue"></text><text class="legend-label">已掌握</text><text class="legend-value">{{stats.masteredCount}}</text></view>
+          <view class="legend-item"><text class="legend-dot legend-dot--green"></text><text class="legend-label">模糊掌握</text><text class="legend-value">{{overview.reviewCount}}</text></view>
+          <view class="legend-item"><text class="legend-dot legend-dot--orange"></text><text class="legend-label">未掌握</text><text class="legend-value">{{stats.wrongCount}}</text></view>
+          <view class="legend-item"><text class="legend-dot legend-dot--gray"></text><text class="legend-label">无练习</text><text class="legend-value">{{overview.newCount}}</text></view>
+        </view>
+      </view>
+    </ui-card>
   </view>
 
-  <!-- 快捷入口 -->
   <view class="section">
-    <text class="section-title">快捷操作</text>
-    <view class="action-cards">
-      <view class="action-card" bindtap="goToImport">
-        <text class="action-icon">📥</text>
-        <text class="action-title">导入题库</text>
-        <text class="action-desc">PDF / 图片 / 文档导入</text>
+    <text class="section-title">先看见盲区，再消灭盲区。</text>
+    <view class="feature-stack">
+      <view class="feature-row" bindtap="goToImport">
+        <view class="icon-badge">AI</view>
+        <view class="feature-copy"><text class="feature-title">AI 结构化题库</text><text class="feature-desc">多格式资料一键导入，AI 解析结构化</text></view>
       </view>
-      <view class="action-card" bindtap="goToQuiz">
-        <text class="action-icon">📝</text>
-        <text class="action-title">快速测评</text>
-        <text class="action-desc">智能诊断掌握程度</text>
+      <view class="feature-row" bindtap="goToQuiz">
+        <view class="icon-badge">✓</view>
+        <view class="feature-copy"><text class="feature-title">自信度校准</text><text class="feature-desc">匹配主观自信与客观表现，识别知识幻觉</text></view>
       </view>
-      <view class="action-card" bindtap="goToErrors">
-        <text class="action-icon">📋</text>
-        <text class="action-title">错题本</text>
-        <text class="action-desc">精准复习查漏补缺</text>
+      <view class="feature-row" bindtap="goToErrors">
+        <view class="icon-badge">↺</view>
+        <view class="feature-copy"><text class="feature-title">诊断式追问</text><text class="feature-desc">按错因和知识点安排复习路径</text></view>
       </view>
-      <view class="action-card" bindtap="goToSprint">
-        <text class="action-icon">🚀</text>
-        <text class="action-title">冲刺模式</text>
-        <text class="action-desc">消灭所有薄弱点</text>
-      </view>
-    </view>
-  </view>
-
-  <!-- 产品亮点 -->
-  <view class="section">
-    <text class="section-title">你的学习闭环</text>
-    <view class="feature-list">
-      <view class="feature-item">
-        <text class="feature-dot">1</text>
-        <text>导入资料 → AI自动结构化</text>
-      </view>
-      <view class="feature-item">
-        <text class="feature-dot">2</text>
-        <text>快速测评 → 发现知识盲区</text>
-      </view>
-      <view class="feature-item">
-        <text class="feature-dot">3</text>
-        <text>错题诊断 → 理解错因</text>
-      </view>
-      <view class="feature-item">
-        <text class="feature-dot">4</text>
-        <text>冲刺模式 → 最短路径攻克</text>
+      <view class="feature-row" bindtap="goToSprint">
+        <view class="icon-badge">⚡</view>
+        <view class="feature-copy"><text class="feature-title">个性化冲刺</text><text class="feature-desc">30/60/120min 冲刺模式，最短效提分</text></view>
       </view>
     </view>
   </view>

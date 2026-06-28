@@ -1,0 +1,7 @@
+<button
+  class="ui-button ui-button--{{variant}} {{block ? 'ui-button--block' : ''}} {{disabled ? 'ui-button--disabled' : ''}}"
+  disabled="{{disabled}}"
+  bindtap="handleTap"
+>
+  <slot></slot>
+</button>

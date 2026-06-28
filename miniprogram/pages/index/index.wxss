@@ -1,67 +1,25 @@
-.container {
-  padding-bottom: 40rpx;
-}
-
-.header {
-  background: linear-gradient(135deg, #4F46E5, #7C3AED);
-  padding: 80rpx 40rpx 60rpx;
-  text-align: center;
-}
-
-.logo { font-size: 64rpx; display: block; margin-bottom: 16rpx; }
-.title { font-size: 44rpx; font-weight: 700; color: #fff; display: block; }
-.subtitle { font-size: 26rpx; color: rgba(255,255,255,0.8); display: block; margin-top: 8rpx; }
-
-.stats-row {
-  display: flex;
-  margin: -30rpx 24rpx 0;
-  position: relative;
-  z-index: 1;
-}
-
-.stat-card {
-  flex: 1;
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx 0;
-  text-align: center;
-  margin: 0 6rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.08);
-}
-
-.stat-num { font-size: 40rpx; font-weight: 700; color: #1a1a1a; display: block; }
-.stat-num.green { color: #10B981; }
-.stat-num.red { color: #EF4444; }
-.stat-num.blue { color: #4F46E5; }
-.stat-label { font-size: 22rpx; color: #999; margin-top: 6rpx; display: block; }
-
-.section { margin: 32rpx 24rpx 0; }
-.section-title { font-size: 32rpx; font-weight: 700; display: block; margin-bottom: 20rpx; }
-
-.action-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.action-card {
-  width: calc(50% - 8rpx);
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
-}
-
-.action-icon { font-size: 44rpx; display: block; margin-bottom: 12rpx; }
-.action-title { font-size: 30rpx; font-weight: 600; display: block; margin-bottom: 6rpx; }
-.action-desc { font-size: 24rpx; color: #999; display: block; }
-
-.feature-list { background: #fff; border-radius: 16rpx; padding: 32rpx; }
-.feature-item { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f0f0f0; font-size: 28rpx; }
-.feature-item:last-child { border-bottom: none; }
-.feature-dot {
-  width: 40rpx; height: 40rpx;
-  background: #EEF2FF; color: #4F46E5;
-  border-radius: 50%; text-align: center; line-height: 40rpx;
-  font-size: 24rpx; font-weight: 700; margin-right: 20rpx; flex-shrink: 0;
-}
+.home-page { background: var(--background); }
+.hero-card { display:flex; align-items:flex-end; justify-content:space-between; min-height:216rpx; padding:28rpx; border-radius:32rpx; background:var(--primary); color:#fff; }
+.hero-label,.hero-plan { display:block; font-size:24rpx; opacity:.88; }
+.hero-days { display:flex; align-items:baseline; margin-top:8rpx; }
+.hero-number { font-size:56rpx; font-weight:700; line-height:1; }
+.hero-unit { margin-left:12rpx; font-size:28rpx; font-weight:500; }
+.hero-plan { margin-top:24rpx; }
+.hero-action { min-width:116rpx; height:48rpx; padding:0 20rpx; border-radius:999rpx; background:#fff; color:var(--primary); font-size:24rpx; font-weight:600; line-height:48rpx; text-align:center; }
+.metric-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16rpx; }
+.metric-label,.metric-caption { display:block; color:var(--text-secondary); font-size:24rpx; text-align:center; }
+.metric-value { display:block; margin-top:8rpx; color:var(--text-primary); font-size:36rpx; font-weight:700; text-align:center; }
+.knowledge-layout { display:flex; align-items:center; gap:32rpx; }
+.donut { position:relative; width:168rpx; height:168rpx; flex:0 0 168rpx; border-radius:50%; background:conic-gradient(#4E7BFF 0 44%, #34C759 44% 62%, #FF9F0A 62% 82%, #D9DEE8 82% 100%); }
+.donut-hole { position:absolute; top:40rpx; left:40rpx; width:88rpx; height:88rpx; border-radius:50%; background:#fff; }
+.legend-list { flex:1; }
+.legend-item { display:grid; grid-template-columns:18rpx 1fr auto; align-items:center; gap:12rpx; margin-bottom:16rpx; }
+.legend-dot { width:12rpx; height:12rpx; border-radius:999rpx; }
+.legend-dot--blue{background:var(--primary)} .legend-dot--green{background:var(--success)} .legend-dot--orange{background:var(--warning)} .legend-dot--gray{background:#D9DEE8}
+.legend-label,.legend-value { font-size:24rpx; }
+.legend-label { color:var(--text-secondary); }
+.legend-value { color:var(--text-primary); font-weight:600; }
+.feature-row { display:flex; align-items:center; padding:24rpx 0; }
+.feature-copy { flex:1; margin-left:20rpx; }
+.feature-title { display:block; color:var(--primary); font-size:28rpx; font-weight:600; }
+.feature-desc { display:block; margin-top:8rpx; color:var(--text-secondary); font-size:24rpx; }

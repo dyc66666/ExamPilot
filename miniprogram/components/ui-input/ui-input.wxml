@@ -1,0 +1,21 @@
+<view class="ui-field">
+  <text class="ui-field__label" wx:if="{{label}}">{{label}}</text>
+  <textarea
+    wx:if="{{multiline}}"
+    class="ui-field__control ui-field__textarea {{focused ? 'ui-field__control--focus' : ''}}"
+    value="{{value}}"
+    placeholder="{{placeholder}}"
+    bindinput="handleInput"
+    bindfocus="handleFocus"
+    bindblur="handleBlur"
+  />
+  <input
+    wx:else
+    class="ui-field__control {{focused ? 'ui-field__control--focus' : ''}}"
+    value="{{value}}"
+    placeholder="{{placeholder}}"
+    bindinput="handleInput"
+    bindfocus="handleFocus"
+    bindblur="handleBlur"
+  />
+</view>

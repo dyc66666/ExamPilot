@@ -1,48 +1,44 @@
-<view class="container">
-  <!-- 头部统计 -->
-  <view class="banner">
-    <text class="banner-num">{{wrongQuestions.length}}</text>
-    <text class="banner-label">道错题待攻克</text>
-  </view>
+<view class="page page--tab errors-page">
+  <ui-navbar title="错题本" subtitle="诊断薄弱点" />
 
-  <!-- 冲刺入口 -->
-  <view class="sprint-entry" wx:if="{{wrongQuestions.length > 0}}" bindtap="startSprint">
-    <text class="sprint-icon">🚀</text>
-    <view class="sprint-info">
-      <text class="sprint-title">消灭错题 · 冲刺模式</text>
-      <text class="sprint-desc">AI 针对性出题，直到全部掌握</text>
+  <ui-card compact="{{true}}">
+    <view class="book-header">
+      <view><text class="book-title">错题本</text><text class="book-subtitle">{{wrongQuestions.length}} 道题待巩固</text></view>
     </view>
-    <text class="sprint-arrow">›</text>
-  </view>
+    <ui-tabs items="{{filterTabs}}" active="{{activeFilter}}" bind:change="onFilterChange" />
+  </ui-card>
 
-  <!-- 空状态 -->
-  <view class="empty" wx:if="{{wrongQuestions.length === 0}}">
-    <text class="empty-icon">🎉</text>
-    <text class="empty-title">错题本为空</text>
-    <text class="empty-desc">继续保持！</text>
-  </view>
-
-  <!-- 按知识点分组 -->
-  <view class="card" wx:for="{{groupedQuestions}}" wx:key="name">
-    <view class="group-header">
-      <text class="group-name">{{item.name}}</text>
-      <text class="group-count">{{item.count}} 题</text>
+  <view class="section-tight" wx:if="{{wrongQuestions.length > 0}}">
+    <view class="sprint-entry" bindtap="startSprint">
+      <view class="sprint-entry__icon">⚡</view>
+      <view class="sprint-entry__copy"><text class="sprint-entry__title">消灭错题 · 冲刺模式</text><text class="sprint-entry__desc">按错因和知识点安排最短复习路径</text></view>
+      <text class="sprint-entry__arrow">›</text>
     </view>
-    <view class="group-question" wx:for="{{item.questions}}" wx:key="id" wx:for-item="q">
-      <view class="gq-header">
-        <text class="gq-confidence" data-type="{{q.confidenceWhenWrong}}">
-          {{q.confidenceWhenWrong === 'sure' ? '💪 高估' : q.confidenceWhenWrong === 'unsure' ? '🤔 模糊' : '🎲 猜测'}}
-        </text>
-        <text class="gq-count">错 {{q.wrongCount || 1}} 次</text>
+  </view>
+
+  <view class="section-tight" wx:if="{{wrongQuestions.length === 0}}">
+    <ui-card>
+      <view class="empty-state">
+        <view class="empty-visual">✓</view>
+        <text class="empty-title">错题本为空</text>
+        <text class="empty-desc">完成一次快速测评后，答错题目会自动进入这里。</text>
+        <ui-button variant="primary" bind:tap="goToQuiz">开始测评</ui-button>
       </view>
-      <text class="gq-stem">{{q.stem}}</text>
-      <text class="gq-answer">答案：{{q.answer}}</text>
-      <text class="gq-exp" wx:if="{{q.explanation}}">{{q.explanation}}</text>
+    </ui-card>
+  </view>
+
+  <view class="section-tight" wx:if="{{groupedQuestions.length > 0}}">
+    <view class="group-card" wx:for="{{groupedQuestions}}" wx:key="name">
+      <view class="group-header"><text class="group-name">{{item.name}}</text><text class="tag tag--error">{{item.count}} 题</text></view>
+      <view class="wrong-row" wx:for="{{item.questions}}" wx:key="id" wx:for-item="q">
+        <view class="wrong-row__top"><text class="wrong-title">{{q.stem}}</text><text class="wrong-date">{{q.dateText}}</text></view>
+        <view class="wrong-row__meta"><text class="wrong-label wrong-label--error">错因：{{q.confidenceText}}</text><text class="wrong-label wrong-label--success">错 {{q.wrongCount || 1}} 次</text></view>
+        <text class="wrong-answer">答案：{{q.answer}}</text>
+      </view>
     </view>
   </view>
 
-  <!-- 底部操作 -->
-  <view class="bottom-bar" wx:if="{{wrongQuestions.length > 0}}">
-    <button class="btn-clear" bindtap="clearErrors">清空错题本</button>
+  <view class="bottom-action" wx:if="{{wrongQuestions.length > 0}}">
+    <ui-button variant="ghost" block="{{true}}" bind:tap="clearErrors">清空错题本</ui-button>
   </view>
 </view>

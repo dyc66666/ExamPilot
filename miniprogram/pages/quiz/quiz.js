@@ -1,131 +1,51 @@
+const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F']
+function decorateQuestion(question) {
+  if (!question) return null
+  return { ...question, answer: String(question.answer || '').toUpperCase(), optionItems: (question.options || []).map((text, index) => ({ label: LETTERS[index], text })).filter(item => item.text) }
+}
+function progressClass(current, total) {
+  if (!total) return 'progress-0'
+  const percent = Math.round(((current + 1) / total) * 100)
+  if (percent >= 100) return 'progress-100'
+  if (percent >= 75) return 'progress-75'
+  if (percent >= 50) return 'progress-50'
+  if (percent >= 25) return 'progress-25'
+  return 'progress-10'
+}
 Page({
-  data: {
-    isQuizStarted: false,
-    questions: [],
-    currentIndex: 0,
-    currentQuestion: null,
-    confidence: '',       // 'sure' | 'unsure' | 'guess'
-    selectedAnswer: '',
-    isSubmitted: false,
-    isCorrect: false,
-    showExplanation: false,
-    progress: { done: 0, total: 0 }
-  },
-
-  onShow() {
-    this.loadQuestions()
-  },
-
-  loadQuestions() {
-    const questions = wx.getStorageSync('questions') || []
-    if (questions.length > 0 && !this.data.isQuizStarted) {
-      this.setData({
-        questions,
-        currentQuestion: questions[0],
-        progress: { done: 0, total: questions.length }
-      })
-    }
-  },
-
+  data: { isQuizStarted: false, questions: [], currentIndex: 0, currentQuestion: null, confidence: '', selectedAnswer: '', isSubmitted: false, isCorrect: false, progressText: '0/0', progressClass: 'progress-0', nextButtonText: '下一题' },
+  onShow() { this.loadQuestions() },
+  loadQuestions() { this.setData({ questions: wx.getStorageSync('questions') || [] }) },
+  syncCurrentQuestion(index, questions = this.data.questions) { this.setData({ currentIndex: index, currentQuestion: decorateQuestion(questions[index]), progressText: `${index + 1}/${questions.length}`, progressClass: progressClass(index, questions.length), nextButtonText: index + 1 < questions.length ? '下一题' : '完成测评' }) },
   startQuiz() {
-    const questions = this.data.questions
-    if (questions.length === 0) {
-      wx.showToast({ title: '请先导入题库', icon: 'none' })
-      return
-    }
-    this.setData({
-      isQuizStarted: true,
-      currentIndex: 0,
-      currentQuestion: questions[0],
-      progress: { done: 0, total: questions.length },
-      confidence: '',
-      selectedAnswer: '',
-      isSubmitted: false,
-      showExplanation: false
-    })
+    if (!this.data.questions.length) { wx.showToast({ title: '请先导入题库', icon: 'none' }); return }
+    this.setData({ isQuizStarted: true, confidence: '', selectedAnswer: '', isSubmitted: false, isCorrect: false })
+    this.syncCurrentQuestion(0)
   },
-
-  // 选择自信度
-  selectConfidence(e) {
-    this.setData({ confidence: e.currentTarget.dataset.value })
-  },
-
-  // 选择答案
-  selectAnswer(e) {
-    if (this.data.isSubmitted) return
-    this.setData({ selectedAnswer: e.currentTarget.dataset.value })
-  },
-
-  // 提交答案
+  stopQuiz() { this.setData({ isQuizStarted: false, currentIndex: 0, currentQuestion: null, confidence: '', selectedAnswer: '', isSubmitted: false, isCorrect: false }) },
+  selectConfidence(e) { if (!this.data.isSubmitted) this.setData({ confidence: e.currentTarget.dataset.value }) },
+  selectAnswer(e) { if (!this.data.isSubmitted) this.setData({ selectedAnswer: e.currentTarget.dataset.value }) },
+  handlePrimaryAction() { this.data.isSubmitted ? this.nextQuestion() : this.submitAnswer() },
   submitAnswer() {
-    if (!this.data.confidence) {
-      wx.showToast({ title: '请先选择自信度', icon: 'none' })
-      return
-    }
-    if (!this.data.selectedAnswer) {
-      wx.showToast({ title: '请选择答案', icon: 'none' })
-      return
-    }
-
+    if (!this.data.selectedAnswer || !this.data.confidence) return
     const correct = this.data.selectedAnswer === this.data.currentQuestion.answer
-
-    // 认知冲突检测：高自信但答错
-    const conflict = this.data.confidence === 'sure' && !correct
-
-    this.setData({
-      isSubmitted: true,
-      isCorrect: correct,
-      conflict: conflict
-    })
-
-    // 更新错题本
-    if (!correct) {
-      const wrongQuestions = wx.getStorageSync('wrongQuestions') || []
-      const q = this.data.currentQuestion
-      q.wrongTime = new Date().toISOString()
-      q.confidenceWhenWrong = this.data.confidence
-      const exists = wrongQuestions.find(w => w.id === q.id)
-      if (!exists) {
-        q.wrongCount = (q.wrongCount || 0) + 1
-        wrongQuestions.unshift(q)
-        wx.setStorageSync('wrongQuestions', wrongQuestions)
-        const app = getApp()
-        app.globalData.wrongQuestions = wrongQuestions
-      }
-    }
+    this.setData({ isSubmitted: true, isCorrect: correct })
+    if (!correct) this.saveWrongQuestion()
   },
-
-  // 下一题
+  saveWrongQuestion() {
+    const wrongQuestions = wx.getStorageSync('wrongQuestions') || []
+    const current = { ...this.data.currentQuestion, wrongTime: new Date().toISOString(), confidenceWhenWrong: this.data.confidence, wrongCount: (this.data.currentQuestion.wrongCount || 0) + 1 }
+    delete current.optionItems
+    const nextWrongQuestions = wrongQuestions.filter(item => item.id !== current.id)
+    nextWrongQuestions.unshift(current)
+    wx.setStorageSync('wrongQuestions', nextWrongQuestions)
+    getApp().globalData.wrongQuestions = nextWrongQuestions
+  },
   nextQuestion() {
     const nextIndex = this.data.currentIndex + 1
-    if (nextIndex >= this.data.questions.length) {
-      wx.showModal({
-        title: '测评完成',
-        content: '恭喜！你已完成本轮所有题目。',
-        confirmText: '返回首页',
-        success: (res) => {
-          if (res.confirm) {
-            wx.switchTab({ url: '/pages/index/index' })
-          }
-        }
-      })
-      return
-    }
-
-    this.setData({
-      currentIndex: nextIndex,
-      currentQuestion: this.data.questions[nextIndex],
-      confidence: '',
-      selectedAnswer: '',
-      isSubmitted: false,
-      isCorrect: false,
-      showExplanation: false,
-      conflict: false,
-      progress: { ...this.data.progress, done: nextIndex }
-    })
+    if (nextIndex >= this.data.questions.length) { wx.showToast({ title: '测评完成', icon: 'success' }); this.stopQuiz(); return }
+    this.setData({ confidence: '', selectedAnswer: '', isSubmitted: false, isCorrect: false })
+    this.syncCurrentQuestion(nextIndex)
   },
-
-  toggleExplanation() {
-    this.setData({ showExplanation: !this.data.showExplanation })
-  }
+  goToImport() { wx.switchTab({ url: '/pages/import/import' }) }
 })

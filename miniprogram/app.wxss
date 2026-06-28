@@ -1,31 +1,133 @@
-/* 全局样式 */
 page {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 28rpx;
-  color: #1a1a1a;
-  background-color: #F5F5F5;
+  --primary: #4E7BFF;
+  --primary-pressed: #3567F5;
+  --background: #F7F8FA;
+  --card: #FFFFFF;
+  --border: #E8ECF3;
+  --text-primary: #1D1D1F;
+  --text-secondary: #6E6E73;
+  --success: #34C759;
+  --warning: #FF9F0A;
+  --error: #FF453A;
+  --radius-button: 32rpx;
+  --radius-input: 32rpx;
+  --radius-card: 48rpx;
+  --shadow-card: 0 8rpx 32rpx rgba(0, 0, 0, 0.05);
+
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: Inter, "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 32rpx;
 }
 
-/* 通用卡片 */
-.card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin: 24rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+view,
+text,
+button,
+input,
+textarea {
+  box-sizing: border-box;
+  font-family: Inter, "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* 通用按钮 */
-.btn-primary {
-  background: #4F46E5;
-  color: #fff;
-  border-radius: 12rpx;
-  padding: 24rpx;
-  text-align: center;
-  font-size: 30rpx;
+button {
+  margin: 0;
+}
+
+button::after {
+  border: 0;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 24rpx 24rpx 40rpx;
+  background: transparent;
+}
+
+.page--tab {
+  padding-bottom: 132rpx;
+}
+
+.section {
+  margin-top: 64rpx;
+}
+
+.section-tight {
+  margin-top: 32rpx;
+}
+
+.section-title {
+  display: block;
+  margin-bottom: 24rpx;
+  color: var(--text-primary);
+  font-size: 40rpx;
   font-weight: 600;
-  border: none;
 }
-.btn-primary:active {
-  background: #4338CA;
+
+.caption {
+  color: var(--text-secondary);
+  font-size: 24rpx;
 }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40rpx;
+  padding: 0 16rpx;
+  border-radius: 999rpx;
+  background: #EEF3FF;
+  color: var(--primary);
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.tag--success {
+  background: rgba(52, 199, 89, 0.12);
+  color: var(--success);
+}
+
+.tag--error {
+  background: rgba(255, 69, 58, 0.12);
+  color: var(--error);
+}
+
+.icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 18rpx;
+  background: #EEF3FF;
+  color: var(--primary);
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8rpx;
+  overflow: hidden;
+  border-radius: 999rpx;
+  background: #EEF1F6;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: var(--primary);
+}
+
+.progress-0 { width: 0; }
+.progress-10 { width: 10%; }
+.progress-20 { width: 20%; }
+.progress-25 { width: 25%; }
+.progress-33 { width: 33%; }
+.progress-40 { width: 40%; }
+.progress-50 { width: 50%; }
+.progress-60 { width: 60%; }
+.progress-66 { width: 66%; }
+.progress-75 { width: 75%; }
+.progress-80 { width: 80%; }
+.progress-90 { width: 90%; }
+.progress-100 { width: 100%; }

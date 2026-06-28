@@ -8,3 +8,4 @@ dist/
 project.private.config.json
 # Claude Code 本地配置
 .claude/
+.agents/

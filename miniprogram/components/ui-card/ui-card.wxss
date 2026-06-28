@@ -1,0 +1,30 @@
+.ui-card {
+  overflow: hidden;
+  padding: 32rpx;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+}
+
+.ui-card--compact {
+  padding: 24rpx;
+}
+
+.ui-card__header {
+  margin-bottom: 24rpx;
+}
+
+.ui-card__title {
+  display: block;
+  color: var(--text-primary);
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.ui-card__subtitle {
+  display: block;
+  margin-top: 8rpx;
+  color: var(--text-secondary);
+  font-size: 28rpx;
+}

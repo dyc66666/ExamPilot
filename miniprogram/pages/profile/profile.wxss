@@ -1,0 +1,210 @@
+.profile-page {
+  background: var(--background);
+}
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 112rpx;
+  height: 112rpx;
+  overflow: hidden;
+  border-radius: 999rpx;
+  background: #EEF3FF;
+}
+
+.avatar-button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.avatar-button::after {
+  border: 0;
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+}
+
+.avatar-fallback {
+  color: var(--primary);
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.avatar-tip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 36rpx;
+  height: 36rpx;
+  border: 4rpx solid #FFFFFF;
+  border-radius: 999rpx;
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 20rpx;
+  line-height: 28rpx;
+  text-align: center;
+}
+
+.profile-copy {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
+}
+
+.profile-name {
+  display: block;
+  color: var(--text-primary);
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.profile-subtitle {
+  display: block;
+  margin-top: 6rpx;
+  color: var(--text-secondary);
+  font-size: 26rpx;
+}
+
+.profile-target {
+  display: block;
+  margin-top: 4rpx;
+  color: var(--primary);
+  font-size: 24rpx;
+}
+
+.profile-badge {
+  height: 48rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  background: #EEF3FF;
+  color: var(--primary);
+  font-size: 24rpx;
+  font-weight: 600;
+  line-height: 48rpx;
+}
+
+.edit-form {
+  display: grid;
+  gap: 24rpx;
+}
+
+.edit-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.asset-card {
+  min-height: 208rpx;
+  padding: 28rpx;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius-card);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-card);
+}
+
+.asset-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 18rpx;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.asset-icon--blue { background: var(--primary); }
+.asset-icon--red { background: var(--error); }
+.asset-icon--green { background: var(--success); }
+.asset-icon--orange { background: var(--warning); }
+
+.asset-title,
+.asset-value,
+.asset-caption {
+  display: block;
+}
+
+.asset-title {
+  margin-top: 18rpx;
+  color: var(--text-primary);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.asset-value {
+  margin-top: 12rpx;
+  color: var(--text-primary);
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.asset-caption {
+  color: var(--text-secondary);
+  font-size: 24rpx;
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  min-height: 104rpx;
+  border-bottom: 2rpx solid #F1F3F7;
+}
+
+.menu-row:last-child {
+  border-bottom: 0;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 16rpx;
+  background: #F4F7FF;
+  color: var(--primary);
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.menu-copy {
+  flex: 1;
+  margin-left: 18rpx;
+}
+
+.menu-title {
+  display: block;
+  color: var(--text-primary);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.menu-desc {
+  display: block;
+  margin-top: 4rpx;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+}
+
+.menu-arrow {
+  color: #B4B8C2;
+  font-size: 42rpx;
+}

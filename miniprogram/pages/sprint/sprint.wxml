@@ -1,69 +1,85 @@
-<wxs module="L">
-var letters = ['A','B','C','D','E','F','G','H'];
-var get = function(idx) { return letters[idx] || ''; };
-module.exports = { get: get };
-</wxs>
+<view class="page sprint-page">
+  <view wx:if="{{!isStarted}}">
+    <ui-navbar title="冲刺" subtitle="选择冲刺模式" back="{{true}}" bind:back="goBack" />
 
-<view class="container">
-  <!-- 顶部进度 -->
-  <view class="sprint-header">
-    <text class="sprint-title">🚀 消灭错题冲刺</text>
-    <view class="sprint-stats">
-      <text class="sprint-remain">剩余 {{remainingCount}} 题</text>
-      <text class="sprint-progress">{{progress}}%</text>
-    </view>
-    <view class="progress-bar">
-      <view class="progress-fill" style="width: {{progress}}%"></view>
+    <ui-card title="选择冲刺模式" subtitle="根据你的掌握情况，生成专属学习方案">
+      <view class="mode-list">
+        <view
+          wx:for="{{modeCards}}"
+          wx:key="value"
+          class="mode-card {{selectedMode === item.value ? 'mode-card--active' : ''}} mode-card--{{item.tone}}"
+          data-value="{{item.value}}"
+          bindtap="selectMode"
+        >
+          <view>
+            <text class="mode-title">{{item.title}}</text>
+            <text class="mode-desc">{{item.desc}}</text>
+            <text class="mode-effect">预计提升 {{item.effect}}</text>
+          </view>
+          <view class="mode-check">{{selectedMode === item.value ? '✓' : item.icon}}</view>
+        </view>
+      </view>
+
+      <view class="mode-footer">
+        <text class="caption">当前错题 {{questions.length}} 道</text>
+        <ui-button variant="primary" block="{{true}}" disabled="{{questions.length === 0}}" bind:tap="startSprint">
+          开始冲刺
+        </ui-button>
+      </view>
+    </ui-card>
+
+    <view class="empty-hint" wx:if="{{questions.length === 0}}">
+      <text>暂无错题。完成测评后，可在这里生成个性化冲刺。</text>
     </view>
   </view>
 
-  <!-- 题目卡片 -->
-  <view class="quiz-card" wx:if="{{currentQuestion}}">
-    <view class="q-header">
-      <text class="q-index">第 {{currentIndex + 1}} 题</text>
-      <text class="q-knowledge">{{currentQuestion.knowledgePoint || ''}}</text>
-    </view>
+  <view wx:if="{{isStarted && currentQuestion}}">
+    <ui-navbar title="{{currentModeTitle}}" subtitle="错题冲刺" back="{{true}}" bind:back="stopSprint" />
 
-    <text class="q-stem">{{currentQuestion.stem}}</text>
-
-    <!-- 选项 -->
-    <view class="options-list">
-      <view
-        wx:for="{{currentQuestion.options}}"
-        wx:key="index"
-        wx:if="{{item}}"
-        class="option-item {{selectedAnswer === L.get(index) ? 'selected' : ''}} {{isSubmitted && L.get(index) === currentQuestion.answer ? 'correct' : ''}} {{isSubmitted && selectedAnswer === L.get(index) && !isCorrect ? 'wrong' : ''}}"
-        bindtap="selectAnswer"
-        data-value="{{L.get(index)}}"
-      >
-        <text class="opt-letter">{{L.get(index)}}</text>
-        <text class="opt-text">{{item}}</text>
-      </view>
-    </view>
-
-    <button class="btn-primary submit-btn" bindtap="submitAnswer" wx:if="{{!isSubmitted}}" disabled="{{!selectedAnswer}}">
-      提交答案
-    </button>
-
-    <!-- 反馈 -->
-    <view class="feedback" wx:if="{{isSubmitted}}">
-      <view class="fb-result {{isCorrect ? 'correct' : 'wrong'}}">
-        <text class="fb-icon">{{isCorrect ? '✅' : '❌'}}</text>
-        <text>{{isCorrect ? '答对了！此题已从错题本移除' : '答错了，此题保留在错题本'}}</text>
+    <ui-card>
+      <view class="sprint-status">
+        <text class="caption">{{progressText}}</text>
+        <text class="caption">剩余 {{remainingCount}} 题</text>
       </view>
 
-      <view class="fb-answer">
-        <text class="fb-label">正确答案：</text>
-        <text class="fb-value">{{currentQuestion.answer}}</text>
+      <view class="progress-track">
+        <view class="progress-fill {{progressClass}}"></view>
       </view>
 
-      <view class="fb-explanation" wx:if="{{currentQuestion.explanation}}">
-        <text>{{currentQuestion.explanation}}</text>
+      <text class="question-stem">{{currentIndex + 1}}. {{currentQuestion.stem}}</text>
+
+      <view class="options-list">
+        <view
+          wx:for="{{currentQuestion.optionItems}}"
+          wx:key="label"
+          class="option-item {{selectedAnswer === item.label ? 'option-item--selected' : ''}} {{isSubmitted && item.label === currentQuestion.answer ? 'option-item--correct' : ''}} {{isSubmitted && selectedAnswer === item.label && !isCorrect ? 'option-item--wrong' : ''}}"
+          data-value="{{item.label}}"
+          bindtap="selectAnswer"
+        >
+          <view class="option-radio"></view>
+          <text class="option-label">{{item.label}}</text>
+          <text class="option-text">{{item.text}}</text>
+        </view>
       </view>
 
-      <button class="btn-primary next-btn" bindtap="nextQuestion">
-        {{remainingCount > 0 ? '下一题' : '完成冲刺'}}
-      </button>
-    </view>
+      <view class="answer-panel" wx:if="{{isSubmitted}}">
+        <view class="answer-result {{isCorrect ? 'answer-result--correct' : 'answer-result--wrong'}}">
+          <text class="answer-result__title">{{isCorrect ? '答对了' : '答错了'}}</text>
+          <text class="answer-result__desc">{{isCorrect ? '此题已从错题本移除' : '此题保留在错题本，稍后继续巩固'}}</text>
+        </view>
+
+        <view class="explanation-box" wx:if="{{currentQuestion.explanation}}">
+          <text class="explanation-label">解析</text>
+          <text class="explanation-text">{{currentQuestion.explanation}}</text>
+        </view>
+      </view>
+
+      <view class="quiz-actions">
+        <ui-button variant="ghost" bind:tap="stopSprint">退出</ui-button>
+        <ui-button variant="primary" disabled="{{!selectedAnswer}}" bind:tap="handlePrimaryAction">
+          {{isSubmitted ? nextButtonText : '提交'}}
+        </ui-button>
+      </view>
+    </ui-card>
   </view>
 </view>

@@ -1,0 +1,33 @@
+.ui-field {
+  width: 100%;
+}
+
+.ui-field__label {
+  display: block;
+  margin-bottom: 12rpx;
+  color: var(--text-primary);
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.ui-field__control {
+  width: 100%;
+  min-height: 96rpx;
+  padding: 0 28rpx;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius-input);
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-size: 32rpx;
+  line-height: 96rpx;
+}
+
+.ui-field__textarea {
+  min-height: 168rpx;
+  padding-top: 24rpx;
+  line-height: 1.5;
+}
+
+.ui-field__control--focus {
+  border-color: var(--primary);
+}

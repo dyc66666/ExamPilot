@@ -1,0 +1,85 @@
+<view class="page page--tab profile-page">
+  <ui-navbar title="个人中心" subtitle="我的学习资产" />
+
+  <ui-card compact="{{true}}">
+    <view class="profile-hero">
+      <button class="avatar-wrap avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image class="avatar" src="{{user.avatar}}" mode="aspectFill" wx:if="{{user.avatar}}" />
+        <text class="avatar-fallback" wx:else>{{user.initial}}</text>
+        <view class="avatar-tip">换</view>
+      </button>
+      <view class="profile-copy" bindtap="toggleEdit">
+        <text class="profile-name">{{user.name}}</text>
+        <text class="profile-subtitle">{{user.grade}} · {{user.major}}</text>
+        <text class="profile-target">{{user.targetExam}}</text>
+      </view>
+      <view class="profile-badge">{{user.identity}}</view>
+    </view>
+  </ui-card>
+
+  <view class="section-tight" wx:if="{{isEditing}}">
+    <ui-card title="编辑个人信息" subtitle="用于生成更贴合你的学习建议">
+      <view class="edit-form">
+        <ui-input label="昵称" value="{{draftUser.name}}" bind:input="onNameInput" />
+        <ui-input label="身份标签" value="{{draftUser.identity}}" bind:input="onIdentityInput" />
+        <ui-input label="年级" value="{{draftUser.grade}}" bind:input="onGradeInput" />
+        <ui-input label="专业方向" value="{{draftUser.major}}" bind:input="onMajorInput" />
+        <ui-input label="目标考试" value="{{draftUser.targetExam}}" bind:input="onTargetInput" />
+        <view class="edit-actions">
+          <ui-button variant="ghost" block="{{true}}" bind:tap="cancelEdit">取消</ui-button>
+          <ui-button variant="primary" block="{{true}}" bind:tap="saveProfile">保存</ui-button>
+        </view>
+      </view>
+    </ui-card>
+  </view>
+
+  <view class="section-tight">
+    <view class="asset-grid">
+      <view class="asset-card" bindtap="goToImport">
+        <view class="asset-icon asset-icon--blue">库</view>
+        <text class="asset-title">我的专属题库</text>
+        <text class="asset-value">{{stats.totalQuestions}}</text>
+        <text class="asset-caption">道题目</text>
+      </view>
+      <view class="asset-card" bindtap="goToErrors">
+        <view class="asset-icon asset-icon--red">错</view>
+        <text class="asset-title">专属错题本</text>
+        <text class="asset-value">{{stats.wrongCount}}</text>
+        <text class="asset-caption">待攻克</text>
+      </view>
+      <view class="asset-card">
+        <view class="asset-icon asset-icon--green">报</view>
+        <text class="asset-title">学习报告</text>
+        <text class="asset-value">{{stats.accuracy}}%</text>
+        <text class="asset-caption">掌握率</text>
+      </view>
+      <view class="asset-card">
+        <view class="asset-icon asset-icon--orange">藏</view>
+        <text class="asset-title">收藏题目</text>
+        <text class="asset-value">{{stats.favoriteCount}}</text>
+        <text class="asset-caption">重点题</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-tight">
+    <ui-card title="我的工具">
+      <view class="menu-row" bindtap="goToSprint">
+        <view class="menu-icon">冲</view>
+        <view class="menu-copy">
+          <text class="menu-title">冲刺计划</text>
+          <text class="menu-desc">30/60/120min 个性化复习</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-row" bindtap="toggleEdit">
+        <view class="menu-icon">设</view>
+        <view class="menu-copy">
+          <text class="menu-title">个人与学习设置</text>
+          <text class="menu-desc">昵称、身份、专业和考试目标</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </ui-card>
+  </view>
+</view>

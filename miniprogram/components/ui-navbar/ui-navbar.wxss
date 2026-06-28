@@ -1,0 +1,57 @@
+.ui-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 88rpx;
+  padding-top: calc(env(safe-area-inset-top) + 48rpx);
+  margin-bottom: 28rpx;
+}
+
+.ui-navbar__left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.ui-navbar__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 999rpx;
+  color: var(--text-primary);
+  font-size: 42rpx;
+  font-weight: 500;
+}
+
+.ui-navbar__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 12rpx;
+  border-radius: 16rpx;
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.ui-navbar__logo {
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.ui-navbar__title {
+  display: block;
+  color: var(--text-primary);
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.ui-navbar__subtitle {
+  display: block;
+  margin-top: 4rpx;
+  color: var(--text-secondary);
+  font-size: 24rpx;
+}

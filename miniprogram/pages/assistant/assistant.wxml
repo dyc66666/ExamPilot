@@ -1,0 +1,70 @@
+<view class="page assistant-page">
+  <image class="assistant-bg" src="/images/app-bg.png" mode="widthFix" />
+
+  <ui-navbar title="AI学习助手" subtitle="问答、上传资料、整理入库" />
+
+  <view class="assistant-top-card">
+    <view class="assistant-hero">
+      <view class="assistant-avatar">AI</view>
+      <view class="assistant-hero-copy">
+        <text class="assistant-title">今天想解决什么学习问题？</text>
+        <text class="assistant-desc">可以直接提问，也可以上传文件并描述需求。</text>
+      </view>
+    </view>
+    <view class="quick-actions">
+      <view class="quick-chip" data-text="帮我把资料整理成选择题并加入题库" bindtap="useQuickPrompt">整理成题库</view>
+      <view class="quick-chip" data-text="帮我讲一下这道题的解题思路" bindtap="useQuickPrompt">讲题思路</view>
+      <view class="quick-chip" data-text="根据我的错题生成30分钟冲刺计划" bindtap="useQuickPrompt">冲刺计划</view>
+      <view class="quick-chip quick-chip--muted" bindtap="clearChat">清空</view>
+    </view>
+  </view>
+
+  <scroll-view
+    class="chat-panel"
+    scroll-y="true"
+    scroll-top="{{scrollTop}}"
+    scroll-with-animation="{{true}}"
+  >
+    <view class="chat-content">
+      <view wx:for="{{messages}}" wx:key="id" class="message-row message-row--{{item.role}}">
+        <view class="message-bubble">
+          <text class="message-text">{{item.content}}</text>
+          <view class="message-files" wx:if="{{item.files && item.files.length}}">
+            <view class="message-file" wx:for="{{item.files}}" wx:key="path" wx:for-item="file">
+              {{file.name}}
+            </view>
+          </view>
+          <view class="result-card" wx:if="{{item.result}}">
+            <text class="result-title">{{item.result.title}}</text>
+            <text class="result-desc">{{item.result.desc}}</text>
+            <ui-button wx:if="{{item.result.canImport}}" variant="primary" block="{{true}}" data-id="{{item.id}}" bind:tap="importResult">
+              确认加入题库
+            </ui-button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="assistant-composer">
+    <view class="attached-list" wx:if="{{attachedFiles.length}}">
+      <view class="attached-item" wx:for="{{attachedFiles}}" wx:key="path">
+        <text class="attached-name">{{item.name}}</text>
+        <text class="attached-remove" data-index="{{index}}" bindtap="removeFile">×</text>
+      </view>
+    </view>
+
+    <view class="composer-row">
+      <button class="upload-button" bindtap="chooseFiles">+</button>
+      <input
+        class="composer-input"
+        value="{{inputValue}}"
+        placeholder="输入问题或资料整理需求"
+        confirm-type="send"
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+      />
+      <button class="send-button" bindtap="sendMessage">发送</button>
+    </view>
+  </view>
+</view>

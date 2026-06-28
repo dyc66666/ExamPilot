@@ -1,0 +1,7 @@
+<view class="ui-card {{compact ? 'ui-card--compact' : ''}}">
+  <view class="ui-card__header" wx:if="{{title || subtitle}}">
+    <text class="ui-card__title" wx:if="{{title}}">{{title}}</text>
+    <text class="ui-card__subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+  </view>
+  <slot></slot>
+</view>
