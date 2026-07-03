@@ -38,25 +38,84 @@ module.exports = { countChecked: countChecked };
     <text class="error-text">{{errorMsg}}</text>
   </view>
 
+  <view class="card warning-card" wx:if="{{parseWarning}}">
+    <text class="warning-title">需要核对</text>
+    <text class="warning-text">{{parseWarning}}</text>
+  </view>
+
   <!-- 解析结果 -->
   <view class="card" wx:if="{{parsedQuestions.length > 0}}">
-    <text class="card-title">核对确认 · {{parsedQuestions.length}} 题</text>
-    <text class="card-subtitle">点击圆圈勾选，确认后入库</text>
+    <view class="review-header">
+      <text class="card-title">核对确认 · {{parsedQuestions.length}} 题</text>
+      <text class="warn-summary" wx:if="{{warnCount > 0}}">{{warnCount}} 题需核对</text>
+      <text class="duplicate-summary" wx:if="{{duplicateCount > 0}}">{{duplicateGroupCount}} 组重复</text>
+    </view>
+    <text class="card-subtitle">点击左侧勾选，重复题和异常题会置顶显示，可编辑后再入库</text>
+    <view class="review-bar">
+      <text class="link-btn" bindtap="selectAllParsed">全选</text>
+      <text class="link-btn" bindtap="deselectAllParsed">取消全选</text>
+      <text class="link-btn" wx:if="{{duplicateCount > 0}}" bindtap="deselectDuplicateParsed">取消重复题</text>
+      <text class="link-btn danger" wx:if="{{duplicateCount > 0}}" bindtap="removeDuplicateParsed">删除重复项</text>
+      <text>已选 {{U.countChecked(parsedQuestions)}} / {{parsedQuestions.length}}</text>
+    </view>
     <view class="parsed-list">
-      <view class="parsed-item {{item._checked ? '' : 'off'}}" wx:for="{{parsedQuestions}}" wx:key="id">
+      <view class="parsed-item {{item._checked ? '' : 'off'}} {{item._warn ? 'warn' : ''}} {{item._duplicate ? 'duplicate' : ''}}" wx:for="{{parsedQuestions}}" wx:key="id" bindtap="openParsedEditor" data-index="{{index}}">
         <view class="parsed-row">
-          <view class="parsed-check" bindtap="toggleQuestion" data-index="{{index}}">
+          <view class="parsed-check" catchtap="toggleQuestion" data-index="{{index}}">
             <text>{{item._checked ? 'V' : ''}}</text>
           </view>
           <text class="parsed-stem">{{item.stem}}</text>
+          <text class="parsed-edit">编辑</text>
         </view>
         <view class="parsed-meta">
+          <text class="parsed-duplicate" wx:if="{{item._duplicate}}">{{item._duplicateLabel}}</text>
           <text class="parsed-answer">答案：{{item.answer}}</text>
+          <text class="parsed-answer">选项：{{item.options.length}}</text>
           <text class="parsed-tag" wx:if="{{item.knowledgePoint}}">{{item.knowledgePoint}}</text>
+        </view>
+        <view class="parsed-warn" wx:if="{{item._warn}}">
+          <text>⚠ {{item._warn}}</text>
         </view>
       </view>
     </view>
-    <button class="btn-save-all" bindtap="saveAllParsed">全部入库（{{U.countChecked(parsedQuestions)}} 题）</button>
+    <button class="btn-save-all" bindtap="saveAllParsed">确认入库（{{U.countChecked(parsedQuestions)}} 题）</button>
+  </view>
+
+  <view class="modal-mask" wx:if="{{showParsedEditor}}" catchtap="closeParsedEditor">
+    <view class="modal-panel" catchtap="noop">
+      <view class="modal-head">
+        <text class="modal-title">编辑核对题目</text>
+        <text class="modal-close" bindtap="closeParsedEditor">关闭</text>
+      </view>
+      <scroll-view class="modal-scroll" scroll-y>
+        <view class="form-group">
+          <text class="form-label">题干</text>
+          <textarea class="form-textarea" value="{{activeParsedQuestion.stem}}" bindinput="onParsedStemInput" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">选项</text>
+          <view class="opt-row parsed-opt-row" wx:for="{{activeParsedQuestion.options}}" wx:key="index" wx:for-index="idx">
+            <text class="opt-letter">{{['A','B','C','D','E','F','G','H','I','J'][idx]}}</text>
+            <input class="form-input" value="{{item}}" bindinput="onParsedOptionInput" data-index="{{idx}}" />
+            <text class="remove-option" catchtap="removeParsedOption" data-index="{{idx}}">删</text>
+          </view>
+          <text class="add-option" bindtap="addParsedOption">+ 添加选项</text>
+        </view>
+        <view class="form-group">
+          <text class="form-label">正确答案</text>
+          <input class="form-input" placeholder="如：A 或 AC" value="{{activeParsedQuestion.answer}}" bindinput="onParsedAnswerInput" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">解析</text>
+          <textarea class="form-textarea short" value="{{activeParsedQuestion.explanation}}" bindinput="onParsedExplanationInput" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">知识点</text>
+          <input class="form-input" value="{{activeParsedQuestion.knowledgePoint}}" bindinput="onParsedKnowledgeInput" />
+        </view>
+      </scroll-view>
+      <button class="btn-save-all modal-save" bindtap="saveParsedEdit">保存修改</button>
+    </view>
   </view>
 
   <!-- 手动录入 -->
