@@ -1,24 +1,61 @@
 <view class="page assistant-page">
+  <!-- 三色交融装饰背景 -->
+  <view class="tri-color-blobs">
+    <view class="blob blob--blue"></view>
+    <view class="blob blob--purple"></view>
+    <view class="blob blob--pink"></view>
+  </view>
   <image class="assistant-bg" src="/images/app-bg.png" mode="widthFix" />
 
-  <ui-navbar title="AI学习助手" subtitle="问答、上传资料、整理入库" />
+  <!-- 顶部导航 -->
+  <view class="assistant-navbar">
+    <view class="assistant-nav-brand">
+      <text class="assistant-nav-title">AI学习助手</text>
+      <text class="assistant-nav-subtitle">问答、上传资料、整理入库</text>
+    </view>
+    <view class="nav-new-btn" bindtap="clearChat">+</view>
+  </view>
 
-  <view class="assistant-top-card">
-    <view class="assistant-hero">
-      <view class="assistant-avatar">AI</view>
-      <view class="assistant-hero-copy">
-        <text class="assistant-title">今天想解决什么学习问题？</text>
-        <text class="assistant-desc">可以直接提问，也可以上传文件并描述需求。</text>
+  <!-- 主卡片（含IP角色） -->
+  <view class="main-card">
+    <view class="main-card-left">
+      <view class="ai-icon">Ai</view>
+      <view class="main-card-copy">
+        <text class="main-card-title">今天想解决什么学习问题？</text>
+        <text class="main-card-desc">可以直接提问，也可以上传文件并描述需求。</text>
       </view>
     </view>
+    <image class="main-mascot" src="/images/mascot-transparent.png" mode="aspectFit" />
     <view class="quick-actions">
-      <view class="quick-chip" data-text="帮我把资料整理成选择题并加入题库" bindtap="useQuickPrompt">整理成题库</view>
+      <view class="quick-chip" data-text="帮我把资料整理成选择题并加入题库" bindtap="useQuickPrompt">整理题库</view>
       <view class="quick-chip" data-text="帮我讲一下这道题的解题思路" bindtap="useQuickPrompt">讲题思路</view>
       <view class="quick-chip" data-text="根据我的错题生成30分钟冲刺计划" bindtap="useQuickPrompt">冲刺计划</view>
-      <view class="quick-chip quick-chip--muted" bindtap="clearChat">清空</view>
     </view>
   </view>
 
+  <!-- 猜你想问 — 仅新对话时显示 -->
+  <view class="guess-section" wx:if="{{isNewChat}}">
+    <text class="guess-title">猜你想问</text>
+    <view class="guess-list">
+      <view class="guess-item" bindtap="useGuess" data-text="如何提高高数选择题正确率？">
+        <view class="guess-dot"></view>
+        <text class="guess-text">如何提高高数选择题正确率？</text>
+        <text class="guess-arrow">›</text>
+      </view>
+      <view class="guess-item" bindtap="useGuess" data-text="帮我整理一下《经济学原理》重点">
+        <view class="guess-dot"></view>
+        <text class="guess-text">帮我整理一下《经济学原理》重点</text>
+        <text class="guess-arrow">›</text>
+      </view>
+      <view class="guess-item" bindtap="useGuess" data-text="明天天气如何，我该穿什么冲刺复习？">
+        <view class="guess-dot"></view>
+        <text class="guess-text">明天天气如何，我该穿什么冲刺复习？</text>
+        <text class="guess-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 聊天区域 -->
   <scroll-view
     class="chat-panel"
     scroll-y="true"
@@ -27,8 +64,8 @@
   >
     <view class="chat-content">
       <view wx:for="{{messages}}" wx:key="id" class="message-row message-row--{{item.role}}">
-        <view class="message-bubble">
-          <text class="message-text">{{item.content}}</text>
+        <view class="message-bubble {{item.loading ? 'message-bubble--loading' : ''}}">
+          <text class="message-text {{item.loading ? 'loading-text' : ''}}">{{item.loading ? '正在思考...' : item.content}}</text>
           <view class="message-files" wx:if="{{item.files && item.files.length}}">
             <view class="message-file" wx:for="{{item.files}}" wx:key="path" wx:for-item="file">
               {{file.name}}
@@ -46,25 +83,42 @@
     </view>
   </scroll-view>
 
-  <view class="assistant-composer">
-    <view class="attached-list" wx:if="{{attachedFiles.length}}">
-      <view class="attached-item" wx:for="{{attachedFiles}}" wx:key="path">
-        <text class="attached-name">{{item.name}}</text>
-        <text class="attached-remove" data-index="{{index}}" bindtap="removeFile">×</text>
-      </view>
-    </view>
+  <!-- 底部输入栏 -->
+  <view class="composer-bar">
+    <button class="add-btn" bindtap="chooseFiles">+</button>
+    <input
+      class="composer-input"
+      value="{{inputValue}}"
+      placeholder="输入问题或资料整理需求..."
+      confirm-type="send"
+      bindinput="onInput"
+      bindconfirm="sendMessage"
+    />
+    <button class="send-btn" bindtap="sendMessage">
+      <text class="send-icon">↑</text>
+    </button>
+  </view>
 
-    <view class="composer-row">
-      <button class="upload-button" bindtap="chooseFiles">+</button>
-      <input
-        class="composer-input"
-        value="{{inputValue}}"
-        placeholder="输入问题或资料整理需求"
-        confirm-type="send"
-        bindinput="onInput"
-        bindconfirm="sendMessage"
-      />
-      <button class="send-button" bindtap="sendMessage">发送</button>
+  <!-- 选择题库弹窗（居中） -->
+  <view class="modal-mask" wx:if="{{showBankPicker}}" catchtap="closeBankPicker">
+    <view class="center-panel" catchtap="noop">
+      <text class="center-title">选择题库</text>
+      <view class="center-list">
+        <view
+          class="center-item {{item.name === currentBank ? 'center-item--active' : ''}}"
+          wx:for="{{bankList}}"
+          wx:key="name"
+          data-name="{{item.name}}"
+          bindtap="selectBank"
+        >
+          <view class="center-color" style="background:{{item.color}}"></view>
+          <text class="center-name">{{item.name}}</text>
+          <text class="center-check" wx:if="{{item.name === currentBank}}">✓</text>
+        </view>
+        <view class="center-empty" wx:if="{{bankList.length === 0}}">
+          <text>暂未创建题库，请前往「题库」页创建</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>

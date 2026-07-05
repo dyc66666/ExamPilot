@@ -39,6 +39,6 @@
   </view>
 
   <view class="bottom-action" wx:if="{{wrongQuestions.length > 0}}">
-    <ui-button variant="ghost" block="{{true}}" bind:tap="clearErrors">清空错题本</ui-button>
+    <view class="clear-btn" bindtap="clearErrors">清空错题本</view>
   </view>
 </view>

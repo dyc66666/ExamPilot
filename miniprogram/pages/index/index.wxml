@@ -77,12 +77,11 @@
   </view>
 
   <view class="assistant-strip" bindtap="goToAssistant">
-    <image class="assistant-bg" src="/images/home-greeting-bg.png" mode="aspectFill" />
+    <image class="assistant-bg" src="/images/home-greeting-bg.png" mode="widthFix" />
     <view class="assistant-text">
       <text class="assistant-title">早上好呀！</text>
       <text class="assistant-desc">今天也要加油学习哦～</text>
     </view>
-    <view class="assistant-hand" hover-class="assistant-hand-hover" hover-stay-time="120">◆</view>
   </view>
 
   <view class="recommend-section">

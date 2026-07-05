@@ -1,10 +1,60 @@
+/* ===== 个人中心 — 参考设计稿重写 ===== */
+
 .profile-page {
-  background: var(--background);
+  position: relative;
+  background: linear-gradient(180deg, #FDFBFF 0%, #F8F6FC 50%, #F4F2FF 100%);
+  min-height: 100vh;
 }
 
-.profile-hero {
+/* ===== 三色交融装饰 ===== */
+.tri-color-blobs {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 560rpx;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60rpx);
+}
+
+.blob--blue {
+  top: -80rpx;
+  left: -100rpx;
+  width: 420rpx;
+  height: 420rpx;
+  background: rgba(120, 180, 255, 0.45);
+}
+
+.blob--purple {
+  top: -40rpx;
+  right: -60rpx;
+  width: 480rpx;
+  height: 480rpx;
+  background: rgba(180, 140, 255, 0.38);
+}
+
+.blob--pink {
+  top: 180rpx;
+  right: 80rpx;
+  width: 360rpx;
+  height: 360rpx;
+  background: rgba(255, 180, 200, 0.30);
+}
+
+/* ===== 头部：头像 + 信息 + 吉祥物 ===== */
+.pf-header {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 130rpx 28rpx 16rpx;
 }
 
 .avatar-wrap {
@@ -12,199 +62,357 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 112rpx;
-  height: 112rpx;
+  width: 120rpx;
+  height: 120rpx;
   overflow: hidden;
   border-radius: 999rpx;
-  background: #EEF3FF;
+  background: linear-gradient(135deg, #E8E3FF, #DDD6FF);
+  border: 4rpx solid rgba(255, 255, 255, 0.9);
 }
 
-.avatar-button {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
+.avatar-button { margin: 0; padding: 0; border: 0; }
+.avatar-button::after { border: 0; }
 
-.avatar-button::after {
-  border: 0;
-}
-
-.avatar {
-  width: 112rpx;
-  height: 112rpx;
-}
+.avatar { width: 120rpx; height: 120rpx; }
 
 .avatar-fallback {
-  color: var(--primary);
-  font-size: 40rpx;
+  color: #7C68E7;
+  font-size: 44rpx;
   font-weight: 700;
 }
 
 .avatar-tip {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 36rpx;
-  height: 36rpx;
-  border: 4rpx solid #FFFFFF;
+  right: 0; bottom: 0;
+  width: 36rpx; height: 36rpx;
+  border: 4rpx solid #fff;
   border-radius: 999rpx;
-  background: var(--primary);
-  color: #FFFFFF;
-  font-size: 20rpx;
+  background: #7C68E7;
+  color: #fff;
+  font-size: 18rpx;
   line-height: 28rpx;
   text-align: center;
 }
 
-.profile-copy {
+.pf-info {
   flex: 1;
+  margin-left: 22rpx;
   min-width: 0;
-  margin-left: 20rpx;
 }
 
-.profile-name {
+.pf-name {
   display: block;
-  color: var(--text-primary);
-  font-size: 36rpx;
+  color: #1A1A2E;
+  font-size: 38rpx;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pf-phone {
+  display: block;
+  margin-top: 8rpx;
+  color: #9B9BAD;
+  font-size: 25rpx;
+}
+
+/* 头部右侧吉祥物 */
+.pf-mascot {
+  width: 180rpx;
+  height: 200rpx;
+  flex-shrink: 0;
+}
+
+/* ===== VIP 区域（吉祥物坐落其上）===== */
+.vip-section {
+  position: relative;
+  z-index: 2;
+  margin-top: -8rpx;
+}
+
+/* 吉祥物 — 坐落在 VIP 横幅右上方 */
+.pf-mascot {
+  position: absolute;
+  right: 10rpx;
+  top: -160rpx;
+  width: 200rpx;
+  height: 220rpx;
+  pointer-events: none;
+  z-index: 3;
+  filter:
+    drop-shadow(0 12rpx 36rpx rgba(120, 140, 200, .20))
+    drop-shadow(0 4rpx 12rpx rgba(107, 92, 231, .12));
+}
+
+.vip-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 24rpx;
+  padding: 26rpx 32rpx;
+  border-radius: 20rpx 20rpx 0 0;
+  background: linear-gradient(135deg, #B8A0FF, #9B85F5);
+  box-shadow: 0 4rpx 20rpx rgba(155, 133, 245, .25);
+}
+
+.vip-left { display: flex; align-items: baseline; gap: 16rpx; }
+.vip-label {
+  color: #fff;
+  font-size: 30rpx;
   font-weight: 700;
 }
-
-.profile-subtitle {
-  display: block;
-  margin-top: 6rpx;
-  color: var(--text-secondary);
-  font-size: 26rpx;
-}
-
-.profile-target {
-  display: block;
-  margin-top: 4rpx;
-  color: var(--primary);
+.vip-days {
+  color: rgba(255, 255, 255, .78);
   font-size: 24rpx;
 }
 
-.profile-badge {
-  height: 48rpx;
-  padding: 0 18rpx;
+.vip-tag {
+  display: inline-block;
+  padding: 6rpx 22rpx;
   border-radius: 999rpx;
-  background: #EEF3FF;
-  color: var(--primary);
-  font-size: 24rpx;
+  background: rgba(255, 255, 255, .24);
+  color: #fff;
+  font-size: 22rpx;
   font-weight: 600;
-  line-height: 48rpx;
 }
 
-.edit-form {
-  display: grid;
-  gap: 24rpx;
+/* ===== 统计卡片 ===== */
+.stats-card {
+  display: flex;
+  align-items: center;
+  margin: 0 24rpx;
+  padding: 32rpx 16rpx;
+  border-radius: 0 0 22rpx 22rpx;
+  background: #fff;
+  box-shadow: 0 4rpx 24rpx rgba(100, 80, 200, .06);
 }
 
-.edit-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16rpx;
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
 }
 
-.asset-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
+.stat-num {
+  color: #1A1A2E;
+  font-size: 44rpx;
+  font-weight: 800;
 }
 
-.asset-card {
-  min-height: 208rpx;
-  padding: 28rpx;
-  border: 2rpx solid var(--border);
-  border-radius: var(--radius-card);
-  background: #FFFFFF;
-  box-shadow: var(--shadow-card);
+.stat-label {
+  color: #9B9BAD;
+  font-size: 23rpx;
 }
 
-.asset-icon {
+.stat-divider {
+  width: 2rpx;
+  height: 52rpx;
+  background: #EEEAF5;
+  flex-shrink: 0;
+}
+
+/* ===== 区块通用 ===== */
+.section-block {
+  margin: 24rpx 24rpx 0;
+  padding: 28rpx 24rpx;
+  border-radius: 22rpx;
+  background: #fff;
+  box-shadow: 0 2rpx 14rpx rgba(100, 80, 200, .05);
+}
+
+.section-title {
+  display: block;
+  color: #1A1A2E;
+  font-size: 31rpx;
+  font-weight: 700;
+  margin-bottom: 24rpx;
+}
+
+/* ===== 我的学习 — 四宫格（图标和参考图一致）===== */
+.learn-grid {
+  display: flex;
+  justify-content: space-around;
+}
+
+.learn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14rpx;
+  min-width: 0;
+}
+
+.learn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
+}
+
+.learn-ic { font-size: 40rpx; }
+.learn-img { width: 48rpx; height: 48rpx; }
+
+/* 题库：蓝紫渐变底 */
+.learn-icon--bank {
+  background: linear-gradient(145deg, #CDD8FF, #B8C7FF);
+}
+
+/* 错题本：紫渐变圆底 + X */
+.learn-icon--error {
+  background: linear-gradient(145deg, #DDD4FF, #CBBEFF);
+}
+.learn-sym {
+  color: #9B70F5;
+  font-size: 46rpx;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* 学习报告：蓝底 */
+.learn-icon--report {
+  background: linear-gradient(145deg, #D0EAFF, #BDE0FF);
+}
+
+/* 收藏题目：暖橙粉底 */
+.learn-icon--fav {
+  background: linear-gradient(145deg, #FFE4DC, #FFD4C8);
+}
+
+.learn-text {
+  color: #55586A;
+  font-size: 24rpx;
+  text-align: center;
+}
+
+/* ===== 设置菜单列表（图标颜色和参考图一致）===== */
+.menu-list { display: flex; flex-direction: column; }
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 0;
+  border-bottom: 2rpx solid #F3F2F8;
+}
+.menu-row:last-child { border-bottom: none; }
+
+.menu-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 56rpx;
   height: 56rpx;
   border-radius: 18rpx;
-  color: #FFFFFF;
-  font-size: 24rpx;
-  font-weight: 700;
 }
 
-.asset-icon--blue { background: var(--primary); }
-.asset-icon--red { background: var(--error); }
-.asset-icon--green { background: var(--success); }
-.asset-icon--orange { background: var(--warning); }
+.menu-ico { font-size: 26rpx; }
 
-.asset-title,
-.asset-value,
-.asset-caption {
-  display: block;
-}
+/* 个人信息 — 紫色人形 */
+.menu-icon--user   { background: #EEECFA; }
+.menu-sym--user    { color: #7C68E7; }
 
-.asset-title {
-  margin-top: 18rpx;
-  color: var(--text-primary);
-  font-size: 28rpx;
-  font-weight: 600;
-}
+/* 账号与设置 — 黄金色锁 */
+.menu-icon--lock   { background: #FFF6E5; }
+.menu-sym--lock    { color: #E6A83C; }
 
-.asset-value {
-  margin-top: 12rpx;
-  color: var(--text-primary);
-  font-size: 40rpx;
-  font-weight: 700;
-}
+/* 冲刺计划 — 蓝色耳机 */
+.menu-icon--support{ background: #E8F4FD; }
+.menu-sym--support { color: #4E9EF5; }
 
-.asset-caption {
-  color: var(--text-secondary);
-  font-size: 24rpx;
-}
+/* 重置数据 — 灰色电源 */
+.menu-icon--logout { background: #F2F1F5; }
+.menu-sym--logout  { color: #9B9BAD; }
 
-.menu-row {
-  display: flex;
-  align-items: center;
-  min-height: 104rpx;
-  border-bottom: 2rpx solid #F1F3F7;
-}
-
-.menu-row:last-child {
-  border-bottom: 0;
-}
-
-.menu-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52rpx;
-  height: 52rpx;
-  border-radius: 16rpx;
-  background: #F4F7FF;
-  color: var(--primary);
-  font-size: 22rpx;
-  font-weight: 700;
-}
-
-.menu-copy {
+.menu-txt {
   flex: 1;
-  margin-left: 18rpx;
-}
-
-.menu-title {
-  display: block;
-  color: var(--text-primary);
-  font-size: 28rpx;
-  font-weight: 600;
-}
-
-.menu-desc {
-  display: block;
-  margin-top: 4rpx;
-  color: var(--text-secondary);
-  font-size: 24rpx;
+  margin-left: 20rpx;
+  color: #2D2D3A;
+  font-size: 29rpx;
+  font-weight: 500;
 }
 
 .menu-arrow {
-  color: #B4B8C2;
-  font-size: 42rpx;
+  color: #C0C2CC;
+  font-size: 38rpx;
+  font-weight: 300;
+}
+
+/* ===== 编辑弹窗 ===== */
+.modal-mask {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, .35);
+  backdrop-filter: blur(8rpx);
+}
+
+.edit-panel {
+  width: 100%;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 40rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
+  border-radius: 36rpx 36rpx 0 0;
+  background: #fff;
+  box-shadow: 0 -8rpx 48rpx rgba(0, 0, 0, .12);
+}
+
+.edit-panel__title {
+  display: block;
+  margin-bottom: 32rpx;
+  color: #1A1A2E;
+  font-size: 36rpx;
+  font-weight: 700;
+  text-align: center;
+}
+
+.efield { margin-bottom: 24rpx; }
+.efield__label {
+  display: block;
+  margin-bottom: 10rpx;
+  color: #55586A;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+.efield__input {
+  height: 88rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #EBEAFA;
+  border-radius: 20rpx;
+  background: #FBFAFF;
+  color: #1A1A2E;
+  font-size: 28rpx;
+}
+.efield__input::placeholder { color: #C0C2CC; }
+
+.edit-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+  margin-top: 36rpx;
+}
+
+.ebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 24rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.ebtn--ghost {
+  background: #F2F1F8;
+  color: #66687A;
+}
+
+.ebtn--primary {
+  background: linear-gradient(135deg, #7C5CFC, #9B6DFF);
+  color: #fff;
+  box-shadow: 0 6rpx 20rpx rgba(124, 92, 252, .30);
 }

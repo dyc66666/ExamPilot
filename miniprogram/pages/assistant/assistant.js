@@ -1,27 +1,4 @@
-function makeQuestionFromPrompt(prompt) {
-  const subject = prompt.includes('导数') ? '导数与函数单调性' : '资料核心概念'
-  return {
-    id: `ai-${Date.now()}`,
-    stem: `根据你上传的资料，关于「${subject}」的正确理解是？`,
-    options: [
-      '先识别概念，再判断条件和结论之间的关系',
-      '只记住答案，不需要理解推导过程',
-      '遇到相似题型时直接套用任意公式',
-      '忽略题干中的限定条件'
-    ],
-    answer: 'A',
-    explanation: 'AI 助手根据你的需求生成了这道示例题。正式接入模型后，这里会由真实资料解析结果生成。',
-    knowledgePoint: subject,
-    wrongCount: 0,
-    status: 'new',
-    source: 'AI助手'
-  }
-}
-
-function canImportToQuestionBank(text, files) {
-  const keywords = ['题库', '整理', '生成题', '选择题', '入库', '导入', '资料']
-  return files.length > 0 || keywords.some(keyword => text.includes(keyword))
-}
+// 云开发已在 app.js 中初始化
 
 Page({
   data: {
@@ -36,7 +13,34 @@ Page({
       }
     ],
     pendingResults: {},
-    scrollTop: 0
+    scrollTop: 0,
+    isNewChat: true,
+    sending: false,
+    // 题库选择
+    showBankPicker: false,
+    currentBank: '',
+    bankList: []
+  },
+
+  onShow() {
+    this.loadBankData()
+  },
+
+  loadBankData() {
+    const createdBanks = wx.getStorageSync('createdBanks') || []
+    const currentBank = wx.getStorageSync('currentBank') || ''
+    const bankColors = ['#4E7BFF', '#34C759', '#FF9F0A', '#FF453A', '#AF52DE', '#636366']
+
+    const bankList = createdBanks.map((name, index) => ({
+      name,
+      color: (() => {
+        const saved = wx.getStorageSync(`bankColor_${name}`)
+        if (saved) return saved
+        return bankColors[index % bankColors.length]
+      })()
+    }))
+
+    this.setData({ bankList, currentBank })
   },
 
   onInput(e) {
@@ -45,6 +49,13 @@ Page({
 
   useQuickPrompt(e) {
     this.setData({ inputValue: e.currentTarget.dataset.text })
+  },
+
+  // ===== 猜你想问点击 =====
+  useGuess(e) {
+    const text = e.currentTarget.dataset.text
+    this.setData({ inputValue: text })
+    this.sendMessage()
   },
 
   chooseFiles() {
@@ -66,7 +77,9 @@ Page({
     this.setData({ attachedFiles: files })
   },
 
-  sendMessage() {
+  sendMessage: async function() {
+    if (this.data.sending) return
+
     const text = this.data.inputValue.trim()
     const files = this.data.attachedFiles
     if (!text && files.length === 0) {
@@ -74,21 +87,44 @@ Page({
       return
     }
 
-    const userMessage = this.createMessage('user', text || '请帮我分析这些资料', files)
-    const assistantMessage = this.buildAssistantReply(text, files)
-    const nextMessages = [...this.data.messages, userMessage, assistantMessage]
-    const pendingResults = { ...this.data.pendingResults }
-
-    if (assistantMessage.result && assistantMessage.result.question) {
-      pendingResults[assistantMessage.id] = assistantMessage.result.question
-    }
+    var loadingMessage = this.createMessage('assistant', '...', [], null, true)
+    var loadingId = loadingMessage.id
 
     this.setData({
-      messages: nextMessages,
+      messages: [...this.data.messages, this.createMessage('user', text || '请帮我分析这些资料', files), loadingMessage],
       inputValue: '',
       attachedFiles: [],
-      pendingResults
-    }, () => {
+      isNewChat: false,
+      sending: true,
+      pendingResults: { ...this.data.pendingResults }
+    })
+
+    this.scrollToBottom()
+
+    try {
+      var res = await wx.cloud.callFunction({
+        name: 'aiParse',
+        data: {
+          mode: 'chat',
+          messages: [{ role: 'user', content: text }]
+        }
+      })
+      var reply = (res.result && res.result.reply) || 'AI 服务暂时无法回复，请稍后再试'
+      this.replaceLoading(loadingId, reply)
+    } catch (err) {
+      console.error('cloud call failed', err)
+      this.replaceLoading(loadingId, 'AI 服务暂时无法回复，请稍后再试')
+    }
+  },
+
+  replaceLoading(loadingId, text) {
+    const messages = this.data.messages.map(msg => {
+      if (msg.id === loadingId) {
+        return { ...msg, content: text, loading: false }
+      }
+      return msg
+    })
+    this.setData({ messages, sending: false }, () => {
       this.scrollToBottom()
     })
   },
@@ -99,38 +135,9 @@ Page({
     })
   },
 
-  createMessage(role, content, files = [], result = null) {
+  createMessage(role, content, files = [], result = null, loading = false) {
     const id = `${role}-${Date.now()}-${Math.floor(Math.random() * 1000)}`
-    return { id, role, content, files, result }
-  },
-
-  buildAssistantReply(text, files) {
-    if (canImportToQuestionBank(text, files)) {
-      const question = makeQuestionFromPrompt(text)
-      return this.createMessage(
-        'assistant',
-        '我已经识别到你的需求是“资料整理/题库生成”。当前先用本地模拟结果生成预览；接入真实 AI 后会读取文件内容并批量生成题目。',
-        [],
-        {
-          title: '已生成 1 道题目预览',
-          desc: `知识点：${question.knowledgePoint}。确认后会加入你的专属题库。`,
-          canImport: true,
-          question
-        }
-      )
-    }
-
-    if (text.includes('冲刺') || text.includes('计划')) {
-      return this.createMessage(
-        'assistant',
-        '建议你先做 30min 错题冲刺：前 10 分钟复盘高自信错题，中间 15 分钟限时练习，最后 5 分钟整理错因。这个需求可以通过错题本和冲刺模式完成。'
-      )
-    }
-
-    return this.createMessage(
-      'assistant',
-      '我可以先帮你拆解问题：先找题干关键词，再判断考查的知识点，最后对比选项差异。如果你上传题目图片或文件，我可以继续帮你整理成题库。'
-    )
+    return { id, role, content, files, result, loading }
   },
 
   importResult(e) {
@@ -173,6 +180,8 @@ Page({
       attachedFiles: [],
       pendingResults: {},
       scrollTop: 0,
+      isNewChat: true,
+      sending: false,
       messages: [
         {
           id: 'welcome',
@@ -182,5 +191,29 @@ Page({
         }
       ]
     })
+  },
+
+  // ===== 题库选择弹窗 =====
+  openBankPicker() {
+    this.loadBankData()
+    this.setData({ showBankPicker: true })
+  },
+
+  closeBankPicker() {
+    this.setData({ showBankPicker: false })
+  },
+
+  selectBank(e) {
+    const name = e.currentTarget.dataset.name
+    wx.setStorageSync('currentBank', name)
+    this.setData({
+      currentBank: name,
+      showBankPicker: false
+    })
+    wx.showToast({ title: `已切换至「${name}」`, icon: 'none' })
+  },
+
+  noop() {
+    // 空函数，阻止冒泡
   }
 })

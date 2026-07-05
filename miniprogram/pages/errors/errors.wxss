@@ -1,27 +1,77 @@
-.errors-page { background:var(--background); }
+/* ===== 错题本 — 靛蓝紫主题（参考设计稿）===== */
+
+.errors-page { background:#F4F2FF; min-height:100vh; }
+
 .book-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24rpx; }
-.book-title { display:block; color:var(--text-primary); font-size:40rpx; font-weight:700; }
-.book-subtitle { display:block; margin-top:6rpx; color:var(--text-secondary); font-size:24rpx; }
-.sprint-entry { display:flex; align-items:center; padding:28rpx; border:2rpx solid #DDE7FF; border-radius:var(--radius-card); background:#fff; box-shadow:var(--shadow-card); }
-.sprint-entry__icon { display:flex; align-items:center; justify-content:center; width:72rpx; height:72rpx; border-radius:24rpx; background:#EEF3FF; color:var(--primary); font-size:32rpx; }
-.sprint-entry__copy { flex:1; margin-left:20rpx; }
-.sprint-entry__title { display:block; color:var(--text-primary); font-size:30rpx; font-weight:600; }
-.sprint-entry__desc { display:block; margin-top:6rpx; color:var(--text-secondary); font-size:24rpx; }
-.sprint-entry__arrow { color:#B4B8C2; font-size:46rpx; }
-.empty-state { display:flex; flex-direction:column; align-items:center; padding:48rpx 0 16rpx; text-align:center; }
-.empty-visual { display:flex; align-items:center; justify-content:center; width:112rpx; height:112rpx; border-radius:999rpx; background:rgba(52,199,89,.14); color:var(--success); font-size:56rpx; font-weight:700; }
-.empty-title { display:block; margin-top:28rpx; color:var(--text-primary); font-size:36rpx; font-weight:600; }
-.empty-desc { display:block; margin:12rpx 0 32rpx; color:var(--text-secondary); font-size:28rpx; line-height:1.6; }
-.group-card { margin-bottom:24rpx; padding:32rpx; border:2rpx solid var(--border); border-radius:var(--radius-card); background:#fff; box-shadow:var(--shadow-card); }
-.group-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16rpx; }
-.group-name { color:var(--text-primary); font-size:32rpx; font-weight:600; }
-.wrong-row { padding:24rpx 0; border-top:2rpx solid #F1F3F7; }
+.book-title { display:block; color:#1A1A2E; font-size:40rpx; font-weight:700; }
+.book-subtitle { display:block; margin-top:6rpx; color:#9B9BAD; font-size:24rpx; }
+
+/* 冲刺模式入口 — 暖色图标 */
+.sprint-entry {
+  display:flex; align-items:center;
+  padding:28rpx 30rpx;
+  border-radius:20rpx;
+  background:#fff;
+  box-shadow:0 2rpx 16rpx rgba(107,78,230,.06);
+}
+.sprint-entry__icon {
+  display:flex; align-items:center; justify-content:center;
+  width:76rpx; height:76rpx; border-radius:20rpx;
+  background:linear-gradient(135deg, #FFF5E8, #FFECD2);
+  color:#FF9F43; font-size:34rpx;
+}
+.sprint-entry__copy { flex:1; margin-left:22rpx; }
+.sprint-entry__title { display:block; color:#1A1A2E; font-size:30rpx; font-weight:600; }
+.sprint-entry__desc { display:block; margin-top:6rpx; color:#9B9BAD; font-size:24rpx; }
+.sprint-entry__arrow { color:#C0C2CC; font-size:44rpx; }
+
+/* 空状态 */
+.empty-state { display:flex; flex-direction:column; align-items:center; padding:60rpx 32rpx; text-align:center; }
+.empty-visual {
+  display:flex; align-items:center; justify-content:center;
+  width:120rpx; height:120rpx; border-radius:50%;
+  background:linear-gradient(135deg, #EBE7FF, #DDD9F5);
+  color:#6B5CE7; font-size:56rpx; font-weight:700;
+}
+.empty-title { display:block; margin-top:28rpx; color:#1A1A2E; font-size:36rpx; font-weight:600; }
+.empty-desc { display:block; margin:12rpx 0 36rpx; color:#9B9BAD; font-size:28rpx; line-height:1.6; }
+
+/* 分组卡片 */
+.group-card {
+  margin-bottom:24rpx; padding:30rpx 28rpx;
+  border-radius:22rpx;
+  background:#fff;
+  box-shadow:0 2rpx 14rpx rgba(100,80,200,.05);
+}
+.group-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12rpx; }
+.group-name { color:#1A1A2E; font-size:31rpx; font-weight:600; }
+
+/* 错题行 */
+.wrong-row { padding:22rpx 0; border-top:2rpx solid #F3F2F8; }
+.wrong-row:first-of-type { border-top:none; }
 .wrong-row__top { display:flex; align-items:flex-start; justify-content:space-between; gap:16rpx; }
-.wrong-title { flex:1; color:var(--text-primary); font-size:28rpx; font-weight:600; line-height:1.45; }
-.wrong-date { color:var(--text-secondary); font-size:24rpx; }
-.wrong-row__meta { display:flex; gap:12rpx; margin-top:12rpx; }
-.wrong-label { padding:4rpx 12rpx; border-radius:999rpx; font-size:22rpx; font-weight:500; }
-.wrong-label--error { background:rgba(255,69,58,.10); color:var(--error); }
-.wrong-label--success { background:rgba(52,199,89,.12); color:var(--success); }
-.wrong-answer { display:block; margin-top:12rpx; color:var(--text-secondary); font-size:26rpx; }
-.bottom-action { margin-top:24rpx; }
+.wrong-title { flex:1; color:#2D2D3A; font-size:28rpx; font-weight:600; line-height:1.45; }
+.wrong-date { color:#A8A8B8; font-size:24rpx; flex-shrink:0; }
+.wrong-row__meta { display:flex; flex-wrap:wrap; gap:10rpx; margin-top:12rpx; }
+.wrong-label { padding:4rpx 14rpx; border-radius:999rpx; font-size:22rpx; font-weight:500; line-height:1.6; }
+.wrong-label--error { background:rgba(255,69,58,.09); color:#FF3B30; }
+.wrong-label--success { background:rgba(52,199,89,.10); color:#34C759; }
+.wrong-answer { display:block; margin-top:10rpx; color:#9B9BAD; font-size:25rpx; }
+
+/* 底部清空按钮 — 蓝紫渐变 */
+.bottom-action { margin:32rpx 24rpx 48rpx; }
+.clear-btn {
+  display:flex; align-items:center; justify-content:center;
+  height:96rpx; border-radius:48rpx;
+  background:linear-gradient(135deg, #6B5CE7, #8B70F5);
+  color:#fff; font-size:30rpx; font-weight:600;
+  letter-spacing:4rpx;
+  box-shadow:0 8rpx 26rpx rgba(107,92,231,.30);
+}
+
+/* Tab 选中态 — 靛蓝紫 */
+.errors-page .tab-active {
+  background:#6B5CE7 !important;
+  color:#fff !important;
+  border-radius:32rpx !important;
+}

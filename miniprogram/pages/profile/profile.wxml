@@ -1,85 +1,142 @@
 <view class="page page--tab profile-page">
-  <ui-navbar title="个人中心" subtitle="我的学习资产" />
-
-  <ui-card compact="{{true}}">
-    <view class="profile-hero">
-      <button class="avatar-wrap avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-        <image class="avatar" src="{{user.avatar}}" mode="aspectFill" wx:if="{{user.avatar}}" />
-        <text class="avatar-fallback" wx:else>{{user.initial}}</text>
-        <view class="avatar-tip">换</view>
-      </button>
-      <view class="profile-copy" bindtap="toggleEdit">
-        <text class="profile-name">{{user.name}}</text>
-        <text class="profile-subtitle">{{user.grade}} · {{user.major}}</text>
-        <text class="profile-target">{{user.targetExam}}</text>
-      </view>
-      <view class="profile-badge">{{user.identity}}</view>
+  <!-- 头部：头像 + 信息 + 吉祥物 -->
+  <view class="pf-header">
+    <button class="avatar-wrap avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{user.avatar}}" mode="aspectFill" wx:if="{{user.avatar}}" />
+      <text class="avatar-fallback" wx:else>{{user.initial}}</text>
+      <view class="avatar-tip">换</view>
+    </button>
+    <view class="pf-info">
+      <text class="pf-name">{{user.name}}</text>
+      <text class="pf-phone">{{user.identity}} · {{user.grade}}</text>
     </view>
-  </ui-card>
-
-  <view class="section-tight" wx:if="{{isEditing}}">
-    <ui-card title="编辑个人信息" subtitle="用于生成更贴合你的学习建议">
-      <view class="edit-form">
-        <ui-input label="昵称" value="{{draftUser.name}}" bind:input="onNameInput" />
-        <ui-input label="身份标签" value="{{draftUser.identity}}" bind:input="onIdentityInput" />
-        <ui-input label="年级" value="{{draftUser.grade}}" bind:input="onGradeInput" />
-        <ui-input label="专业方向" value="{{draftUser.major}}" bind:input="onMajorInput" />
-        <ui-input label="目标考试" value="{{draftUser.targetExam}}" bind:input="onTargetInput" />
-        <view class="edit-actions">
-          <ui-button variant="ghost" block="{{true}}" bind:tap="cancelEdit">取消</ui-button>
-          <ui-button variant="primary" block="{{true}}" bind:tap="saveProfile">保存</ui-button>
-        </view>
-      </view>
-    </ui-card>
+    <image class="pf-mascot" src="/images/mascot-transparent.png" mode="aspectFit" />
   </view>
 
-  <view class="section-tight">
-    <view class="asset-grid">
-      <view class="asset-card" bindtap="goToImport">
-        <view class="asset-icon asset-icon--blue">库</view>
-        <text class="asset-title">我的专属题库</text>
-        <text class="asset-value">{{stats.totalQuestions}}</text>
-        <text class="asset-caption">道题目</text>
-      </view>
-      <view class="asset-card" bindtap="goToErrors">
-        <view class="asset-icon asset-icon--red">错</view>
-        <text class="asset-title">专属错题本</text>
-        <text class="asset-value">{{stats.wrongCount}}</text>
-        <text class="asset-caption">待攻克</text>
-      </view>
-      <view class="asset-card">
-        <view class="asset-icon asset-icon--green">报</view>
-        <text class="asset-title">学习报告</text>
-        <text class="asset-value">{{stats.accuracy}}%</text>
-        <text class="asset-caption">掌握率</text>
-      </view>
-      <view class="asset-card">
-        <view class="asset-icon asset-icon--orange">藏</view>
-        <text class="asset-title">收藏题目</text>
-        <text class="asset-value">{{stats.favoriteCount}}</text>
-        <text class="asset-caption">重点题</text>
-      </view>
+  <!-- VIP / 会员横幅 -->
+  <view class="vip-banner">
+    <view class="vip-left">
+      <text class="vip-label">ExamPilot</text>
+      <text class="vip-days">已学习 {{stats.totalQuestions}} 题</text>
+    </view>
+    <view class="vip-right">
+      <text class="vip-tag">学习达人</text>
     </view>
   </view>
 
-  <view class="section-tight">
-    <ui-card title="我的工具">
-      <view class="menu-row" bindtap="goToSprint">
-        <view class="menu-icon">冲</view>
-        <view class="menu-copy">
-          <text class="menu-title">冲刺计划</text>
-          <text class="menu-desc">30/60/120min 个性化复习</text>
+  <!-- 统计数据行 -->
+  <view class="stats-card">
+    <view class="stat-item" bindtap="goToImport">
+      <text class="stat-num">{{stats.totalQuestions}}</text>
+      <text class="stat-label">题目总量</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goToErrors">
+      <text class="stat-num">{{stats.wrongCount}}</text>
+      <text class="stat-label">错题数量</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num">{{stats.accuracy}}%</text>
+      <text class="stat-label">掌握率</text>
+    </view>
+  </view>
+
+  <!-- 我的学习 -->
+  <view class="section-block">
+    <text class="section-title">我的学习</text>
+    <view class="learn-grid">
+      <view class="learn-item" bindtap="goToImport">
+        <view class="learn-icon learn-icon--bank">
+          <text class="learn-emoji">📚</text>
         </view>
+        <text class="learn-text">专属题库</text>
+      </view>
+      <view class="learn-item" bindtap="goToErrors">
+        <view class="learn-icon learn-icon--error">
+          <text class="learn-emoji">✕</text>
+        </view>
+        <text class="learn-text">专属错题本</text>
+      </view>
+      <view class="learn-item">
+        <view class="learn-icon learn-icon--report">
+          <text class="learn-emoji">📊</text>
+        </view>
+        <text class="learn-text">学习报告</text>
+      </view>
+      <view class="learn-item">
+        <view class="learn-icon learn-icon--fav">
+          <text class="learn-emoji">⭐</text>
+        </view>
+        <text class="learn-text">收藏题目</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置菜单列表 -->
+  <view class="section-block">
+    <view class="menu-list">
+      <view class="menu-row" bindtap="toggleEdit">
+        <view class="menu-icon-wrap menu-icon--user">
+          <text class="menu-icon">👤</text>
+        </view>
+        <text class="menu-txt">个人信息</text>
         <text class="menu-arrow">›</text>
       </view>
       <view class="menu-row" bindtap="toggleEdit">
-        <view class="menu-icon">设</view>
-        <view class="menu-copy">
-          <text class="menu-title">个人与学习设置</text>
-          <text class="menu-desc">昵称、身份、专业和考试目标</text>
+        <view class="menu-icon-wrap menu-icon--lock">
+          <text class="menu-icon">🔒</text>
         </view>
+        <text class="menu-txt">账号与设置</text>
         <text class="menu-arrow">›</text>
       </view>
-    </ui-card>
+      <view class="menu-row" bindtap="goToSprint">
+        <view class="menu-icon-wrap menu-icon--support">
+          <text class="menu-icon">🎧</text>
+        </view>
+        <text class="menu-txt">冲刺计划</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-row" bindtap="clearAllData">
+        <view class="menu-icon-wrap menu-icon--logout">
+          <text class="menu-icon">⏻</text>
+        </view>
+        <text class="menu-txt">重置数据</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑个人信息弹窗 -->
+  <view class="modal-mask" wx:if="{{isEditing}}" catchtap="cancelEdit">
+    <view class="modal-panel" catchtap="noop">
+      <text class="modal-title">编辑个人信息</text>
+      
+      <view class="field">
+        <text class="field-label">昵称</text>
+        <input class="field-input" value="{{draftUser.name}}" placeholder="你的称呼" bindinput="onNameInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">身份标签</text>
+        <input class="field-input" value="{{draftUser.identity}}" placeholder="大学生 / 考研党 / 高中生" bindinput="onIdentityInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">年级</text>
+        <input class="field-input" value="{{draftUser.grade}}" placeholder="大一 / 大二 / ..." bindinput="onGradeInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">专业方向</text>
+        <input class="field-input" value="{{draftUser.major}}" placeholder="数学、计算机、经济学..." bindinput="onMajorInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">目标考试</text>
+        <input class="field-input" value="{{draftUser.targetExam}}" placeholder="期末考试 / 四六级 / 考研..." bindinput="onTargetInput" />
+      </view>
+
+      <view class="modal-btns">
+        <view class="btn btn--cancel" bindtap="cancelEdit">取消</view>
+        <view class="btn btn--save" bindtap="saveProfile">保存</view>
+      </view>
+    </view>
   </view>
 </view>

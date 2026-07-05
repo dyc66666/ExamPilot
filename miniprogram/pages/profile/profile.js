@@ -18,7 +18,7 @@ function withInitial(user) {
 
 Page({
   data: {
-    user: withInitial(DEFAULT_USER),
+    user: withInitial({ ...DEFAULT_USER }),
     draftUser: { ...DEFAULT_USER },
     isEditing: false,
     stats: {
@@ -137,5 +137,22 @@ Page({
 
   goToSprint() {
     wx.navigateTo({ url: '/pages/sprint/sprint' })
-  }
+  },
+
+  clearAllData() {
+    wx.showModal({
+      title: '确认重置',
+      content: '将清空所有题库、错题、收藏和个人信息，此操作不可撤销。',
+      confirmText: '重置',
+      confirmColor: '#FF453A',
+      success(res) {
+        if (!res.confirm) return
+        wx.clearStorageSync()
+        wx.showToast({ title: '已重置', icon: 'success' })
+        setTimeout(function() { wx.reLaunch({ url: '/pages/index/index' }) }, 1200)
+      }
+    })
+  },
+
+  noop() {}
 })
