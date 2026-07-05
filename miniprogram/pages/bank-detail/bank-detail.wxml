@@ -1,0 +1,117 @@
+<view class="bank-detail-page">
+  <!-- 顶部固定区 -->
+  <view class="detail-header">
+    <!-- 导航栏行：返回按钮 + 搜索框 -->
+    <view class="detail-navbar">
+      <text class="back-btn" bindtap="goBack">‹</text>
+      <view class="search-bar">
+        <text class="search-icon">⌕</text>
+        <input class="search-input" placeholder="搜索题目内容" value="{{searchValue}}" bindinput="onSearchInput" adjust-position="{{false}}" />
+        <text class="search-clear" wx:if="{{searchValue}}" bindtap="clearSearch">✕</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 可滚动区域 -->
+  <scroll-view scroll-y class="body-scroll">
+    <!-- 统计条 -->
+    <view class="summary-strip">
+      <view class="summary-item">
+        <text class="summary-value">{{questions.length}}</text>
+        <text class="summary-label">总题目</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{masteredCount}}</text>
+        <text class="summary-label">已掌握</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-value">{{masteryRate}}%</text>
+        <text class="summary-label">掌握率</text>
+      </view>
+    </view>
+
+    <!-- 管理操作栏 -->
+    <view class="manage-bar">
+      <text class="manage-title">全部题目</text>
+      <text class="manage-pill {{editMode ? 'active' : ''}}" bindtap="toggleEditMode">{{editMode ? '完成' : '管理'}}</text>
+      <text wx:if="{{editMode}}" class="select-all-btn" bindtap="toggleSelectAll">{{selectedCount == filteredQuestions.length ? '取消全选' : '全选'}}</text>
+      <text wx:if="{{editMode}}" class="select-count">已选 {{selectedCount}} 题</text>
+      <view class="manage-actions" wx:if="{{editMode}}">
+        <text class="manage-pill" bindtap="favoriteSelected">收藏</text>
+        <text class="manage-pill danger" bindtap="deleteSelected">删除</text>
+      </view>
+    </view>
+
+    <!-- 题目列表 -->
+    <view wx:if="{{filteredQuestions.length == 0}}" class="empty-bank">
+      <view class="empty-folder">▣</view>
+      <text class="empty-title">{{searchValue ? '未找到匹配题目' : '暂无题目'}}</text>
+      <text class="empty-desc">{{searchValue ? '试试其他搜索词' : '该题库还没有题目，请从首页导入'}}</text>
+      <button class="primary-pill" wx:if="{{!searchValue}}" bindtap="goBack">返回题库</button>
+    </view>
+
+    <view wx:else class="q-list">
+      <view
+        class="question-item {{item._selected ? 'selected' : ''}}"
+        wx:for="{{filteredQuestions}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-index="{{index}}"
+        bindtap="{{editMode ? 'toggleSelect' : 'openQuestionDetail'}}"
+      >
+        <view class="q-top">
+          <view class="q-left">
+            <view class="q-checkbox {{editMode ? 'visible' : ''}}" wx:if="{{editMode}}">
+              <text class="check-fill" wx:if="{{item._selected}}">✓</text>
+            </view>
+            <text class="q-tag">{{item.knowledgePoint || '未分类'}}</text>
+          </view>
+          <text class="q-status {{item.status === 'mastered' ? 'ok' : ''}}">{{item.status === 'mastered' ? '已掌握' : '待复习'}}</text>
+        </view>
+        <text class="q-stem">{{item.stem}}</text>
+        <text class="q-arrow">›</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 题目详情弹窗 -->
+  <view class="sheet-mask" wx:if="{{showDetail}}" catchtap="closeDetail">
+    <view class="detail-sheet" catchtap="noop">
+      <view class="sheet-handle" catchtap="closeDetail"></view>
+      <scroll-view scroll-y class="detail-body">
+        <view class="detail-section">
+          <view class="detail-head-row">
+            <text class="detail-section-label">题干</text>
+            <text class="detail-close-btn" catchtap="closeDetail">⌄</text>
+          </view>
+          <text class="detail-stem">{{currentDetail.stem}}</text>
+        </view>
+
+        <view class="detail-section" wx:if="{{currentDetail.options && currentDetail.options[0]}}">
+          <text class="detail-section-label">选项</text>
+          <view class="detail-opts">
+            <view class="detail-opt-row" wx:for="{{detailOpts}}" wx:key="index" wx:for-index="idx">
+              <text class="detail-opt-letter {{item.isCorrect ? 'correct' : ''}}">{{item.letter}}</text>
+              <text class="detail-opt-text">{{item.text}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="detail-section">
+          <text class="detail-section-label">正确答案</text>
+          <text class="detail-answer">{{currentDetail.answer}}</text>
+        </view>
+
+        <view class="detail-section" wx:if="{{currentDetail.explanation}}">
+          <text class="detail-section-label">解析</text>
+          <text class="detail-explanation">{{currentDetail.explanation}}</text>
+        </view>
+
+        <view class="detail-actions">
+          <text class="manage-pill danger detail-delete" data-id="{{currentDetail.id}}" bindtap="deleteCurrentQuestion">删除此题</text>
+          <text class="manage-pill detail-fav" data-id="{{currentDetail.id}}" bindtap="favoriteCurrentQuestion">{{currentDetail.status === 'mastered' ? '取消收藏' : '收藏'}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

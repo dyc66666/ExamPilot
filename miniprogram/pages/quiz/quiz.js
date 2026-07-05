@@ -56,19 +56,40 @@ Page({
     quizProgress: null,
     hasProgress: false,
     progressText: '0/0',
-    progressClass: 'progress-0'
+    progressClass: 'progress-0',
+    hasSelection: false,
+    currentBank: '',
+    bankQuestionCount: 0
   },
 
   onShow: function() {
-    var questions = (wx.getStorageSync('questions') || []).map(function(q) {
+    var allQuestions = (wx.getStorageSync('questions') || []).map(function(q) {
       q.stem = stripAnswerMarkers(q.stem || '')
       return q
     })
-    wx.setStorageSync('questions', questions)
-    getApp().globalData.questions = questions
+    // 按当前题库过滤
+    var currentBank = wx.getStorageSync('currentBank') || ''
+    var questions = allQuestions
+    if (currentBank) {
+      questions = allQuestions.filter(function(q) {
+        return (q.knowledgePoint || '') === currentBank
+      })
+    }
+    wx.setStorageSync('questions', allQuestions)
+    getApp().globalData.questions = allQuestions
     var progress = wx.getStorageSync('quizProgress')
-    var hasProgress = !!(progress && progress.questionIds && progress.questionIds.length)
-    this.setData({ questions: questions, quizProgress: progress, hasProgress: hasProgress })
+    // 仅当进度所属银行与当前银行一致时才恢复
+    var hasProgress = !!(progress && progress.questionIds && progress.questionIds.length && progress.bankName === currentBank)
+    if (!hasProgress) {
+      progress = null
+    }
+    this.setData({
+      questions: questions,
+      quizProgress: progress,
+      hasProgress: hasProgress,
+      currentBank: currentBank || '全部题目',
+      bankQuestionCount: questions.length
+    })
   },
 
   syncCurrentQuestion: function(index, questions) {
@@ -103,7 +124,7 @@ Page({
       questions: qs,
       isSubmitted: false,
       isCorrect: false,
-      quizProgress: { sortMode: this.data.sortMode, currentIndex: 0, questionIds: questionIds },
+      quizProgress: { sortMode: this.data.sortMode, currentIndex: 0, bankName: wx.getStorageSync('currentBank') || '', questionIds: questionIds },
       hasProgress: true
     })
     this.saveProgress(0, qs)
@@ -128,6 +149,7 @@ Page({
     var progress = {
       sortMode: this.data.sortMode,
       currentIndex: index,
+      bankName: wx.getStorageSync('currentBank') || '',
       questionIds: (questions || this.data.questions).map(function(q) { return q.id })
     }
     wx.setStorageSync('quizProgress', progress)
@@ -180,13 +202,13 @@ Page({
         return o
       })
     }
-    this.setData({ 'currentQuestion.optionItems': items })
+    this.setData({ 'currentQuestion.optionItems': items, hasSelection: items.some(function(o) { return o._sel }) })
   },
 
   submitAnswer: function() {
     var items = this.data.currentQuestion.optionItems
     var hasSel = items.some(function(o) { return o._sel })
-    if (!hasSel) return
+    if (!hasSel) { wx.showToast({ title: '请先选择一个选项', icon: 'none' }); return }
 
     var cur = this.data.currentQuestion
     var given = items.filter(function(o) { return o._sel }).map(function(o) { return o.label }).sort().join('')
@@ -231,7 +253,7 @@ Page({
       return
     }
     this.saveProgress(nextIndex)
-    this.setData({ isSubmitted: false, isCorrect: false })
+    this.setData({ isSubmitted: false, isCorrect: false, hasSelection: false })
     this.syncCurrentQuestion(nextIndex)
   },
 
@@ -353,7 +375,7 @@ Page({
       return
     }
     this.saveProgress(nextIndex)
-    this.setData({ isSubmitted: false, isCorrect: false })
+    this.setData({ isSubmitted: false, isCorrect: false, hasSelection: false })
     this.syncCurrentQuestion(nextIndex)
   },
 

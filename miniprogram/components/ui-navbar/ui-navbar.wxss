@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   min-height: 88rpx;
-  padding-top: calc(env(safe-area-inset-top) + 48rpx);
+  padding-top: calc(env(safe-area-inset-top) + 104rpx);
   margin-bottom: 28rpx;
 }
 

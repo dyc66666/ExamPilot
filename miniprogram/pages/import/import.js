@@ -6,6 +6,7 @@ Page({
     errorMsg: '',
     parseWarning: '',
     progress: '',
+    parseProgress: 0,
     parsedQuestions: [],
     duplicateCount: 0,
     duplicateGroupCount: 0,
@@ -13,17 +14,300 @@ Page({
     activeParsedIndex: -1,
     activeParsedQuestion: null,
     showParsedEditor: false,
+    showImportSheet: false,
+    showUploadPanel: false,
+    importSuccess: false,
+    importSavedCount: 0,
     editMode: false,
     selectedCount: 0,
     newQuestion: { stem: '', options: ['', '', '', ''], answer: '', explanation: '', knowledgePoint: '' },
-    showForm: false
+    showForm: false,
+    bankSummary: { total: 0, masteredRate: 0, learnedToday: 0 },
+    bankDecks: [],
+    createdBanks: [],
+    deckManageMode: false,
+    selectedDeckCount: 0,
+    favoriteDecks: [],
+    importBankName: '',
+    useNewImportBank: false,
+    importNewBankName: '',
+    showCreateBankPanel: false,
+    newBankName: '',
+    newBankNameLen: 0,
+    canCreateBank: false,
+    selectedColorIndex: 0,
+    bankColors: [
+      'linear-gradient(135deg, #8B68FF, #A65CFF)',
+      'linear-gradient(135deg, #4E7BFF, #5AA8FF)',
+      'linear-gradient(135deg, #2DCAA7, #51E0BD)',
+      'linear-gradient(135deg, #FFB23F, #FF8A2A)',
+      'linear-gradient(135deg, #FF7A4F, #FF5B3D)',
+      'linear-gradient(135deg, #6BC4E8, #8ED1F0)'
+    ]
   },
 
   onShow: function() {
+    var questions = wx.getStorageSync('questions') || []
+    var favoriteDecks = wx.getStorageSync('favoriteDecks') || []
+    var createdBanks = wx.getStorageSync('createdBanks') || []
+    var decks = this.buildBankDecks(questions, favoriteDecks, createdBanks)
     this.setData({
-      questions: wx.getStorageSync('questions') || [],
+      questions: questions,
       editMode: false,
-      selectedCount: 0
+      selectedCount: 0,
+      deckManageMode: false,
+      selectedDeckCount: 0,
+      favoriteDecks: favoriteDecks,
+      createdBanks: createdBanks,
+      bankSummary: this.buildBankSummary(questions),
+      bankDecks: decks,
+      importBankName: this.getDefaultImportBank(decks)
+    })
+  },
+
+  getDefaultImportBank: function(decks) {
+    return decks && decks.length ? decks[0].name : '未分类题库'
+  },
+
+  buildBankSummary: function(questions) {
+    var total = questions.length
+    var mastered = questions.filter(function(q) { return q.status === 'mastered' }).length
+    var rate = total ? Math.round((mastered / total) * 100) : 0
+    return { total: total, masteredRate: rate, learnedToday: Math.min(total, 12) }
+  },
+
+  buildBankDecks: function(questions, favoriteDecks, createdBanks) {
+    favoriteDecks = favoriteDecks || this.data.favoriteDecks || []
+    createdBanks = createdBanks || []
+    var groups = {}
+    for (var i = 0; i < questions.length; i++) {
+      var q = questions[i]
+      var name = q.knowledgePoint || '未分类题库'
+      if (!groups[name]) groups[name] = { name: name, total: 0, mastered: 0, sample: '', colorIndex: -1 }
+      groups[name].total++
+      if (q.status === 'mastered') groups[name].mastered++
+      if (!groups[name].sample) groups[name].sample = q.stem || ''
+    }
+    var names = Object.keys(groups)
+    // build a lookup for created bank colors
+    var createdColorLookup = {}
+    for (var ci = 0; ci < createdBanks.length; ci++) {
+      createdColorLookup[createdBanks[ci].name] = createdBanks[ci].colorClass
+    }
+    var decks = names.map(function(name, index) {
+      var item = groups[name]
+      var progress = item.total ? Math.round((item.mastered / item.total) * 100) : 0
+      // preserve saved color if user created this bank, otherwise cycle
+      var colorClass = createdColorLookup[name] || 'deck-color-' + (index % 6)
+      return {
+        name: item.name,
+        total: item.total,
+        totalText: item.total + '题',
+        progress: progress,
+        sample: item.sample,
+        timeText: index === 0 ? '今天学习' : (index === 1 ? '昨天学习' : (index < 4 ? '3天前' : '1周前')),
+        colorClass: colorClass,
+        favorite: favoriteDecks.indexOf(item.name) !== -1,
+        _selected: false
+      }
+    })
+    // add empty created banks
+    for (var ci = 0; ci < createdBanks.length; ci++) {
+      var cb = createdBanks[ci]
+      var found = false
+      for (var di = 0; di < decks.length; di++) {
+        if (decks[di].name === cb.name) { found = true; break }
+      }
+      if (!found) {
+        decks.push({
+          name: cb.name,
+          total: 0,
+          totalText: '0题',
+          progress: 0,
+          sample: '',
+          timeText: '刚刚创建',
+          colorClass: cb.colorClass || 'deck-color-0',
+          favorite: false,
+          _selected: false
+        })
+      }
+    }
+    return decks.sort(function(a, b) {
+      if (a.favorite !== b.favorite) return a.favorite ? -1 : 1
+      return b.total - a.total
+    })
+  },
+
+  openImportSheet: function() {
+    this.setData({ showImportSheet: true })
+  },
+
+  closeImportSheet: function() {
+    this.setData({ showImportSheet: false })
+  },
+
+  openUploadPanel: function() {
+    this.setData({
+      showImportSheet: false,
+      showUploadPanel: true,
+      showForm: false,
+      importSuccess: false,
+      importSavedCount: 0,
+      parsedQuestions: [],
+      errorMsg: '',
+      parseWarning: '',
+      progress: '',
+      parseProgress: 0,
+      useNewImportBank: false,
+      importNewBankName: '',
+      importBankName: this.getDefaultImportBank(this.data.bankDecks)
+    })
+  },
+
+  closeUploadPanel: function() {
+    this.setData({ showUploadPanel: false, importSuccess: false })
+  },
+
+  viewImportedBank: function() {
+    this.setData({
+      showUploadPanel: false,
+      importSuccess: false,
+      parsedQuestions: []
+    })
+  },
+
+  continueImport: function() {
+    this.setData({
+      showUploadPanel: true,
+      importSuccess: false,
+      importSavedCount: 0,
+      parsedQuestions: [],
+      errorMsg: '',
+      parseWarning: '',
+      progress: '',
+      parseProgress: 0,
+      useNewImportBank: false,
+      importNewBankName: '',
+      importBankName: this.getDefaultImportBank(this.data.bankDecks)
+    })
+  },
+
+  chooseImportBank: function(e) {
+    this.setData({
+      importBankName: e.currentTarget.dataset.name,
+      useNewImportBank: false,
+      importNewBankName: ''
+    })
+  },
+
+  useNewBankForImport: function() {
+    this.setData({
+      useNewImportBank: true,
+      importBankName: ''
+    })
+  },
+
+  onImportNewBankInput: function(e) {
+    this.setData({ importNewBankName: e.detail.value })
+  },
+
+  openManualEntry: function() {
+    this.setData({ showImportSheet: false, showUploadPanel: false, showForm: true })
+  },
+
+  createNewBank: function() {
+    this.setData({
+      showImportSheet: false,
+      showCreateBankPanel: true,
+      newBankName: '',
+      newBankNameLen: 0,
+      canCreateBank: false,
+      selectedColorIndex: 0
+    })
+  },
+
+  closeCreateBankPanel: function() {
+    this.setData({
+      showCreateBankPanel: false,
+      newBankName: ''
+    })
+  },
+
+  onNewBankNameInput: function(e) {
+    var val = e.detail.value
+    this.setData({ newBankName: val, newBankNameLen: val.length, canCreateBank: val.trim().length > 0 })
+  },
+
+  selectColor: function(e) {
+    var index = parseInt(e.currentTarget.dataset.index)
+    this.setData({ selectedColorIndex: index })
+  },
+
+  confirmCreateBank: function() {
+    var name = (this.data.newBankName || '').trim()
+    if (!name) {
+      wx.showToast({ title: '请输入题库名称', icon: 'none' })
+      return
+    }
+    var colorClass = 'deck-color-' + this.data.selectedColorIndex
+
+    // 持久化存储新创建的题库
+    var createdBanks = wx.getStorageSync('createdBanks') || []
+    var exists = false
+    for (var i = 0; i < createdBanks.length; i++) {
+      if (createdBanks[i].name === name) { exists = true; break }
+    }
+    if (!exists) {
+      createdBanks.push({ name: name, colorClass: colorClass })
+    }
+    wx.setStorageSync('createdBanks', createdBanks)
+
+    // 合并到当前列表
+    var decks = this.data.bankDecks.slice()
+    var alreadyInList = false
+    for (var i = 0; i < decks.length; i++) {
+      if (decks[i].name === name) { alreadyInList = true; break }
+    }
+    if (!alreadyInList) {
+      decks.unshift({
+        name: name,
+        total: 0,
+        totalText: '0题',
+        progress: 0,
+        sample: '',
+        timeText: '刚刚创建',
+        colorClass: colorClass,
+        favorite: false,
+        _selected: false
+      })
+    }
+
+    this.setData({
+      showCreateBankPanel: false,
+      bankDecks: decks,
+      createdBanks: createdBanks,
+      useNewImportBank: true,
+      importNewBankName: name
+    })
+    wx.showToast({ title: '已创建「' + name + '」', icon: 'success' })
+  },
+
+  openCameraCapture: function() {
+    var that = this
+    this.setData({ showImportSheet: false })
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['camera'],
+      success: function(res) {
+        var tempFile = res.tempFiles[0]
+        that.processFile({ name: tempFile.tempFilePath.split('/').pop() || 'camera_photo.jpg', path: tempFile.tempFilePath, size: tempFile.size })
+      },
+      fail: function(err) {
+        if (err.errMsg.indexOf('cancel') === -1) {
+          wx.showToast({ title: '拍照失败', icon: 'none' })
+        }
+      }
     })
   },
 
@@ -54,7 +338,7 @@ Page({
   },
 
   processFile: async function(file) {
-    this.setData({ isUploading: true, errorMsg: '', parseWarning: '', progress: '' })
+    this.setData({ isUploading: true, importSuccess: false, errorMsg: '', parseWarning: '', progress: '正在上传文件...', parseProgress: 8 })
     wx.showLoading({ title: '上传中...' })
     try {
       var uploadRes = await wx.cloud.uploadFile({
@@ -575,6 +859,12 @@ Page({
 
     for (var b = 0; b < batches.length; b++) {
       this.setData({ progress: '解析题块 ' + (b + 1) + '/' + batches.length })
+      var current = b + 1
+      var percent = batches.length ? Math.max(12, Math.min(96, Math.round((current / batches.length) * 100))) : 12
+      this.setData({
+        progress: '解析题块 ' + current + '/' + batches.length,
+        parseProgress: percent
+      })
       var localQuestions = batches[b].map(function(block) {
         return this.parseQuestionBlockLocally(block)
       }, this)
@@ -653,7 +943,13 @@ Page({
     allQuestions = this.validateQuestions(allQuestions)
     allQuestions = this.markDuplicateQuestions(allQuestions)
     var display = this.sortParsedQuestions(allQuestions)
-    this.setData({ isParsing: false, progress: '', parsedQuestions: display })
+    this.setData({
+      isParsing: false,
+      progress: '',
+      parseProgress: 100,
+      parsedQuestions: display,
+      importBankName: this.data.importBankName || this.getDefaultImportBank(this.data.bankDecks)
+    })
     if (allQuestions.length === 0) wx.showToast({ title: '未识别到题目', icon: 'none' })
   },
 
@@ -675,6 +971,7 @@ Page({
     }
 
     this.setData({ isUploading: false, isParsing: true, progress: '识别题块中...' })
+    this.setData({ progress: '识别题块中...', parseProgress: 12 })
     var blocks = this.buildQuestionBlocksFromPages(pages)
     var allQuestions = await this.parseQuestionBlocks(blocks)
     this.finishParsedQuestions(allQuestions)
@@ -694,6 +991,7 @@ Page({
     }
     var rawText = extractRes.result.rawText || ''
     this.setData({ isUploading: false, isParsing: true, progress: '识别题块中...' })
+    this.setData({ progress: '识别题块中...', parseProgress: 12 })
     var blocks = this.buildQuestionBlocksFromText(rawText)
     var allQuestions = await this.parseQuestionBlocks(blocks)
     this.finishParsedQuestions(allQuestions)
@@ -938,6 +1236,8 @@ Page({
   saveAllParsed: function() {
     var checked = this.data.parsedQuestions.filter(function(q) { return q._checked })
     if (checked.length === 0) { wx.showToast({ title: '未选中题目', icon: 'none' }); return }
+    var targetBank = this.data.useNewImportBank ? (this.data.importNewBankName || '').trim() : this.data.importBankName
+    if (!targetBank) { wx.showToast({ title: '请选择题库', icon: 'none' }); return }
     var questions = wx.getStorageSync('questions') || []
     checked.forEach(function(q) {
       delete q._checked
@@ -945,6 +1245,7 @@ Page({
       delete q._duplicate
       delete q._duplicateGroup
       delete q._duplicateLabel
+      q.knowledgePoint = targetBank
       q.wrongCount = 0
       q.status = 'new'
       questions.unshift(q)
@@ -952,11 +1253,124 @@ Page({
     wx.setStorageSync('questions', questions)
     getApp().globalData.questions = questions
     wx.showToast({ title: '已入库 ' + checked.length + ' 题', icon: 'success' })
-    this.setData({ parsedQuestions: [], warnCount: 0, duplicateCount: 0, duplicateGroupCount: 0, duplicateExtraCount: 0 })
-    this.setData({ questions: wx.getStorageSync('questions') || [] })
+    this.setData({
+      parsedQuestions: [],
+      warnCount: 0,
+      duplicateCount: 0,
+      duplicateGroupCount: 0,
+      duplicateExtraCount: 0,
+      showUploadPanel: true,
+      importSuccess: true,
+      importSavedCount: checked.length,
+      useNewImportBank: false,
+      importNewBankName: '',
+      importBankName: targetBank,
+      questions: questions,
+      bankSummary: this.buildBankSummary(questions),
+      bankDecks: this.buildBankDecks(questions, this.data.favoriteDecks, this.data.createdBanks)
+    })
   },
 
   // ===== 题库管理 =====
+  toggleDeckManage: function() {
+    var mode = !this.data.deckManageMode
+    var decks = this.data.bankDecks.map(function(deck) {
+      deck._selected = false
+      return deck
+    })
+    this.setData({
+      deckManageMode: mode,
+      selectedDeckCount: 0,
+      bankDecks: decks
+    })
+  },
+
+  toggleDeckSelect: function(e) {
+    var name = e.currentTarget.dataset.name
+    if (!this.data.deckManageMode) {
+      // 非管理模式下，记录当前题库并跳转到题库详情页
+      wx.setStorageSync('currentBank', name)
+      wx.navigateTo({ url: '/pages/bank-detail/bank-detail?name=' + encodeURIComponent(name) })
+      return
+    }
+    var decks = this.data.bankDecks.map(function(deck) {
+      if (deck.name === name) deck._selected = !deck._selected
+      return deck
+    })
+    this.setData({
+      bankDecks: decks,
+      selectedDeckCount: decks.filter(function(deck) { return deck._selected }).length
+    })
+  },
+
+
+  selectAllDecks: function() {
+    var allSelected = this.data.selectedDeckCount === this.data.bankDecks.length
+    var decks = this.data.bankDecks.map(function(deck) {
+      deck._selected = !allSelected
+      return deck
+    })
+    this.setData({
+      bankDecks: decks,
+      selectedDeckCount: allSelected ? 0 : decks.length
+    })
+  },
+
+  favoriteSelectedDecks: function() {
+    var selected = this.data.bankDecks.filter(function(deck) { return deck._selected }).map(function(deck) { return deck.name })
+    if (!selected.length) { wx.showToast({ title: '请先选择题库', icon: 'none' }); return }
+    var favorites = this.data.favoriteDecks.slice()
+    selected.forEach(function(name) {
+      if (favorites.indexOf(name) === -1) favorites.push(name)
+    })
+    wx.setStorageSync('favoriteDecks', favorites)
+    this.setData({
+      favoriteDecks: favorites,
+      bankDecks: this.buildBankDecks(this.data.questions, favorites, this.data.createdBanks),
+      deckManageMode: false,
+      selectedDeckCount: 0
+    })
+    wx.showToast({ title: '已收藏', icon: 'success' })
+  },
+
+  deleteSelectedDecks: function() {
+    var that = this
+    var selected = this.data.bankDecks.filter(function(deck) { return deck._selected }).map(function(deck) { return deck.name })
+    if (!selected.length) { wx.showToast({ title: '请先选择题库', icon: 'none' }); return }
+    wx.showModal({
+      title: '删除题库',
+      content: '删除选中的 ' + selected.length + ' 个题库及其中题目？',
+      success: function(res) {
+        if (!res.confirm) return
+        var questions = (wx.getStorageSync('questions') || []).filter(function(q) {
+          var name = q.knowledgePoint || '未分类题库'
+          return selected.indexOf(name) === -1
+        })
+        var favorites = that.data.favoriteDecks.filter(function(name) {
+          return selected.indexOf(name) === -1
+        })
+        wx.setStorageSync('questions', questions)
+        wx.setStorageSync('favoriteDecks', favorites)
+        // 从 createdBanks 中移除被删除的
+        var createdBanks = (wx.getStorageSync('createdBanks') || []).filter(function(b) {
+          return selected.indexOf(b.name) === -1
+        })
+        wx.setStorageSync('createdBanks', createdBanks)
+        getApp().globalData.questions = questions
+        that.setData({
+          questions: questions,
+          favoriteDecks: favorites,
+          createdBanks: createdBanks,
+          bankSummary: that.buildBankSummary(questions),
+          bankDecks: that.buildBankDecks(questions, favorites, createdBanks),
+          deckManageMode: false,
+          selectedDeckCount: 0
+        })
+        wx.showToast({ title: '已删除', icon: 'success' })
+      }
+    })
+  },
+
   toggleEditMode: function() {
     var m = !this.data.editMode
     var qs = this.data.questions.map(function(q) { q._selected = false; return q })
@@ -987,7 +1401,13 @@ Page({
           all = all.filter(function(q) { return ids.indexOf(q.id) === -1 })
           wx.setStorageSync('questions', all)
           getApp().globalData.questions = all
-          that.setData({ questions: all, editMode: false, selectedCount: 0 })
+          that.setData({
+            questions: all,
+            editMode: false,
+            selectedCount: 0,
+            bankSummary: that.buildBankSummary(all),
+            bankDecks: that.buildBankDecks(all, that.data.favoriteDecks, that.data.createdBanks)
+          })
           wx.showToast({ title: '已删除', icon: 'success' })
         }
       }
@@ -995,7 +1415,7 @@ Page({
   },
 
   // ===== 手动添加 =====
-  showForm: function() { this.setData({ showForm: true }) },
+  showForm: function() { this.setData({ showForm: true, showImportSheet: false, showUploadPanel: false }) },
   hideForm: function() {
     this.setData({ showForm: false, newQuestion: { stem: '', options: ['', '', '', ''], answer: '', explanation: '', knowledgePoint: '' } })
   },
@@ -1016,6 +1436,10 @@ Page({
     getApp().globalData.questions = qs
     wx.showToast({ title: '添加成功', icon: 'success' })
     this.hideForm()
-    this.setData({ questions: wx.getStorageSync('questions') || [] })
+    this.setData({
+      questions: qs,
+      bankSummary: this.buildBankSummary(qs),
+      bankDecks: this.buildBankDecks(qs, this.data.favoriteDecks, this.data.createdBanks)
+    })
   }
 })

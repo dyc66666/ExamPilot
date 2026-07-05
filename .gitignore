@@ -6,6 +6,8 @@ dist/
 *.log
 # 微信小程序私有配置（含 AppID）
 project.private.config.json
+# WorkBuddy 工作记忆
+.workbuddy/
 # Claude Code 本地配置
 .claude/
 .agents/

@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/import/import",
     "pages/assistant/assistant",
+    "pages/bank-detail/bank-detail",
     "pages/quiz/quiz",
     "pages/errors/errors",
     "pages/profile/profile",

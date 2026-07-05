@@ -1,10 +1,10 @@
 <view class="page quiz-page">
   <!-- 开始页 -->
   <view wx:if="{{!isQuizStarted}}">
-    <ui-navbar title="学习" subtitle="快速测评" back="{{true}}" bind:back="goBack" />
+    <ui-navbar title="学习" subtitle="{{currentBank}}" back="{{true}}" bind:back="goBack" />
     <ui-card>
-      <view class="start-visual"><view class="start-orb">&#10003;</view></view>
-      <text class="start-title">快速测评</text>
+      <view class="start-visual"><view class="start-orb">✓</view></view>
+      <text class="start-title">{{currentBank}} · 共{{bankQuestionCount}}题</text>
       <text class="start-desc">选择选项后提交，系统自动判断对错并记录</text>
       <view class="sort-toggle" bindtap="toggleSortMode">
         <text>答题顺序：{{sortMode === 'sequential' ? '顺序' : '随机'}}</text>
@@ -43,7 +43,7 @@
         <view wx:for="{{currentQuestion.optionItems}}" wx:key="label" wx:for-item="opt" wx:for-index="i"
           class="option-item {{opt._sel ? 'option-item--selected' : ''}} {{opt._correct ? 'option-item--correct' : ''}} {{opt._wrong ? 'option-item--wrong' : ''}}"
           bindtap="toggleAnswer" data-value="{{opt.label}}">
-          <view class="opt-mark">{{currentQuestion.qtype === '多选题' ? (opt._sel ? '&#10003;' : '&#9744;') : ''}}</view>
+          <view class="opt-mark">{{currentQuestion.qtype === '多选题' ? (opt._sel ? '✓' : '') : ''}}</view>
           <text class="option-label">{{opt.label}}</text>
           <text class="option-text">{{opt.text}}</text>
         </view>
@@ -51,7 +51,7 @@
 
       <!-- 提交按钮 -->
       <view class="submit-row" wx:if="{{!isSubmitted}}">
-        <button class="submit-btn" bindtap="submitAnswer" disabled="{{selectedAnswers.length === 0}}">
+        <button class="submit-btn" bindtap="submitAnswer">
           提交答案
         </button>
       </view>
