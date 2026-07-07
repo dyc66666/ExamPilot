@@ -259,7 +259,7 @@ module.exports = { countChecked: countChecked };
       <view class="review-bar">
         <text class="link-btn" bindtap="selectAllParsed">全选</text>
         <text class="link-btn" bindtap="deselectAllParsed">取消全选</text>
-        <text class="link-btn" wx:if="{{duplicateCount > 0}}" bindtap="deselectDuplicateParsed">取消重复题</text>
+        <text class="link-btn" wx:if="{{duplicateCount > 0}}" bindtap="deselectDuplicateParsed">重复题保留一份</text>
         <text class="link-btn danger" wx:if="{{duplicateCount > 0}}" bindtap="removeDuplicateParsed">删除重复项</text>
       </view>
       <view class="parsed-list">

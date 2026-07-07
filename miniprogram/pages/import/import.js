@@ -631,6 +631,330 @@ Page({
     return batches
   },
 
+  makeSlidingWindowsFromText: function(rawText) {
+    var text = String(rawText || '')
+      .replace(/\r/g, '\n')
+      .replace(/\n\s*\d+\s*\/\s*\d+\s*(?=\n|$)/g, '\n')
+      .trim()
+    var windowSize = 7000
+    var overlap = 2200
+    var windows = []
+    if (!text) return windows
+    if (text.length <= windowSize) {
+      return [{ index: 1, start: 0, end: text.length, text: text }]
+    }
+    var start = 0
+    while (start < text.length) {
+      var end = Math.min(start + windowSize, text.length)
+      var cut = end
+      if (end < text.length) {
+        var slice = text.slice(start, end)
+        var lastBreak = Math.max(slice.lastIndexOf('\n\n'), slice.lastIndexOf('\n'))
+        if (lastBreak > windowSize * 0.65) cut = start + lastBreak
+      }
+      windows.push({
+        index: windows.length + 1,
+        start: start,
+        end: cut,
+        text: text.slice(start, cut)
+      })
+      if (cut >= text.length) break
+      start = Math.max(0, cut - overlap)
+      if (windows.length > 80) break
+    }
+    return windows
+  },
+
+  makeSlidingWindowsFromPages: function(pages) {
+    var text = (pages || []).map(function(page, index) {
+      var pageNo = page.pageNo || (index + 1)
+      return '【第' + pageNo + '页】\n' + String(page.text || '').trim()
+    }).filter(function(part) {
+      return part.replace(/【第\d+页】\s*/, '').trim()
+    }).join('\n\n')
+    return this.makeSlidingWindowsFromText(text)
+  },
+
+  normalizeWindowQuestion: function(question, windowIndex) {
+    var q = this.normalizeParsedQuestion(question)
+    q.status = question && question.status ? String(question.status) : 'complete'
+    q.sourceText = question && question.sourceText ? String(question.sourceText) : ''
+    q._windowIndex = windowIndex
+    q._checked = q.status !== 'incomplete'
+    q._warn = q.status === 'incomplete' ? '跨窗口题需核对' : ''
+    return q
+  },
+
+  recordParseIssue: function(message) {
+    if (!message) return
+    if (!this._parseIssues) this._parseIssues = []
+    if (this._parseIssues.indexOf(message) === -1) this._parseIssues.push(message)
+  },
+
+  parseWindowQuestions: async function(win, total) {
+    this.setData({
+      progress: '解析窗口 ' + win.index + '/' + total,
+      parseProgress: Math.max(12, Math.min(88, Math.round((win.index / total) * 78)))
+    })
+    try {
+      var res = await wx.cloud.callFunction({
+        name: 'aiParse',
+        data: { mode: 'parseWindow', text: win.text, windowIndex: win.index }
+      })
+      if (res.result && res.result.success && res.result.questions) {
+        return (res.result.questions || []).map(function(q) {
+          return this.normalizeWindowQuestion(q, win.index)
+        }, this).filter(function(q) {
+          return q.stem || (q.options && q.options.length)
+        })
+      }
+      if (res.result && res.result.success === false) {
+        this.recordParseIssue('窗口 ' + win.index + ' 解析失败：' + (res.result.error || '云函数未返回题目'))
+      }
+    } catch(e) {
+      this.recordParseIssue('窗口 ' + win.index + ' 解析异常：' + (e.errMsg || e.message || '未知错误'))
+    }
+    try {
+      var fallback = await wx.cloud.callFunction({ name: 'aiParse', data: { rawText: win.text } })
+      if (fallback.result && fallback.result.success && fallback.result.questions) {
+        return (fallback.result.questions || []).map(function(q) {
+          return this.normalizeWindowQuestion(q, win.index)
+        }, this)
+      }
+      if (fallback.result && fallback.result.success === false) {
+        this.recordParseIssue('窗口 ' + win.index + ' 兼容解析失败：' + (fallback.result.error || '云函数未返回题目'))
+      }
+    } catch(err) {
+      this.recordParseIssue('窗口 ' + win.index + ' 兼容解析异常：' + (err.errMsg || err.message || '未知错误'))
+    }
+    return []
+  },
+
+  parseWindowsConcurrently: async function(windows, limit) {
+    var results = new Array(windows.length)
+    var nextIndex = 0
+    var completed = 0
+    var that = this
+    var workerCount = Math.min(limit || 2, windows.length)
+
+    async function runWorker() {
+      while (nextIndex < windows.length) {
+        var index = nextIndex
+        nextIndex++
+        results[index] = await that.parseWindowQuestions(windows[index], windows.length)
+        completed++
+        that.setData({
+          progress: '解析窗口 ' + completed + '/' + windows.length,
+          parseProgress: Math.max(12, Math.min(82, Math.round((completed / windows.length) * 70)))
+        })
+      }
+    }
+
+    var workers = []
+    for (var i = 0; i < workerCount; i++) workers.push(runWorker())
+    await Promise.all(workers)
+    return results
+  },
+
+  isSameQuestionRoughly: function(a, b) {
+    var stemA = this.normalizeText(a && a.stem || '').slice(0, 80)
+    var stemB = this.normalizeText(b && b.stem || '').slice(0, 80)
+    if (!stemA || !stemB) return false
+    if (stemA === stemB || stemA.indexOf(stemB) === 0 || stemB.indexOf(stemA) === 0) return true
+    var min = Math.min(stemA.length, stemB.length)
+    var same = 0
+    for (var i = 0; i < min; i++) {
+      if (stemA.charAt(i) === stemB.charAt(i)) same++
+    }
+    return min >= 20 && same / min > 0.82
+  },
+
+  optionSimilarity: function(a, b) {
+    var optsA = (a && a.options || []).map(function(option) { return this.normalizeText(option) }, this).filter(function(option) { return option })
+    var optsB = (b && b.options || []).map(function(option) { return this.normalizeText(option) }, this).filter(function(option) { return option })
+    var len = Math.min(optsA.length, optsB.length)
+    if (!len) return 0
+    var matched = 0
+    for (var i = 0; i < len; i++) {
+      if (!optsA[i] || !optsB[i]) continue
+      if (optsA[i] === optsB[i] || optsA[i].indexOf(optsB[i]) !== -1 || optsB[i].indexOf(optsA[i]) !== -1) {
+        matched++
+      }
+    }
+    return matched / Math.max(optsA.length, optsB.length)
+  },
+
+  stemHitsOption: function(stem, question) {
+    var key = this.normalizeText(stem || '')
+    if (!key || key.length < 4) return false
+    var options = question && question.options || []
+    for (var i = 0; i < options.length; i++) {
+      var optionKey = this.normalizeText(options[i])
+      if (!optionKey) continue
+      if (optionKey === key || optionKey.indexOf(key) !== -1 || key.indexOf(optionKey) !== -1) return true
+    }
+    return false
+  },
+
+  questionSimilarityScore: function(a, b) {
+    var stemA = this.normalizeText(a && a.stem || '')
+    var stemB = this.normalizeText(b && b.stem || '')
+    var answerA = this.normalizeAnswerLetters(a && a.answer || '')
+    var answerB = this.normalizeAnswerLetters(b && b.answer || '')
+    var sameAnswer = !answerA || !answerB || answerA === answerB
+    var optScore = this.optionSimilarity(a, b)
+    if (optScore >= 0.85 && sameAnswer) return 0.96
+    if (optScore >= 0.7 && sameAnswer && (this.stemHitsOption(stemA, b) || this.stemHitsOption(stemB, a))) return 0.93
+    if (stemA && stemB && (stemA.indexOf(stemB) !== -1 || stemB.indexOf(stemA) !== -1)) return 0.88
+    if (this.isSameQuestionRoughly(a, b)) return 0.84
+    return 0
+  },
+
+  findWindowOverlap: function(prevQuestions, currentQuestions) {
+    var prev = prevQuestions || []
+    var curr = currentQuestions || []
+    var prevStartMin = 0
+    var currStartMax = curr.length
+    var best = null
+    for (var i = prevStartMin; i < prev.length; i++) {
+      for (var j = 0; j < currStartMax; j++) {
+        var maxLen = Math.min(prev.length - i, curr.length - j)
+        var matched = 0
+        var scoreSum = 0
+        for (var k = 0; k < maxLen; k++) {
+          var score = this.questionSimilarityScore(prev[i + k], curr[j + k])
+          if (score < 0.78) break
+          matched++
+          scoreSum += score
+        }
+        if (!matched) continue
+        var avg = scoreSum / matched
+        if (matched === 1 && avg < 0.92) continue
+        var candidate = { prevStart: i, currStart: j, length: matched, score: avg }
+        if (!best || candidate.length > best.length || (candidate.length === best.length && candidate.score > best.score)) {
+          best = candidate
+        }
+      }
+    }
+    return best
+  },
+
+  chooseBetterQuestion: function(a, b) {
+    var qa = a || {}
+    var qb = b || {}
+    var scoreA = String(qa.stem || '').length + ((qa.options || []).length * 80) + (qa.answer ? 60 : 0) + (qa.explanation ? 40 : 0)
+    var scoreB = String(qb.stem || '').length + ((qb.options || []).length * 80) + (qb.answer ? 60 : 0) + (qb.explanation ? 40 : 0)
+    var best = scoreB >= scoreA ? Object.assign({}, qa, qb) : Object.assign({}, qb, qa)
+    best.stem = (String(qb.stem || '').length >= String(qa.stem || '').length ? qb.stem : qa.stem) || ''
+    best.options = ((qb.options || []).length >= (qa.options || []).length ? qb.options : qa.options) || []
+    best.answer = qb.answer || qa.answer || ''
+    best.explanation = qb.explanation || qa.explanation || ''
+    best.knowledgePoint = qb.knowledgePoint || qa.knowledgePoint || ''
+    best.status = qa.status === 'incomplete' && qb.status === 'incomplete' ? 'incomplete' : 'complete'
+    best.sourceText = [qa.sourceText, qb.sourceText].filter(function(t) { return t }).join('\n')
+    return best
+  },
+
+  mergeQuestionPairWithAI: async function(prevQuestion, currentQuestion, currentIndex) {
+    try {
+      var res = await wx.cloud.callFunction({
+        name: 'aiParse',
+        data: {
+          mode: 'mergeQuestionPair',
+          prevQuestion: prevQuestion,
+          currentQuestion: currentQuestion
+        }
+      })
+      if (res.result && res.result.success && res.result.question) {
+        return this.normalizeWindowQuestion(res.result.question, currentIndex)
+      }
+      if (res.result && res.result.success === false) {
+        this.recordParseIssue('窗口 ' + currentIndex + ' 交点题合并失败：' + (res.result.error || '云函数未返回题目'))
+      }
+    } catch(e) {
+      this.recordParseIssue('窗口 ' + currentIndex + ' 交点题合并异常：' + (e.errMsg || e.message || '未知错误'))
+    }
+    return this.normalizeWindowQuestion(this.chooseBetterQuestion(prevQuestion, currentQuestion), currentIndex)
+  },
+
+  mergeWindowsLocally: function(prevQuestions, currentQuestions) {
+    var prevOnly = []
+    var currentMerged = (currentQuestions || []).slice()
+    var needsReview = []
+    for (var i = 0; i < (prevQuestions || []).length; i++) {
+      var prev = prevQuestions[i]
+      var matchIndex = -1
+      for (var j = 0; j < currentMerged.length; j++) {
+        if (this.isSameQuestionRoughly(prev, currentMerged[j])) {
+          matchIndex = j
+          break
+        }
+      }
+      if (matchIndex >= 0) {
+        currentMerged[matchIndex] = this.chooseBetterQuestion(prev, currentMerged[matchIndex])
+      } else if (prev.status === 'incomplete') {
+        needsReview.push(prev)
+      } else {
+        prevOnly.push(prev)
+      }
+    }
+    return { prevOnly: prevOnly, currentMerged: currentMerged, needsReview: needsReview }
+  },
+
+  mergeAdjacentWindows: async function(prevQuestions, currentQuestions, currentIndex, total) {
+    this.setData({
+      progress: '合并窗口 ' + (currentIndex - 1) + '-' + currentIndex + '/' + total,
+      parseProgress: Math.max(18, Math.min(92, Math.round((currentIndex / total) * 86)))
+    })
+    var overlap = this.findWindowOverlap(prevQuestions, currentQuestions)
+    if (!overlap) {
+      return { prevOnly: prevQuestions || [], currentMerged: currentQuestions || [], needsReview: [] }
+    }
+    var prevOnly = (prevQuestions || []).slice(0, overlap.prevStart)
+    var needsReview = (currentQuestions || []).slice(0, overlap.currStart).map(function(q) {
+      q._checked = false
+      q._warn = q._warn || '窗口交点前的疑似误切题，需核对'
+      return q
+    })
+    var currentMerged = (currentQuestions || []).slice(overlap.currStart)
+    if (currentMerged.length) {
+      currentMerged[0] = await this.mergeQuestionPairWithAI(prevQuestions[overlap.prevStart], currentQuestions[overlap.currStart], currentIndex)
+    }
+    return { prevOnly: prevOnly, currentMerged: currentMerged, needsReview: needsReview }
+  },
+
+  parseSlidingWindows: async function(windows) {
+    if (!windows.length) return []
+    this._parseIssues = []
+    var committed = []
+    var review = []
+    var parsedWindows = await this.parseWindowsConcurrently(windows, 2)
+    var prev = parsedWindows[0] || []
+
+    for (var i = 1; i < windows.length; i++) {
+      var curr = parsedWindows[i] || []
+      var merged = await this.mergeAdjacentWindows(prev, curr, windows[i].index, windows.length)
+      committed = committed.concat(merged.prevOnly || [])
+      review = review.concat(merged.needsReview || [])
+      prev = merged.currentMerged || []
+    }
+
+    var allQuestions = committed.concat(prev).concat(review)
+    for (var q = 0; q < allQuestions.length; q++) {
+      allQuestions[q].order = q + 1
+      allQuestions[q].id = 'ai_' + Date.now() + '_' + q + '_' + Math.random().toString(36).slice(2, 6)
+      if (allQuestions[q].status === 'incomplete') allQuestions[q]._checked = false
+      else if (allQuestions[q]._checked !== false) allQuestions[q]._checked = true
+    }
+    if (!allQuestions.length) {
+      var detail = (this._parseIssues || []).slice(0, 3).join('；')
+      this.setData({
+        errorMsg: '未识别到题目。' + (detail ? '原因：' + detail : '请确认文件文字可复制，或换一份包含明确题干和选项的资料再试。')
+      })
+    }
+    return allQuestions
+  },
+
   normalizeAnswerLetters: function(answer) {
     var text = String(answer || '').toUpperCase()
     var map = {
@@ -653,11 +977,14 @@ Page({
     var q = question || {}
     q.stem = String(q.stem || '').trim()
     q.options = (q.options || []).map(function(option) {
-      return String(option || '').trim()
-    }).filter(function(option) {
+      return this.stripOptionLabel(String(option || '')).trim()
+    }, this).filter(function(option) {
       return option
     })
     q.answer = this.normalizeAnswerLetters(q.answer)
+    if (!q.answer && question && question.stem) {
+      q.answer = this.getInlineAnswer(question.stem)
+    }
     q.explanation = String(q.explanation || '').trim()
     q.knowledgePoint = String(q.knowledgePoint || '').trim()
     return q
@@ -950,7 +1277,12 @@ Page({
       parsedQuestions: display,
       importBankName: this.data.importBankName || this.getDefaultImportBank(this.data.bankDecks)
     })
-    if (allQuestions.length === 0) wx.showToast({ title: '未识别到题目', icon: 'none' })
+    if (allQuestions.length === 0) {
+      if (!this.data.errorMsg) {
+        this.setData({ errorMsg: '未识别到题目。请确认文件不是扫描图片，且内容里包含可复制的题干和选项。' })
+      }
+      wx.showToast({ title: '未识别到题目', icon: 'none' })
+    }
   },
 
   processPDF: async function(fileID, fileName) {
@@ -970,10 +1302,9 @@ Page({
       return
     }
 
-    this.setData({ isUploading: false, isParsing: true, progress: '识别题块中...' })
-    this.setData({ progress: '识别题块中...', parseProgress: 12 })
-    var blocks = this.buildQuestionBlocksFromPages(pages)
-    var allQuestions = await this.parseQuestionBlocks(blocks)
+    this.setData({ isUploading: false, isParsing: true, progress: '切分滑动窗口...', parseProgress: 12 })
+    var windows = this.makeSlidingWindowsFromPages(pages)
+    var allQuestions = await this.parseSlidingWindows(windows)
     this.finishParsedQuestions(allQuestions)
   },
 
@@ -990,10 +1321,9 @@ Page({
       return
     }
     var rawText = extractRes.result.rawText || ''
-    this.setData({ isUploading: false, isParsing: true, progress: '识别题块中...' })
-    this.setData({ progress: '识别题块中...', parseProgress: 12 })
-    var blocks = this.buildQuestionBlocksFromText(rawText)
-    var allQuestions = await this.parseQuestionBlocks(blocks)
+    this.setData({ isUploading: false, isParsing: true, progress: '切分滑动窗口...', parseProgress: 12 })
+    var windows = this.makeSlidingWindowsFromText(rawText)
+    var allQuestions = await this.parseSlidingWindows(windows)
     this.finishParsedQuestions(allQuestions)
   },
 
@@ -1041,6 +1371,7 @@ Page({
       }
       var stemText = q.stem || ''
       var stemLength = stemText.replace(/\s/g, '').length
+      if (q.status === 'incomplete') warns.push('跨窗口题需核对')
       if (stemLength < 2) warns.push('题干过短')
       else if (this.getLeadingOptionLabel(stemText)) warns.push('题干疑似选项内容')
       q._warn = warns.join('；')
@@ -1087,6 +1418,7 @@ Page({
         item._duplicate = true
         item._duplicateGroup = String(groupNo)
         item._duplicateLabel = '重复 ' + groupNo + '-' + (j + 1) + '/' + indexes.length
+        item._checked = j === 0  // 每组默认只保留第一份勾选
         duplicateCount++
       }
     }
@@ -1197,11 +1529,19 @@ Page({
       wx.showToast({ title: '没有重复题', icon: 'none' })
       return
     }
+    var keptGroups = {}
     var qs = this.data.parsedQuestions.map(function(q) {
-      if (q._duplicate) q._checked = false
+      if (!q._duplicate) return q
+      if (!keptGroups[q._duplicateGroup]) {
+        keptGroups[q._duplicateGroup] = true
+        q._checked = true
+      } else {
+        q._checked = false
+      }
       return q
     })
     this.setData({ parsedQuestions: qs })
+    wx.showToast({ title: '每组重复题已保留一份', icon: 'success' })
   },
 
   removeDuplicateParsed: function() {
