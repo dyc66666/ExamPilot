@@ -1,17 +1,22 @@
 const DEFAULT_USER = {
-  name: '数学小能手',
-  identity: '大学生',
-  grade: '大二',
+  name: '小张同学',
+  phone: '182****1221',
+  identity: '钻石会员',
+  grade: '剩余 120 天',
   major: '数学与应用数学',
   targetExam: '期末高数冲刺',
-  avatar: ''
+  avatar: '/images/profile-avatar-boy.png'
 }
 
 function withInitial(user) {
   const name = user.name || DEFAULT_USER.name
-  return {
+  const merged = {
     ...DEFAULT_USER,
-    ...user,
+    ...user
+  }
+  return {
+    ...merged,
+    avatar: merged.avatar || DEFAULT_USER.avatar,
     initial: name.slice(0, 1)
   }
 }
@@ -41,6 +46,7 @@ Page({
       user,
       draftUser: {
         name: user.name,
+        phone: user.phone,
         identity: user.identity,
         grade: user.grade,
         major: user.major,
@@ -84,6 +90,7 @@ Page({
     }
     const savedUser = {
       name: draft.name.trim(),
+      phone: (draft.phone || DEFAULT_USER.phone).trim(),
       identity: draft.identity.trim() || DEFAULT_USER.identity,
       grade: draft.grade.trim() || DEFAULT_USER.grade,
       major: draft.major.trim() || DEFAULT_USER.major,

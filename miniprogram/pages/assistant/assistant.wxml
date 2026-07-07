@@ -2,8 +2,7 @@
   <!-- 三色交融装饰背景 -->
   <view class="tri-color-blobs">
     <view class="blob blob--blue"></view>
-    <view class="blob blob--purple"></view>
-    <view class="blob blob--pink"></view>
+    <view class="blob blob--blue1"></view>
   </view>
   <image class="assistant-bg" src="/images/app-bg.png" mode="widthFix" />
 

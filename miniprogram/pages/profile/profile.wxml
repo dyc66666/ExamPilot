@@ -1,31 +1,33 @@
 <view class="page page--tab profile-page">
-  <!-- 头部：头像 + 信息 + 吉祥物 -->
-  <view class="pf-header">
+  <view class="tri-color-blobs">
+    <view class="blob blob--blue"></view>
+    <view class="blob blob--blue1"></view>
+  </view>
+  <view class="profile-hero">
     <button class="avatar-wrap avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <image class="avatar" src="{{user.avatar}}" mode="aspectFill" wx:if="{{user.avatar}}" />
-      <text class="avatar-fallback" wx:else>{{user.initial}}</text>
-      <view class="avatar-tip">换</view>
+      <image class="avatar" src="{{user.avatar}}" mode="aspectFill" />
     </button>
     <view class="pf-info">
       <text class="pf-name">{{user.name}}</text>
-      <text class="pf-phone">{{user.identity}} · {{user.grade}}</text>
+      <text class="pf-phone">{{user.phone}}</text>
     </view>
-    <image class="pf-mascot" src="/images/mascot-transparent.png" mode="aspectFit" />
+    <image class="pf-mascot pf-mascot--hero" src="/images/mascot-transparent.png" mode="aspectFit" />
   </view>
 
-  <!-- VIP / 会员横幅 -->
-  <view class="vip-banner">
-    <view class="vip-left">
-      <text class="vip-label">ExamPilot</text>
-      <text class="vip-days">已学习 {{stats.totalQuestions}} 题</text>
+  <view class="vip-section">
+    <view class="vip-banner">
+      <view class="vip-bg-wrap">
+        <view class="vip-bg"></view>
+      </view>
+      <view class="vip-left">
+        <text class="vip-label">{{user.identity}}</text>
+        <text class="vip-divider">|</text>
+        <text class="vip-days">{{user.grade}}</text>
+      </view>
     </view>
-    <view class="vip-right">
-      <text class="vip-tag">学习达人</text>
-    </view>
-  </view>
 
-  <!-- 统计数据行 -->
-  <view class="stats-card">
+    <!-- 统计数据行 -->
+    <view class="stats-card">
     <view class="stat-item" bindtap="goToImport">
       <text class="stat-num">{{stats.totalQuestions}}</text>
       <text class="stat-label">题目总量</text>
@@ -41,67 +43,60 @@
       <text class="stat-label">掌握率</text>
     </view>
   </view>
+  </view>
 
   <!-- 我的学习 -->
   <view class="section-block">
     <text class="section-title">我的学习</text>
     <view class="learn-grid">
       <view class="learn-item" bindtap="goToImport">
-        <view class="learn-icon learn-icon--bank">
-          <text class="learn-emoji">📚</text>
-        </view>
+        <image class="learn-icon learn-icon--bank" src="/images/icon-bank.png" mode="aspectFit" />
         <text class="learn-text">专属题库</text>
       </view>
       <view class="learn-item" bindtap="goToErrors">
-        <view class="learn-icon learn-icon--error">
-          <text class="learn-emoji">✕</text>
-        </view>
+        <image class="learn-icon learn-icon--error" src="/images/icon-error.png" mode="aspectFit" />
         <text class="learn-text">专属错题本</text>
       </view>
       <view class="learn-item">
-        <view class="learn-icon learn-icon--report">
-          <text class="learn-emoji">📊</text>
-        </view>
+        <image class="learn-icon learn-icon--report" src="/images/icon-report.png" mode="aspectFit" />
         <text class="learn-text">学习报告</text>
       </view>
       <view class="learn-item">
-        <view class="learn-icon learn-icon--fav">
-          <text class="learn-emoji">⭐</text>
-        </view>
+        <image class="learn-icon learn-icon--fav" src="/images/icon-fav.png" mode="aspectFit" />
         <text class="learn-text">收藏题目</text>
       </view>
     </view>
   </view>
 
   <!-- 设置菜单列表 -->
-  <view class="section-block">
+  <view class="section-block section-block-footer">
     <view class="menu-list">
       <view class="menu-row" bindtap="toggleEdit">
         <view class="menu-icon-wrap menu-icon--user">
-          <text class="menu-icon">👤</text>
+          <image class="menu-icon" src="/images/people.png" mode="aspectFit" />
         </view>
         <text class="menu-txt">个人信息</text>
         <text class="menu-arrow">›</text>
       </view>
       <view class="menu-row" bindtap="toggleEdit">
         <view class="menu-icon-wrap menu-icon--lock">
-          <text class="menu-icon">🔒</text>
+          <image class="menu-icon" src="/images/lock.png" mode="aspectFit" />
         </view>
-        <text class="menu-txt">账号与设置</text>
+        <text class="menu-txt">账号密码</text>
         <text class="menu-arrow">›</text>
       </view>
       <view class="menu-row" bindtap="goToSprint">
         <view class="menu-icon-wrap menu-icon--support">
-          <text class="menu-icon">🎧</text>
+          <image class="menu-icon" src="/images/headset.png" mode="aspectFit" />
         </view>
-        <text class="menu-txt">冲刺计划</text>
+        <text class="menu-txt">联系客服</text>
         <text class="menu-arrow">›</text>
       </view>
       <view class="menu-row" bindtap="clearAllData">
         <view class="menu-icon-wrap menu-icon--logout">
-          <text class="menu-icon">⏻</text>
+          <image class="menu-icon" src="/images/power.png" mode="aspectFit" />
         </view>
-        <text class="menu-txt">重置数据</text>
+        <text class="menu-txt">退出登录</text>
         <text class="menu-arrow">›</text>
       </view>
     </view>

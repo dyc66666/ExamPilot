@@ -1,5 +1,14 @@
 /* ===== 个人中心 — 参考设计稿重写 ===== */
 
+.tri-color-blobs {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 560rpx;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
 .profile-page {
   position: relative;
   background: linear-gradient(180deg, #FDFBFF 0%, #F8F6FC 50%, #F4F2FF 100%);
@@ -20,170 +29,160 @@
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60rpx);
 }
 
 .blob--blue {
-  top: -80rpx;
-  left: -100rpx;
-  width: 420rpx;
+  top: -170rpx;
+  left: -50rpx;
+  width: 470rpx;
   height: 420rpx;
-  background: rgba(120, 180, 255, 0.45);
+  background: rgba(120, 180, 255, 0.15);
 }
 
-.blob--purple {
-  top: -40rpx;
-  right: -60rpx;
-  width: 480rpx;
+.blob--blue1 {
+  top: -200rpx;
+  right: -290rpx;
+  width: 700rpx;
   height: 480rpx;
-  background: rgba(180, 140, 255, 0.38);
+  background: rgba(120, 180, 255, 0.15);
 }
 
-.blob--pink {
-  top: 180rpx;
-  right: 80rpx;
-  width: 360rpx;
-  height: 360rpx;
-  background: rgba(255, 180, 200, 0.30);
-}
-
-/* ===== 头部：头像 + 信息 + 吉祥物 ===== */
-.pf-header {
+/* ===== 顶部个人信息 ===== */
+.profile-hero {
   position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 130rpx 28rpx 16rpx;
+  z-index: 10;
+  height: 396rpx;
+  margin: 0 24rpx;
 }
 
 .avatar-wrap {
-  position: relative;
+  position: absolute;
+  left: 28rpx;
+  top: 144rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 120rpx;
-  height: 120rpx;
+  width: 178rpx;
+  height: 178rpx;
   overflow: hidden;
   border-radius: 999rpx;
   background: linear-gradient(135deg, #E8E3FF, #DDD6FF);
-  border: 4rpx solid rgba(255, 255, 255, 0.9);
+  border: 0;
+  box-shadow: 0 16rpx 40rpx rgba(88, 103, 170, .12);
 }
 
 .avatar-button { margin: 0; padding: 0; border: 0; }
 .avatar-button::after { border: 0; }
 
-.avatar { width: 120rpx; height: 120rpx; }
-
-.avatar-fallback {
-  color: #7C68E7;
-  font-size: 44rpx;
-  font-weight: 700;
-}
-
-.avatar-tip {
-  position: absolute;
-  right: 0; bottom: 0;
-  width: 36rpx; height: 36rpx;
-  border: 4rpx solid #fff;
-  border-radius: 999rpx;
-  background: #7C68E7;
-  color: #fff;
-  font-size: 18rpx;
-  line-height: 28rpx;
-  text-align: center;
-}
+.avatar { width: 100%; height: 100%; }
 
 .pf-info {
-  flex: 1;
-  margin-left: 22rpx;
+  position: absolute;
+  left: 244rpx;
+  top: 178rpx;
+  z-index: 4;
+  width: 250rpx;
   min-width: 0;
 }
 
 .pf-name {
   display: block;
-  color: #1A1A2E;
-  font-size: 38rpx;
-  font-weight: 700;
-  line-height: 1.3;
+  color: #111219;
+  font-size: 44rpx;
+  font-weight: 800;
+  line-height: 1.12;
 }
 
 .pf-phone {
   display: block;
-  margin-top: 8rpx;
-  color: #9B9BAD;
-  font-size: 25rpx;
+  margin-top: 20rpx;
+  color: #6F7488;
+  font-size: 30rpx;
+  line-height: 1.1;
 }
 
-/* 头部右侧吉祥物 */
-.pf-mascot {
-  width: 180rpx;
-  height: 200rpx;
-  flex-shrink: 0;
+.pf-mascot--hero {
+  position: absolute;
+  right: -20rpx;
+  top: 150rpx;
+  width: 260rpx;
+  height: 262rpx;
+  pointer-events: none;
+  filter: drop-shadow(0 18rpx 24rpx rgba(90, 104, 160, .50));
 }
 
 /* ===== VIP 区域（吉祥物坐落其上）===== */
 .vip-section {
   position: relative;
   z-index: 2;
-  margin-top: -8rpx;
-}
-
-/* 吉祥物 — 坐落在 VIP 横幅右上方 */
-.pf-mascot {
-  position: absolute;
-  right: 10rpx;
-  top: -160rpx;
-  width: 200rpx;
-  height: 220rpx;
-  pointer-events: none;
-  z-index: 3;
-  filter:
-    drop-shadow(0 12rpx 36rpx rgba(120, 140, 200, .20))
-    drop-shadow(0 4rpx 12rpx rgba(107, 92, 231, .12));
+  margin-top: -24rpx;
 }
 
 .vip-banner {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin: 0 24rpx;
-  padding: 26rpx 32rpx;
-  border-radius: 20rpx 20rpx 0 0;
-  background: linear-gradient(135deg, #B8A0FF, #9B85F5);
-  box-shadow: 0 4rpx 20rpx rgba(155, 133, 245, .25);
+  height: 70rpx;
+  padding: 0 30rpx 50rpx;
+  box-shadow: 0 12rpx 34rpx rgba(122, 112, 232, .18);
 }
 
-.vip-left { display: flex; align-items: baseline; gap: 16rpx; }
+/* 背景层：SVG 负责完整轮廓，贝塞尔曲线末端水平收尾 */
+.vip-bg-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  margin-top:-30rpx;
+}
+
+.vip-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3NTAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjYjdiY2Y5Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjOTlhMWY5Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTIyLDAgSDM5MCBDNDI1LDAgNDI1LDM2IDQ2MCwzNiBINzI4IEM3NDAsMzYgNzUwLDQ2IDc1MCw1OCBWMTAwIEgwIFYyMiBDMCwxMCAxMCwwIDIyLDAgWiIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==");
+}
+.vip-left {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
 .vip-label {
   color: #fff;
-  font-size: 30rpx;
-  font-weight: 700;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.vip-divider {
+  margin: 0 15rpx;
+  color: rgba(255, 255, 255, .58);
+  font-size: 32rpx;
+  font-weight: 400;
 }
 .vip-days {
-  color: rgba(255, 255, 255, .78);
-  font-size: 24rpx;
-}
-
-.vip-tag {
-  display: inline-block;
-  padding: 6rpx 22rpx;
-  border-radius: 999rpx;
-  background: rgba(255, 255, 255, .24);
-  color: #fff;
-  font-size: 22rpx;
-  font-weight: 600;
+  color: rgba(255, 255, 255, .86);
+  font-size: 31rpx;
+  font-weight: 400;
 }
 
 /* ===== 统计卡片 ===== */
 .stats-card {
+  position: relative;
   display: flex;
   align-items: center;
-  margin: 0 24rpx;
+  margin: -22rpx 24rpx 0rpx 24rpx;
   padding: 32rpx 16rpx;
-  border-radius: 0 0 22rpx 22rpx;
+  border-radius: 22rpx 22rpx 22rpx 22rpx;
   background: #fff;
   box-shadow: 0 4rpx 24rpx rgba(100, 80, 200, .06);
+  z-index:10;
 }
 
 .stat-item {
@@ -221,6 +220,10 @@
   box-shadow: 0 2rpx 14rpx rgba(100, 80, 200, .05);
 }
 
+.section-block-footer {
+  padding:10rpx 24rpx !important;
+}
+
 .section-title {
   display: block;
   color: #1A1A2E;
@@ -244,41 +247,9 @@
 }
 
 .learn-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 96rpx;
   height: 96rpx;
   border-radius: 24rpx;
-}
-
-.learn-ic { font-size: 40rpx; }
-.learn-img { width: 48rpx; height: 48rpx; }
-
-/* 题库：蓝紫渐变底 */
-.learn-icon--bank {
-  background: linear-gradient(145deg, #CDD8FF, #B8C7FF);
-}
-
-/* 错题本：紫渐变圆底 + X */
-.learn-icon--error {
-  background: linear-gradient(145deg, #DDD4FF, #CBBEFF);
-}
-.learn-sym {
-  color: #9B70F5;
-  font-size: 46rpx;
-  font-weight: 300;
-  line-height: 1;
-}
-
-/* 学习报告：蓝底 */
-.learn-icon--report {
-  background: linear-gradient(145deg, #D0EAFF, #BDE0FF);
-}
-
-/* 收藏题目：暖橙粉底 */
-.learn-icon--fav {
-  background: linear-gradient(145deg, #FFE4DC, #FFD4C8);
 }
 
 .learn-text {
@@ -307,23 +278,21 @@
   border-radius: 18rpx;
 }
 
+.menu-icon {
+  width: 36rpx;
+  height: 36rpx;
+}
+
 .menu-ico { font-size: 26rpx; }
 
-/* 个人信息 — 紫色人形 */
-.menu-icon--user   { background: #EEECFA; }
-.menu-sym--user    { color: #7C68E7; }
-
-/* 账号与设置 — 黄金色锁 */
-.menu-icon--lock   { background: #FFF6E5; }
-.menu-sym--lock    { color: #E6A83C; }
-
-/* 冲刺计划 — 蓝色耳机 */
-.menu-icon--support{ background: #E8F4FD; }
-.menu-sym--support { color: #4E9EF5; }
-
-/* 重置数据 — 灰色电源 */
-.menu-icon--logout { background: #F2F1F5; }
-.menu-sym--logout  { color: #9B9BAD; }
+/* 个人信息 */
+.menu-icon--user   { }
+/* 账号与设置 */
+.menu-icon--lock   { }
+/* 冲刺计划 */
+.menu-icon--support{ }
+/* 重置数据 */
+.menu-icon--logout { }
 
 .menu-txt {
   flex: 1;
