@@ -1,4 +1,4 @@
-node_modules/
+**/node_modules/
 dist/
 .env
 .env.local
@@ -12,5 +12,3 @@ project.private.config.json
 .claude/
 .agents/
 .DS_Store
-# 云函数含 API Key，不入库
-miniprogram/cloudfunctions/
