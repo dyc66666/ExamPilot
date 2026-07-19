@@ -1,3 +1,5 @@
+var questionUtils = require('../../utils/question-utils')
+
 Page({
   data: {
     bankName: '',
@@ -87,6 +89,22 @@ Page({
       filteredQuestions: qs,
       selectedCount: allSelected ? 0 : qs.length
     })
+  },
+
+  selectDuplicateQuestions: function() {
+    var duplicateIndexes = questionUtils.findDuplicateQuestionIndexes(this.data.filteredQuestions)
+    if (!duplicateIndexes.length) {
+      wx.showToast({ title: '未检测到重复题', icon: 'none' })
+      return
+    }
+    var duplicateMap = {}
+    for (var i = 0; i < duplicateIndexes.length; i++) duplicateMap[duplicateIndexes[i]] = true
+    var qs = this.data.filteredQuestions.map(function(q, index) {
+      q._selected = !!duplicateMap[index]
+      return q
+    })
+    this.setData({ filteredQuestions: qs, selectedCount: duplicateIndexes.length })
+    wx.showToast({ title: '已选中 ' + duplicateIndexes.length + ' 道重复项', icon: 'none' })
   },
 
   deleteSelected: function() {

@@ -37,6 +37,7 @@
       <text wx:if="{{editMode}}" class="select-all-btn" bindtap="toggleSelectAll">{{selectedCount == filteredQuestions.length ? '取消全选' : '全选'}}</text>
       <text wx:if="{{editMode}}" class="select-count">已选 {{selectedCount}} 题</text>
       <view class="manage-actions" wx:if="{{editMode}}">
+        <text class="manage-pill" bindtap="selectDuplicateQuestions">选择重复项</text>
         <text class="manage-pill" bindtap="favoriteSelected">收藏</text>
         <text class="manage-pill danger" bindtap="deleteSelected">删除</text>
       </view>

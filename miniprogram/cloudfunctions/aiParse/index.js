@@ -157,7 +157,7 @@ function tryParse(str) {
 
 // 普通解析（非分页模式）
 async function callAI(text) {
-  const prompt = '从以下文本中提取选择题。文本已经尽量按完整候选题块分组，但仍可能包含少量相邻题干上下文。严格按步骤执行：\n\nStep 1 — 识别完整题目\n一道完整题目 = 题干 + 至少2个明确选项。选项标记可能是 A/B/C/D、A、B、C、D、（A）（B）、1/2/3/4、1、2、3、4、（1）（2）、①②③④。只有候选题块不完整时才跳过，不要因为题目跨页就漏掉后半组选项。\n\nStep 2 — 识别选项组\n如果原文用 1/2/3/4 或 ①②③④ 表示选项，请按原始顺序放入 options，并把答案统一转换成 A/B/C/D：1或①=A，2或②=B，3或③=C，4或④=D。\n\nStep 3 — 清洗题干\n删除题干中嵌入的答案标记（如（B）(A) 【C】等）和题型标记（如【单选题】）。其余文字完全保留原文，不改写。\n例：原文"关于XX正确的是（B）" → stem为"关于XX正确的是"\n\nStep 4 — 提取或生成答案\n如果原文明确给出答案，按原文答案转换成 A/B/C/D 填入 answer。若原文没有答案，必须根据题干和选项判断最可能的正确答案并填入 answer，不要留空。多选题可返回多个字母，如 AC。\n\nStep 5 — 提取选项、答案、原文解析\n选项逐字照抄原文，但不要把选项标签本身重复写入选项内容。只有原文明确出现“解析/答案解析”等解析内容时，才填入 explanation；原文没有解析时 explanation 必须为空字符串，不要生成、推理或补写解析。题干或选项中的积分、求和、上下标、希腊字母和变换公式必须完整保留，转换成 Unicode/普通文本，不得省略公式，不要输出 LaTeX 命令。\n\nStep 6 — 按原始顺序输出JSON\n格式：[{"stem":"题干","options":["选项1","选项2","选项3","选项4"],"answer":"A","explanation":""}]\n只输出JSON数组，不要markdown，不要其他文字。\n\n文本：\n' + text
+  const prompt = '从以下文本中提取选择题。文本已经尽量按完整候选题块分组，但仍可能包含少量相邻题干上下文。严格按步骤执行：\n\nStep 1 — 识别完整题目\n一道完整题目 = 题干 + 至少2个明确选项。选项标记可能是 A/B/C/D、A、B、C、D、（A）（B）、1/2/3/4、1、2、3、4、（1）（2）、①②③④。只有候选题块不完整时才跳过，不要因为题目跨页就漏掉后半组选项。\n\nStep 2 — 识别选项组\n如果原文用 1/2/3/4 或 ①②③④ 表示选项，请按原始顺序放入 options，并把答案统一转换成 A/B/C/D：1或①=A，2或②=B，3或③=C，4或④=D。\n\nStep 3 — 清洗题干\n删除题干中嵌入的答案标记（如（B）(A) 【C】等）和题型标记（如【单选题】）。其余文字完全保留原文，不改写。\n例：原文"关于XX正确的是（B）" → stem为"关于XX正确的是"\n\nStep 4 — 提取或生成答案\n如果原文明确给出答案，按原文答案转换成 A/B/C/D 填入 answer。若原文没有答案，必须根据题干和选项判断最可能的正确答案并填入 answer，不要留空。多选题可返回多个字母，如 AC。\n\nStep 5 — 提取选项、答案、原文解析\n选项逐字照抄原文，但不要把选项标签本身重复写入选项内容。只有原文明确出现“解析/答案解析”等解析内容时，才填入 explanation；原文没有解析时 explanation 必须为空字符串，不要生成、推理或补写解析。题干、选项或解析中的积分、分数、根式、矩阵、求和、上下标、希腊字母和变换公式必须完整保留。行内公式使用标准 LaTeX 并包在 $...$ 中，独立公式使用 $$...$$，不得省略公式或依赖图片；JSON 字符串中的 LaTeX 反斜杠必须按 JSON 规范转义。\n\nStep 6 — 按原始顺序输出JSON\n格式：[{"stem":"题干","options":["选项1","选项2","选项3","选项4"],"answer":"A","explanation":""}]\n只输出JSON数组，不要markdown，不要其他文字。\n\n文本：\n' + text
 
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
@@ -206,8 +206,8 @@ async function callAIWindow(text, windowIndex) {
     '7. 如果原文格式是“长题干……（ABCD）[多选题]\\nA. ...\\nB. ...”，stem 必须取 A 选项之前的完整长题干，不能把 A 选项当成 stem。\n' +
     '8. 只有原文明确出现“解析/答案解析”等解析内容时，才填入 explanation；原文没有解析时 explanation 必须为空字符串，不要生成、推理或补写解析。\n' +
     '9. sourceText 放该题在窗口中的关键原文片段，尽量简短但足够回溯。\n' +
-    '10. 题干或选项中的积分、求和、上下标、希腊字母和变换公式必须完整保留，转换成 Unicode/普通文本，不得省略公式，不要输出 LaTeX 命令。\n' +
-    '11. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
+    '10. 题干或选项中的积分、分数、根式、矩阵、求和、上下标、希腊字母和变换公式必须完整保留；行内公式使用标准 LaTeX 并包在 $...$ 中，独立公式使用 $$...$$，不得省略公式或依赖图片。\n' +
+    '11. JSON 字符串中的 LaTeX 反斜杠必须按 JSON 规范转义。只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
     '返回格式：{"questions":[{"stem":"题干","options":["选项1","选项2"],"answer":"A","explanation":"","knowledgePoint":"","status":"complete","sourceText":"原文片段"}]}\n\n' +
     '窗口编号：' + windowIndex + '\n' +
     '窗口文本：\n' + text
@@ -264,7 +264,8 @@ async function callAIMergeWindows(prevQuestions, currentQuestions) {
     '4. 不要丢题。不能确定是否重复时，不要合并，分别保留或放 needsReview。\n' +
     '5. stem 只能保留题干正文，必须删除“（D）[单选题]”“（ABCD）[多选题]”等答案和题型标记；答案字母放入 answer。\n' +
     '6. 不要生成、推理或补写解析；只保留输入题目里已有的 explanation。\n' +
-    '7. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
+    '7. 输入中的 $...$ 或 $$...$$ LaTeX 公式必须完整保留，不要改成普通文本。\n' +
+    '8. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
     '返回格式：{"prevOnly":[题目],"currentMerged":[题目],"needsReview":[题目]}\n\n' +
     '上一个窗口题目 prevQuestions：\n' + JSON.stringify(prev) + '\n\n' +
     '当前窗口题目 currentQuestions：\n' + JSON.stringify(current)
@@ -313,7 +314,8 @@ async function callAIMergeQuestionPair(prevQuestion, currentQuestion) {
     '5. answer 保留更完整/更明确的答案。\n' +
     '6. explanation 不要生成；只保留输入里已有的原文解析，没有就空字符串。\n' +
     '7. knowledgePoint 保留更准确的知识点，没有就空字符串。\n' +
-    '8. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
+    '8. 输入中的 $...$ 或 $$...$$ LaTeX 公式必须完整保留，不要改成普通文本。\n' +
+    '9. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
     '返回格式：{"stem":"题干","options":["选项1","选项2"],"answer":"A","explanation":"","knowledgePoint":"","status":"complete","sourceText":"原文片段"}\n\n' +
     '上一个窗口版本：\n' + JSON.stringify(prev) + '\n\n' +
     '当前窗口版本：\n' + JSON.stringify(current)
@@ -376,7 +378,8 @@ async function callAIPage(currentPageText, carryOver) {
     '4. 一道题至少需要题干和 2 个明确选项。跨页题的选项可以来自上下文和当前页。\n' +
     '5. 题干中如果包含（A）（B）（C）（D）或【单选题】等答案/题型标记，删除这些标记；其余文字照抄原文。\n' +
     '6. 选项必须逐字照抄原文，按 A/B/C/D 顺序放入 options，不要漏掉当前页开头或前段的续页选项。\n' +
-    '7. 答案字母填入 answer；没有明确答案就留空字符串。\n\n' +
+    '7. 答案字母填入 answer；没有明确答案就留空字符串。\n' +
+    '8. 题干和选项中的公式必须完整保留；行内公式使用标准 LaTeX 并包在 $...$ 中，独立公式使用 $$...$$，JSON 中的反斜杠必须正确转义。\n\n' +
     '返回格式：{"questions":[{"stem":"题干","options":["A选项","B选项","C选项","D选项"],"answer":"A"}]}\n' +
     '只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
     '文本：\n' + fullText
@@ -468,7 +471,7 @@ async function explainQuestion(question) {
   }).join('\n')
   const answer = question.answer || ''
 
-  const prompt = '题目：' + stem + '\n选项：\n' + options + '\n正确答案：' + answer + '\n\n请用50字以内解释为什么这是正确答案。只输出解释文字，不要其他内容。'
+  const prompt = '题目：' + stem + '\n选项：\n' + options + '\n正确答案：' + answer + '\n\n请用50字以内解释为什么这是正确答案。解释里如有公式，使用标准 LaTeX：行内公式包在 $...$ 中，独立公式包在 $$...$$ 中。只输出解释文字，不要其他内容。'
 
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
@@ -479,7 +482,7 @@ async function explainQuestion(question) {
     body: JSON.stringify({
       model: 'deepseek-chat',
       messages: [
-        { role: 'system', content: '你是试题讲解助手。用简洁的语言解释题目答案，50字以内，只输出解释内容。' },
+        { role: 'system', content: '你是试题讲解助手。用简洁的语言解释题目答案，50字以内，只输出解释内容；公式使用 $...$ 或 $$...$$ LaTeX。' },
         { role: 'user', content: prompt }
       ],
       temperature: 0.3,
@@ -653,12 +656,15 @@ async function callAIClassifyMaterial(text, fileName) {
   }
 }
 
-async function callAIGenerateStudyQuestions(text, analysis, targetCount, batchIndex, totalBatches, existingStems, level, levelLabel) {
+async function callAIGenerateStudyQuestions(text, analysis, targetCount, batchIndex, totalBatches, existingStems, level, levelLabel, focusPlan) {
   analysis = analysis || {}
-  targetCount = Math.max(3, Math.min(10, Number(targetCount) || 8))
+  targetCount = Math.max(1, Math.min(10, Number(targetCount) || 8))
   batchIndex = Math.max(1, Number(batchIndex) || 1)
   totalBatches = Math.max(1, Number(totalBatches) || 1)
-  existingStems = Array.isArray(existingStems) ? existingStems.slice(0, 30) : []
+  existingStems = Array.isArray(existingStems) ? existingStems.slice(0, 60) : []
+  focusPlan = Array.isArray(focusPlan) ? focusPlan.filter(function(item) {
+    return item && String(item.knowledgePoint || '').trim() && Number(item.questionCount) > 0
+  }).slice(0, 4) : []
   const levelMap = {
     basic: {
       label: '基础保过',
@@ -684,6 +690,7 @@ async function callAIGenerateStudyQuestions(text, analysis, targetCount, batchIn
 
   const prompt = '你是一个大学期末考试复习出题助手。用户会上传复习资料、PPT、笔记、题库或考试大纲。你需要先识别资料中的科目、章节结构、核心考点、重点难点和原文例题，然后根据用户选择的复习等级生成选择题。\n\n' +
     '本批任务：第 ' + batchIndex + '/' + totalBatches + ' 批，目标生成 ' + targetCount + ' 道选择题。\n' +
+    '本批指定考点与题量：' + JSON.stringify(focusPlan) + '。只能围绕这些指定考点出题，每个考点严格按 questionCount 生成；不得重新从整份资料自由选择考点。\n' +
     '用户选择的复习等级：' + levelLabel + '。\n' +
     '等级定位：' + levelConfig.positioning + '。\n' +
     '题量基准：' + levelConfig.perPoint + '。\n' +
@@ -694,11 +701,13 @@ async function callAIGenerateStudyQuestions(text, analysis, targetCount, batchIn
     '3. 原文里有例题、练习题、思考题、测试题或选择题时，必须优先加入，放在 questions 前面；这些题 sourceType 填 original，sourceLabel 填 原题，sourceText 填原文片段。\n' +
     '4. 原文已有题不要随意改写题干和选项，只做必要清洗。若原文没给答案，请根据题目和选项推断答案，并在 explanation 说明“答案由 AI 根据原题推断”。\n' +
     '5. 没有原文例题的考点，再由 AI 补充选择题；这些题 sourceType 填 generated，sourceLabel 填 AI生成。\n' +
-    '6. 不要重复已生成题干；如果 existingStems 里已有相同或高度相似题干，请换一个考点或换一种问法。\n' +
+    '6. 不要重复已生成题目。如果 existingStems 里已有相同或高度相似的考查内容，不得只换一种问法再次生成，必须改为该考点下不同的知识结论、条件、计算步骤、易错点或应用场景。\n' +
     '7. 每题必须包含 stem、options、answer、explanation、knowledgePoint、difficulty、questionStyle、sourceType、sourceLabel。options 至少 4 个，answer 用 A/B/C/D/E 表示，多选可返回 ABC。\n' +
     '8. 输出题量尽量接近本批目标，不要只生成少量题；除非资料极短，否则不能少于目标题量的 80%。\n' +
-    '9. 题目涉及定义式、积分、求和、矩阵、上下标或变换公式时，必须把答题所需的完整公式直接写进 stem 或对应 option，不能省略为“由上式”“如下图”。公式使用 Unicode 和普通文本表达，例如 F(ω)=∫₋∞⁺∞ f(t)e⁻ⁱωᵗdt；不要输出 LaTeX 命令、美元符号或依赖图片的公式。\n' +
-    '10. 正确答案位置必须在 A/B/C/D 间均衡随机分布，不能连续多题都为 A。解析尽量按选项内容说明，不依赖固定答案字母，方便系统重排选项。\n\n' +
+    '9. 题目涉及定义式、积分、分数、根式、求和、矩阵、上下标或变换公式时，必须把答题所需的完整公式直接写进 stem 或对应 option，不能省略为“由上式”“如下图”。行内公式使用标准 LaTeX 并包在 $...$ 中，独立公式使用 $$...$$，不得省略公式或依赖图片；JSON 字符串中的反斜杠必须按 JSON 规范转义。\n' +
+    '10. 正确答案位置必须在 A/B/C/D 间均衡随机分布，不能连续多题都为 A。解析尽量按选项内容说明，不依赖固定答案字母，方便系统重排选项。\n' +
+    '11. 禁止使用“资料核心概念”“根据你上传的资料”“上述资料”“本资料中的知识点”等占位表达。每道题必须直接写出真实的学科概念、公式、条件或材料，脱离原文件后也能独立作答。\n' +
+    '12. 同一考点需要多道题时，各题必须考查不同维度。例如依次考查定义、典型计算、适用条件和易错辨析，不能用相同题干模板只替换选项。\n\n' +
     'questionStyle 可取：核心概念题、经典速通题、易混辨析题、简单应用题、常考变式题、陷阱题、章节综合题、多选题、材料题、跨章节综合题。\n' +
     'difficulty 可取：基础、中等、较难。\n\n' +
     '返回格式：{"questions":[{"stem":"题干","options":["选项A","选项B","选项C","选项D"],"answer":"A","explanation":"解析","knowledgePoint":"考点","difficulty":"基础","questionStyle":"经典速通题","sourceType":"original","sourceLabel":"原题","sourceText":"原文片段"}],"studyPack":{"subject":"识别到的科目","examGoal":"考试目标","level":"' + levelLabel + '","summary":"资料总结","chapters":["章节"],"keyPoints":["考点"],"coverage":[{"knowledgePoint":"考点","questionCount":2,"hasOriginal":true}],"reviewPlan":["步骤"]}}\n\n' +
@@ -805,7 +814,8 @@ exports.main = async (event) => {
         event.totalBatches || 1,
         event.existingStems || [],
         event.level || 'basic',
-        event.levelLabel || ''
+        event.levelLabel || '',
+        event.focusPlan || []
       )
       return {
         success: true,

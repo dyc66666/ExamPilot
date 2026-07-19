@@ -46,7 +46,15 @@
     </view>
 
     <view class="quiz-content" bindtouchstart="onQuestionTouchStart" bindtouchend="onQuestionTouchEnd">
-      <text class="question-stem">{{currentIndex + 1}}. {{currentQuestion.stem}}</text>
+      <view class="question-stem-row">
+        <text class="question-number">{{currentIndex + 1}}.</text>
+        <mp-html
+          class="question-stem question-rich-text"
+          content="{{currentQuestion.stemHtml}}"
+          container-style="font-size:36rpx;font-weight:800;line-height:1.55;overflow-x:auto;"
+          selectable="{{true}}"
+        />
+      </view>
 
       <view class="options-list">
         <view wx:for="{{currentQuestion.optionItems}}" wx:key="label" wx:for-item="opt" wx:for-index="i"
@@ -54,7 +62,12 @@
           bindtap="toggleAnswer" data-value="{{opt.label}}">
           <view class="opt-mark">{{currentQuestion.qtype === '多选题' ? (opt._sel ? '✓' : '') : ''}}</view>
           <text class="option-label">{{opt.label}}</text>
-          <text class="option-text">{{opt.text}}</text>
+          <mp-html
+            class="option-text option-rich-text"
+            content="{{opt.html}}"
+            container-style="color:{{opt._correct ? '#137A49' : (opt._wrong ? '#C93242' : (opt._sel ? '#FFFFFF' : '#101B4F'))}};font-size:31rpx;font-weight:500;line-height:1.45;overflow-x:auto;"
+            selectable="{{true}}"
+          />
         </view>
       </view>
 
@@ -76,7 +89,13 @@
         <view class="explanation-box" wx:if="{{!isCorrect || currentQuestion.explanation}}">
           <text class="explanation-label">解析</text>
           <text class="explanation-text" wx:if="{{explanationLoading}}">AI 正在生成解析...</text>
-          <text class="explanation-text" wx:else>{{currentQuestion.explanation || '暂无解析'}}</text>
+          <mp-html
+            class="explanation-text explanation-rich-text"
+            wx:else
+            content="{{currentQuestion.explanationHtml || '暂无解析'}}"
+            container-style="color:#687086;font-size:26rpx;line-height:1.6;overflow-x:auto;"
+            selectable="{{true}}"
+          />
         </view>
         <view class="next-btn" bindtap="nextQuestion">下一题</view>
       </view>

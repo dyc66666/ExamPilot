@@ -392,17 +392,35 @@ Page({
   },
 
   buildMaterialSampleFromPages: function(pages) {
-    var chunks = []
-    for (var i = 0; i < pages.length; i++) {
-      if (!pages[i] || !pages[i].text) continue
-      chunks.push('第' + pages[i].pageNo + '页：\n' + pages[i].text)
-      if (chunks.join('\n\n').length > 12000) break
+    var validPages = (pages || []).filter(function(page) {
+      return page && String(page.text || '').trim()
+    })
+    if (!validPages.length) return ''
+    var sampleCount = Math.min(12, validPages.length)
+    var selected = []
+    var used = {}
+    for (var i = 0; i < sampleCount; i++) {
+      var index = sampleCount === 1 ? 0 : Math.round(i * (validPages.length - 1) / (sampleCount - 1))
+      if (used[index]) continue
+      used[index] = true
+      selected.push(validPages[index])
     }
-    return chunks.join('\n\n').slice(0, 12000)
+    return selected.map(function(page) {
+      return '第' + page.pageNo + '页：\n' + String(page.text || '').slice(0, 1800)
+    }).join('\n\n').slice(0, 18000)
   },
 
-  buildMaterialSampleFromText: function(text) {
-    return String(text || '').slice(0, 12000)
+  buildMaterialSampleFromText: function(text, requestedLength) {
+    text = String(text || '')
+    var maxLength = Number(requestedLength) || 18000
+    if (text.length <= maxLength) return text
+    var chunkLength = Math.floor(maxLength / 3)
+    var middleStart = Math.max(0, Math.floor((text.length - chunkLength) / 2))
+    return [
+      text.slice(0, chunkLength),
+      text.slice(middleStart, middleStart + chunkLength),
+      text.slice(text.length - chunkLength)
+    ].join('\n\n【资料抽样分隔】\n\n')
   },
 
   getPendingMaterialText: function(maxLength) {
@@ -413,13 +431,24 @@ Page({
         return '第' + page.pageNo + '页：\n' + (page.text || '')
       }).join('\n\n')
     }
-    return maxLength ? text.slice(0, maxLength) : text
+    return maxLength ? this.buildMaterialSampleFromText(text, maxLength) : text
   },
 
   normalizeMaterialAnalysis: function(analysis, fileName) {
     analysis = analysis || {}
     var type = analysis.materialType || '混合资料'
     var intent = analysis.recommendedAction || ''
+    var cleanOutlineItems = function(items) {
+      var seen = {}
+      return (items || []).map(function(item) {
+        return String(item || '').trim()
+      }).filter(function(item) {
+        var key = item.replace(/\s+/g, '')
+        if (!key || /^(资料)?(核心)?概念$|^(主要)?知识点$|^重点内容$|^未识别/.test(key) || seen[key]) return false
+        seen[key] = true
+        return true
+      })
+    }
     return {
       materialType: type,
       materialTypeLabel: type,
@@ -427,8 +456,8 @@ Page({
       examGoal: analysis.examGoal || '考试复习',
       confidence: typeof analysis.confidence === 'number' ? Math.round(analysis.confidence * 100) : 70,
       summary: analysis.summary || 'AI 已完成资料初步判断，请选择接下来的处理方式。',
-      chapters: (analysis.chapters || []).slice(0, 8),
-      keyPoints: (analysis.keyPoints || []).slice(0, 12),
+      chapters: cleanOutlineItems(analysis.chapters).slice(0, 16),
+      keyPoints: cleanOutlineItems(analysis.keyPoints).slice(0, 30),
       questionEvidence: analysis.questionEvidence || '',
       recommendedAction: intent || (type.indexOf('题库') !== -1 ? 'organizeQuestions' : 'generateFromMaterial'),
       fileName: fileName || ''
@@ -504,9 +533,27 @@ Page({
     analysis = analysis || {}
     var keyPointCount = (analysis.keyPoints || []).length
     var chapterCount = (analysis.chapters || []).length
-    var baseCount = keyPointCount ? keyPointCount * config.minPerPoint : config.fallbackCount
-    if (!keyPointCount && chapterCount) baseCount = chapterCount * 6
-    return Math.max(config.fallbackCount, Math.min(config.maxCount, baseCount))
+    var baseCount = keyPointCount ? keyPointCount * config.minPerPoint : chapterCount * config.minPerPoint
+    return Math.min(config.maxCount, baseCount || config.fallbackCount)
+  },
+
+  buildGenerationBatches: function(level, analysis) {
+    var config = this.getGenerateLevelConfig(level)
+    analysis = analysis || {}
+    var focusPoints = (analysis.keyPoints || []).slice()
+    if (!focusPoints.length) focusPoints = (analysis.chapters || []).slice()
+    var pointsPerBatch = Math.max(1, Math.floor(8 / config.minPerPoint))
+    var batches = []
+    for (var i = 0; i < focusPoints.length; i += pointsPerBatch) {
+      var points = focusPoints.slice(i, i + pointsPerBatch)
+      batches.push({
+        focusPlan: points.map(function(point) {
+          return { knowledgePoint: point, questionCount: config.minPerPoint }
+        }),
+        targetCount: points.length * config.minPerPoint
+      })
+    }
+    return batches
   },
 
   organizeQuestionsFromDocument: async function() {
@@ -526,16 +573,19 @@ Page({
   generateQuestionsFromMaterialBatched: async function() {
     var level = this.data.generateLevel || 'basic'
     var levelConfig = this.getGenerateLevelConfig(level)
-    var targetCount = this.estimateGenerateTargetCount(level, this.data.materialAnalysis || {})
-    var batchSize = 8
-    var totalBatches = Math.max(1, Math.ceil(targetCount / batchSize))
+    var generationBatches = this.buildGenerationBatches(level, this.data.materialAnalysis || {})
+    if (!generationBatches.length) {
+      throw new Error('没有识别到可用于出题的具体章节或考点，请重新上传更完整的资料')
+    }
+    var targetCount = generationBatches.reduce(function(total, batch) { return total + batch.targetCount }, 0)
+    var totalBatches = generationBatches.length
     var allQuestions = []
     var materialText = this.getPendingMaterialText(18000)
     this.setData({ progress: 'AI 正在按「' + levelConfig.label + '」识别章节和考点...', parseProgress: 35 })
     try {
-      for (var i = 0; i < totalBatches && allQuestions.length < targetCount; i++) {
-        var remaining = targetCount - allQuestions.length
-        var currentTarget = Math.min(batchSize, remaining)
+      for (var i = 0; i < totalBatches; i++) {
+        var currentBatch = generationBatches[i]
+        var currentTarget = currentBatch.targetCount
         var percent = 35 + Math.round(((i + 1) / totalBatches) * 48)
         this.setData({
           progress: 'AI 正在按考点生成第 ' + (i + 1) + '/' + totalBatches + ' 批题目...',
@@ -555,7 +605,8 @@ Page({
               levelLabel: levelConfig.label,
               batchIndex: i + 1,
               totalBatches: totalBatches,
-              existingStems: allQuestions.slice(-30).map(function(q) { return q.stem || '' }).filter(Boolean)
+              focusPlan: currentBatch.focusPlan,
+              existingStems: allQuestions.slice(-60).map(function(q) { return q.stem || '' }).filter(Boolean)
             }
           })
         } catch (err) {
@@ -577,7 +628,8 @@ Page({
               levelLabel: levelConfig.label,
               batchIndex: i + 1,
               totalBatches: totalBatches,
-              existingStems: allQuestions.slice(-30).map(function(q) { return q.stem || '' }).filter(Boolean)
+              focusPlan: currentBatch.focusPlan.slice(0, 1),
+              existingStems: allQuestions.slice(-60).map(function(q) { return q.stem || '' }).filter(Boolean)
             }
           })
         }
@@ -1545,7 +1597,13 @@ Page({
   },
 
   finishParsedQuestions: function(allQuestions) {
-    for (var i = 0; i < allQuestions.length; i++) allQuestions[i].order = i + 1
+    for (var i = 0; i < allQuestions.length; i++) {
+      allQuestions[i].order = i + 1
+      // AI generated questions do not carry UI selection state. Treat every
+      // newly parsed question as selected unless an earlier parser explicitly
+      // marked it otherwise; validation and duplicate checks can deselect it.
+      if (typeof allQuestions[i]._checked !== 'boolean') allQuestions[i]._checked = true
+    }
     allQuestions = this.validateQuestions(allQuestions)
     allQuestions = this.markDuplicateQuestions(allQuestions)
     var display = this.sortParsedQuestions(allQuestions)
@@ -1668,6 +1726,9 @@ Page({
       if (q.status === 'incomplete') warns.push('跨窗口题需核对')
       if (stemLength < 2) warns.push('题干过短')
       else if (this.getLeadingOptionLabel(stemText)) warns.push('题干疑似选项内容')
+      if (/资料核心概念|根据(?:你|用户)?上传的资料|上述资料|本资料中的知识点/.test(stemText)) {
+        warns.push('题干含泛化占位词')
+      }
       q._warn = warns.join('；')
       if (warns.length) {
         q._checked = false   // 异常题默认不勾选
@@ -1686,14 +1747,75 @@ Page({
     return stem.slice(0, 120) + '||' + options
   },
 
+  buildDuplicateStemKey: function(q) {
+    return this.normalizeText(q && q.stem || '').replace(/^\d+/, '').slice(0, 180)
+  },
+
+  duplicateTextSimilarity: function(left, right) {
+    left = String(left || '')
+    right = String(right || '')
+    if (left === right) return left ? 1 : 0
+    if (left.length < 4 || right.length < 4) return 0
+    var leftParts = {}
+    var rightParts = {}
+    var i
+    for (i = 0; i < left.length - 1; i++) leftParts[left.slice(i, i + 2)] = true
+    for (i = 0; i < right.length - 1; i++) rightParts[right.slice(i, i + 2)] = true
+    var leftKeys = Object.keys(leftParts)
+    var rightKeys = Object.keys(rightParts)
+    var intersection = 0
+    for (i = 0; i < leftKeys.length; i++) {
+      if (rightParts[leftKeys[i]]) intersection++
+    }
+    return (2 * intersection) / (leftKeys.length + rightKeys.length)
+  },
+
+  areLikelyDuplicateQuestions: function(left, right) {
+    var leftStem = this.buildDuplicateStemKey(left)
+    var rightStem = this.buildDuplicateStemKey(right)
+    if (!leftStem || !rightStem) return false
+    if (leftStem === rightStem) return true
+    var leftPoint = this.normalizeText(left && left.knowledgePoint || '')
+    var rightPoint = this.normalizeText(right && right.knowledgePoint || '')
+    if (leftPoint && rightPoint && leftPoint !== rightPoint) return false
+    var negativePattern = /不正确|错误|不包括|不能|不是|不属于|除外|有误/
+    if (negativePattern.test(left && left.stem || '') !== negativePattern.test(right && right.stem || '')) return false
+    var stemSimilarity = this.duplicateTextSimilarity(leftStem, rightStem)
+    var leftOptions = this.normalizeText((left && left.options || []).join('|'))
+    var rightOptions = this.normalizeText((right && right.options || []).join('|'))
+    var optionSimilarity = this.duplicateTextSimilarity(leftOptions, rightOptions)
+    if (stemSimilarity >= 0.92 && optionSimilarity >= 0.45) return true
+    if (leftPoint && leftPoint === rightPoint && stemSimilarity >= 0.82 && optionSimilarity >= 0.6) return true
+    if (leftPoint && leftPoint === rightPoint && stemSimilarity >= 0.6 && optionSimilarity >= 0.8) return true
+    return stemSimilarity >= 0.65 && optionSimilarity >= 0.88
+  },
+
   markDuplicateQuestions: function(list) {
     var groups = {}
     var existingQuestions = wx.getStorageSync('questions') || []
     var existingKeys = {}
+    var existingStemKeys = {}
     for (var e = 0; e < existingQuestions.length; e++) {
       var existingKey = this.buildDuplicateKey(existingQuestions[e])
       if (existingKey) existingKeys[existingKey] = true
+      var existingStemKey = this.buildDuplicateStemKey(existingQuestions[e])
+      if (existingStemKey && existingStemKey.length >= 8) existingStemKeys[existingStemKey] = true
     }
+    var parents = list.map(function(_, index) { return index })
+    var findRoot = function(index) {
+      while (parents[index] !== index) {
+        parents[index] = parents[parents[index]]
+        index = parents[index]
+      }
+      return index
+    }
+    var join = function(left, right) {
+      var leftRoot = findRoot(left)
+      var rightRoot = findRoot(right)
+      if (leftRoot !== rightRoot) parents[rightRoot] = leftRoot
+    }
+    var fullKeyOwners = {}
+    var stemKeyOwners = {}
     for (var i = 0; i < list.length; i++) {
       var q = list[i]
       q._duplicate = false
@@ -1701,9 +1823,26 @@ Page({
       q._duplicateGroup = ''
       q._duplicateLabel = ''
       var key = this.buildDuplicateKey(q)
-      if (!key || key.length < 8) continue
-      if (!groups[key]) groups[key] = []
-      groups[key].push(i)
+      var stemKey = this.buildDuplicateStemKey(q)
+      if (key && key.length >= 8) {
+        if (typeof fullKeyOwners[key] === 'number') join(i, fullKeyOwners[key])
+        else fullKeyOwners[key] = i
+      }
+      if (stemKey && stemKey.length >= 8) {
+        if (typeof stemKeyOwners[stemKey] === 'number') join(i, stemKeyOwners[stemKey])
+        else stemKeyOwners[stemKey] = i
+      }
+    }
+    for (var leftIndex = 0; leftIndex < list.length; leftIndex++) {
+      for (var rightIndex = leftIndex + 1; rightIndex < list.length; rightIndex++) {
+        if (findRoot(leftIndex) === findRoot(rightIndex)) continue
+        if (this.areLikelyDuplicateQuestions(list[leftIndex], list[rightIndex])) join(leftIndex, rightIndex)
+      }
+    }
+    for (var groupedIndex = 0; groupedIndex < list.length; groupedIndex++) {
+      var root = findRoot(groupedIndex)
+      if (!groups[root]) groups[root] = []
+      groups[root].push(groupedIndex)
     }
 
     var duplicateCount = 0
@@ -1718,13 +1857,14 @@ Page({
         item._duplicate = true
         item._duplicateGroup = String(groupNo)
         item._duplicateLabel = '重复 ' + groupNo + '-' + (j + 1) + '/' + indexes.length
-        item._checked = j === 0  // 每组默认只保留第一份勾选
+        item._checked = j === 0 && !item._warn  // 每组默认只保留第一份有效题
         duplicateCount++
       }
     }
     for (var x = 0; x < list.length; x++) {
       var currentKey = this.buildDuplicateKey(list[x])
-      if (!currentKey || !existingKeys[currentKey]) continue
+      var currentStemKey = this.buildDuplicateStemKey(list[x])
+      if ((!currentKey || !existingKeys[currentKey]) && (!currentStemKey || !existingStemKeys[currentStemKey])) continue
       if (!list[x]._duplicate) {
         groupNo++
         duplicateCount++

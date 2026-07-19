@@ -33,27 +33,8 @@ function getQuestionType(answer) {
   return normalizeAnswer(answer).length > 1 ? '多选题' : '单选题'
 }
 
-function duplicateText(text) {
-  return String(text || '')
-    .replace(/^\s*\d+\s*[.．、]\s*/, '')
-    .replace(/\s+/g, '')
-    .replace(/[，。；：、,.．:;()（）【】\[\]]/g, '')
-    .toUpperCase()
-}
-
 function countDuplicateQuestions(questions) {
-  var seen = {}
-  var duplicateCount = 0
-  var list = questions || []
-  list.forEach(function(question) {
-    var stem = duplicateText(question.stem)
-    var options = (question.options || []).map(duplicateText).filter(Boolean).sort().join('|')
-    if (!stem || !options) return
-    var key = stem.slice(0, 120) + '||' + options
-    if (seen[key]) duplicateCount++
-    else seen[key] = true
-  })
-  return duplicateCount
+  return questionUtils.findDuplicateQuestionIndexes(questions || []).length
 }
 
 function decorateQuestion(question, state) {
@@ -66,17 +47,22 @@ function decorateQuestion(question, state) {
     var isAnswer = ans.indexOf(label) > -1
     return {
       label: label,
-      text: questionUtils.formatMathText(text),
+      text: text,
+      html: questionUtils.toMathHtml(text, { autoFormula: true }),
       _sel: selected,
       _correct: !!(state && state.submitted && isAnswer),
       _wrong: !!(state && state.submitted && selected && !isAnswer)
     }
   }).filter(function(item) { return item.text })
+  var stem = stripAnswerMarkers(question.stem || '')
+  var explanation = question.explanation || ''
   return {
-    stem: questionUtils.formatMathText(stripAnswerMarkers(question.stem || '')),
+    stem: stem,
+    stemHtml: questionUtils.toMathHtml(stem, { autoFormula: true, displayMode: true }),
     answer: ans,
     knowledgePoint: question.knowledgePoint || '',
-    explanation: questionUtils.formatMathText(question.explanation || ''),
+    explanation: explanation,
+    explanationHtml: questionUtils.toMathHtml(explanation, { autoFormula: true }),
     id: question.id,
     order: question.order,
     sourceType: question.sourceType || '',
@@ -710,9 +696,13 @@ Page({
         }
       })
       if (res.result && res.result.success) {
-        var explanation = questionUtils.formatMathText(res.result.explanation)
+        var explanation = String(res.result.explanation || '')
         if (this.data.currentQuestion && this.data.currentQuestion.id === q.id) {
-          this.setData({ 'currentQuestion.explanation': explanation, explanationLoading: false })
+          this.setData({
+            'currentQuestion.explanation': explanation,
+            'currentQuestion.explanationHtml': questionUtils.toMathHtml(explanation, { autoFormula: true }),
+            explanationLoading: false
+          })
         }
         var questions = wx.getStorageSync('questions') || []
         questions = questions.map(function(qq) {

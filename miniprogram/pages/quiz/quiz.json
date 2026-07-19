@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "快速测评"
+  "navigationBarTitleText": "快速测评",
+  "usingComponents": {
+    "mp-html": "/components/mp-html/index"
+  }
 }
