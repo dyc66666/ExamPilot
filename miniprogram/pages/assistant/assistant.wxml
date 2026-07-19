@@ -24,7 +24,7 @@
         <text class="main-card-desc">可以直接提问，也可以上传文件并描述需求。</text>
       </view>
     </view>
-    <image class="main-mascot" src="/images/mascot-transparent.png" mode="aspectFit" />
+    <image class="main-mascot" src="/images/assistant-mascot-uniform.gif" mode="aspectFit" />
     <view class="quick-actions">
       <view class="quick-chip" data-text="帮我把资料整理成选择题并加入题库" bindtap="useQuickPrompt">整理题库</view>
       <view class="quick-chip" data-text="帮我讲一下这道题的解题思路" bindtap="useQuickPrompt">讲题思路</view>

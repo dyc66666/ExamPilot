@@ -1,11 +1,11 @@
 <view class="page quiz-page">
-  <!-- 开始页 -->
   <view wx:if="{{!isQuizStarted}}">
     <ui-navbar title="学习" subtitle="{{currentBank}}" back="{{true}}" bind:back="goBack" />
     <ui-card>
       <view class="start-visual"><view class="start-orb">✓</view></view>
       <text class="start-title">{{currentBank}} · 共{{bankQuestionCount}}题</text>
       <text class="start-desc">选择选项后提交，系统自动判断对错并记录</text>
+      <text class="duplicate-audit" wx:if="{{duplicateQuestionCount > 0}}">检测到 {{duplicateQuestionCount}} 道重复项，建议返回题库核对</text>
       <view class="sort-toggle" bindtap="toggleSortMode">
         <text>答题顺序：{{sortMode === 'sequential' ? '顺序' : '随机'}}</text>
         <text class="sort-hint">点击切换</text>
@@ -23,22 +23,31 @@
     </ui-card>
   </view>
 
-  <!-- 答题页 -->
   <view class="quiz-body" wx:if="{{isQuizStarted && currentQuestion}}">
-    <ui-navbar title="测评" subtitle="{{progressText}}" back="{{true}}" bind:back="goBack" />
-    <view class="progress-track"><view class="progress-fill {{progressClass}}"></view></view>
-    <view class="quiz-master-row" wx:if="{{!isSubmitted}}">
-      <text class="quiz-master-btn" bindtap="markAsMastered">已掌握，跳过</text>
+    <view class="quiz-hero">
+      <view class="quiz-hero-bg quiz-hero-bg-a"></view>
+      <view class="quiz-hero-bg quiz-hero-bg-b"></view>
+      <view class="quiz-hero-nav">
+        <view class="quiz-back" bindtap="goBack">‹</view>
+        <view class="quiz-title-block">
+          <text class="quiz-title">测评</text>
+          <text class="quiz-progress-text">{{progressText}}</text>
+        </view>
+        <view class="quiz-nav-space"></view>
+      </view>
+      <image class="quiz-hero-mascot" src="{{mascotSrc}}" mode="aspectFit" bindtap="openMascotChat" />
+      <view class="progress-track quiz-progress-track"><view class="progress-fill {{progressClass}}"></view></view>
+      <view class="quiz-meta quiz-hero-meta">
+        <text class="qtype-tag {{currentQuestion.qtype === '多选题' ? 'qtype-multi' : 'qtype-single'}}">{{currentQuestion.qtype}}</text>
+        <text class="source-tag {{currentQuestion.sourceType === 'original' ? 'source-tag--original' : 'source-tag--generated'}}" wx:if="{{currentQuestion.sourceLabel}}">{{currentQuestion.sourceLabel}}</text>
+        <text class="answer-count">{{currentQuestion.answer.length}}</text>
+        <text class="quiz-master-btn" wx:if="{{!isSubmitted}}" bindtap="markAsMastered">✓ 已掌握，跳过</text>
+      </view>
     </view>
 
-    <view class="quiz-content">
-      <view class="quiz-meta">
-        <text class="qtype-tag {{currentQuestion.qtype === '多选题' ? 'qtype-multi' : 'qtype-single'}}">{{currentQuestion.qtype}}</text>
-        <text class="tag tag--success">{{currentQuestion.knowledgePoint || '未归类'}}</text>
-      </view>
+    <view class="quiz-content" bindtouchstart="onQuestionTouchStart" bindtouchend="onQuestionTouchEnd">
       <text class="question-stem">{{currentIndex + 1}}. {{currentQuestion.stem}}</text>
 
-      <!-- 选项 -->
       <view class="options-list">
         <view wx:for="{{currentQuestion.optionItems}}" wx:key="label" wx:for-item="opt" wx:for-index="i"
           class="option-item {{opt._sel ? 'option-item--selected' : ''}} {{opt._correct ? 'option-item--correct' : ''}} {{opt._wrong ? 'option-item--wrong' : ''}}"
@@ -49,14 +58,16 @@
         </view>
       </view>
 
-      <!-- 提交按钮 -->
-      <view class="submit-row" wx:if="{{!isSubmitted}}">
-        <button class="submit-btn" bindtap="submitAnswer">
-          提交答案
-        </button>
+      <view class="question-nav-row">
+        <button class="question-nav-btn" disabled="{{currentIndex === 0}}" bindtap="previousQuestion">‹ 上一题</button>
+        <text class="question-nav-hint">也可左右滑动</text>
+        <button class="question-nav-btn" disabled="{{currentIndex + 1 >= questions.length}}" bindtap="nextQuestion">下一题 ›</button>
       </view>
 
-      <!-- 结果面板 -->
+      <view class="submit-row" wx:if="{{!isSubmitted}}">
+        <button class="submit-btn" bindtap="submitAnswer">提交答案</button>
+      </view>
+
       <view wx:if="{{isSubmitted}}" class="answer-panel">
         <view class="answer-result {{isCorrect ? 'answer-result--correct' : 'answer-result--wrong'}}">
           <text class="answer-result-title">{{isCorrect ? '回答正确' : '回答错误'}}</text>
@@ -71,9 +82,54 @@
       </view>
     </view>
 
-    <!-- 底部：不会 -->
     <view class="quiz-bottom" wx:if="{{!isSubmitted}}">
       <view class="bottom-btn bottom-btn--skip" bindtap="markAsDontKnow">不会，看答案</view>
+    </view>
+
+    <view class="mascot-chat-mask" wx:if="{{mascotChatVisible}}" bindtap="closeMascotChat">
+      <view class="mascot-chat-panel {{mascotChatFullscreen ? 'mascot-chat-panel--full' : ''}}" style="height: {{mascotChatPanelHeight}}vh;" catchtap="noop">
+        <view
+          class="mascot-chat-handle"
+          catchtouchstart="startMascotPanelDrag"
+          catchtouchmove="dragMascotPanel"
+          catchtouchend="endMascotPanelDrag"
+          catchtouchcancel="endMascotPanelDrag"
+        ></view>
+        <view class="mascot-chat-head">
+          <image class="mascot-chat-avatar" src="{{mascotSrc}}" mode="aspectFit" />
+          <view class="mascot-chat-title-wrap">
+            <text class="mascot-chat-title">AI 学习伙伴</text>
+            <text class="mascot-chat-subtitle">正在陪你答题</text>
+          </view>
+          <view class="mascot-chat-tools">
+            <view class="mascot-tool-btn mascot-tool-btn--min" bindtap="shrinkMascotChat" aria-label="缩小"></view>
+            <view class="mascot-tool-btn mascot-tool-btn--max" bindtap="expandMascotChat" aria-label="放大"></view>
+            <view class="mascot-tool-btn mascot-tool-btn--close" bindtap="closeMascotChat" aria-label="关闭"></view>
+          </view>
+        </view>
+        <scroll-view class="mascot-chat-list" scroll-y="true" scroll-top="{{mascotChatScrollTop}}" scroll-with-animation="{{true}}">
+          <view class="mascot-message-row mascot-message-row--{{item.role}}" wx:for="{{mascotChatMessages}}" wx:key="id">
+            <view class="mascot-message-bubble {{item.loading ? 'mascot-message-bubble--loading' : ''}}">
+              <text>{{item.loading ? '正在思考...' : item.content}}</text>
+            </view>
+          </view>
+        </scroll-view>
+        <view class="mascot-chat-actions">
+          <text class="mascot-chat-chip" data-text="讲讲这题" bindtap="useMascotQuick">讲讲这题</text>
+          <text class="mascot-chat-chip" data-text="给我提示" bindtap="useMascotQuick">给我提示</text>
+        </view>
+        <view class="mascot-composer">
+          <input
+            class="mascot-composer-input"
+            value="{{mascotChatInput}}"
+            placeholder="问我这道题..."
+            confirm-type="send"
+            bindinput="onMascotChatInput"
+            bindconfirm="sendMascotChatFromInput"
+          />
+          <button class="mascot-send-btn" loading="{{mascotChatSending}}" disabled="{{mascotChatSending}}" bindtap="sendMascotChatFromInput">↑</button>
+        </view>
+      </view>
     </view>
   </view>
 </view>

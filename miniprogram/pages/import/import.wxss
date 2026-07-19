@@ -1104,6 +1104,251 @@
   word-break: break-all;
 }
 
+.material-decision-card {
+  margin: 28rpx 32rpx 0;
+  padding: 32rpx;
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18rpx 48rpx rgba(54, 65, 112, 0.12);
+}
+
+.material-decision-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.material-confidence {
+  min-width: 90rpx;
+  height: 54rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  background: #EEF3FF;
+  color: #4E7BFF;
+  font-size: 26rpx;
+  font-weight: 800;
+  line-height: 54rpx;
+  text-align: center;
+}
+
+.material-type-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 26rpx;
+}
+
+.material-type-pill {
+  padding: 12rpx 18rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #7E6BFF, #A65CFF);
+  color: #FFFFFF;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.material-subject {
+  flex: 1;
+  min-width: 0;
+  color: #202333;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.material-summary {
+  display: block;
+  margin-top: 22rpx;
+  color: #5D667A;
+  font-size: 27rpx;
+  line-height: 1.6;
+}
+
+.material-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+
+.material-info-item {
+  min-width: 0;
+  padding: 18rpx;
+  border-radius: 20rpx;
+  background: #F7F9FF;
+}
+
+.material-info-label {
+  display: block;
+  color: #98A2B3;
+  font-size: 23rpx;
+}
+
+.material-info-value {
+  display: block;
+  margin-top: 8rpx;
+  color: #27324A;
+  font-size: 25rpx;
+  font-weight: 700;
+  line-height: 1.35;
+  word-break: break-all;
+}
+
+.material-section {
+  margin-top: 24rpx;
+}
+
+.material-section-title {
+  display: block;
+  margin-bottom: 14rpx;
+  color: #202333;
+  font-size: 27rpx;
+  font-weight: 800;
+}
+
+.material-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.material-tag {
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  background: #F1F4FA;
+  color: #607089;
+  font-size: 24rpx;
+}
+
+.material-tag.key {
+  background: #EAF7F0;
+  color: #22B36D;
+}
+
+.material-evidence {
+  margin-top: 22rpx;
+  padding: 18rpx 20rpx;
+  border-radius: 18rpx;
+  background: #FFF8EA;
+  color: #A36A00;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.generate-level-section {
+  margin-top: 26rpx;
+  padding: 22rpx;
+  border-radius: 22rpx;
+  background: #F7F9FF;
+}
+
+.generate-level-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.generate-level-head .material-section-title {
+  margin-bottom: 0;
+}
+
+.generate-level-hint {
+  flex-shrink: 0;
+  color: #98A2B3;
+  font-size: 22rpx;
+}
+
+.generate-level-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.generate-level-option {
+  min-width: 0;
+  padding: 18rpx 20rpx;
+  border: 2rpx solid transparent;
+  border-radius: 18rpx;
+  background: #FFFFFF;
+}
+
+.generate-level-option.active {
+  border-color: #6A7CFF;
+  background: linear-gradient(180deg, #EEF3FF 0%, #FFFFFF 100%);
+  box-shadow: 0 10rpx 24rpx rgba(92, 107, 255, 0.14);
+}
+
+.generate-level-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14rpx;
+}
+
+.generate-level-title,
+.generate-level-desc {
+  display: block;
+}
+
+.generate-level-title {
+  color: #27324A;
+  font-size: 27rpx;
+  font-weight: 800;
+}
+
+.generate-level-badge {
+  flex-shrink: 0;
+  padding: 6rpx 12rpx;
+  border-radius: 999rpx;
+  background: #EEF3FF;
+  color: #4E7BFF;
+  font-size: 21rpx;
+  font-weight: 800;
+}
+
+.generate-level-desc {
+  margin-top: 8rpx;
+  color: #667085;
+  font-size: 23rpx;
+  line-height: 1.45;
+}
+
+.material-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  margin-top: 30rpx;
+}
+
+.material-action-primary,
+.material-action-secondary {
+  width: 100%;
+  height: 88rpx;
+  border-radius: 999rpx;
+  font-size: 29rpx;
+  font-weight: 800;
+  line-height: 88rpx;
+}
+
+.material-action-primary {
+  background: linear-gradient(135deg, #4E7BFF, #A65CFF);
+  color: #FFFFFF;
+  box-shadow: 0 16rpx 34rpx rgba(92, 107, 255, 0.25);
+}
+
+.material-action-secondary {
+  border: 2rpx solid #DDE5FF;
+  background: #F7F9FF;
+  color: #4E7BFF;
+}
+
+.material-action-primary::after,
+.material-action-secondary::after {
+  border: none;
+}
+
 /* 题库首页：参考图样式 */
 .import-page {
   min-height: 100vh;

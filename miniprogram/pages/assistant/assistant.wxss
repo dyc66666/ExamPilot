@@ -113,6 +113,8 @@
 }
 
 .main-card-left {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: flex-start;
   gap: 14rpx;
@@ -171,6 +173,8 @@
 
 /* 快捷操作 chips */
 .main-card .quick-actions {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: 10rpx;
   margin-top: 20rpx;
@@ -518,4 +522,18 @@
   text-align: center;
   color: var(--text-secondary);
   font-size: 26rpx;
+}
+
+.main-card {
+  padding-right: 220rpx;
+}
+
+.main-mascot {
+  z-index: 99;
+  right: 8rpx;
+  top: 6rpx;
+  width: 226rpx;
+  height: 214rpx;
+  border-radius: 28rpx;
+  overflow: visible;
 }

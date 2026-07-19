@@ -3,6 +3,116 @@ const DEEPSEEK_KEY = process.env.DEEPSEEK_KEY
 const cloud = require('wx-server-sdk')
 cloud.init({ env: 'cloud1-d7g9nz5em55c161ca' })
 
+function sanitizeAiText(text) {
+  return String(text || '')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/^\s*[-*]\s+/gm, '- ')
+    .trim()
+}
+
+function decodeXmlText(text) {
+  return String(text || '')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+}
+
+async function extractDocxTextFallback(buffer) {
+  const JSZip = require('jszip')
+  const zip = await JSZip.loadAsync(buffer)
+  const parts = Object.keys(zip.files).filter(name => {
+    return /^word\/(document|header\d*|footer\d*|footnotes|endnotes|comments)\.xml$/.test(name) ||
+      /^word\/(drawings|charts)\/.+\.xml$/.test(name)
+  })
+  const chunks = []
+  for (const name of parts) {
+    const xml = await zip.files[name].async('string')
+    const texts = []
+    xml.replace(/<w:t[^>]*>([\s\S]*?)<\/w:t>/g, (_, value) => {
+      texts.push(decodeXmlText(value))
+      return ''
+    })
+    if (!texts.length) {
+      xml.replace(/<a:t[^>]*>([\s\S]*?)<\/a:t>/g, (_, value) => {
+        texts.push(decodeXmlText(value))
+        return ''
+      })
+    }
+    if (texts.length) chunks.push(texts.join(' '))
+  }
+  return chunks.join('\n').replace(/\s+\n/g, '\n').replace(/[ \t]{2,}/g, ' ').trim()
+}
+
+function detectFileKind(buffer, fileName) {
+  const lowerName = String(fileName || '').toLowerCase()
+  if (lowerName.endsWith('.pdf')) return 'pdf'
+  if (lowerName.endsWith('.docx')) return 'docx'
+  if (lowerName.endsWith('.doc')) return 'doc'
+  const head = buffer ? buffer.slice(0, 8).toString('utf-8') : ''
+  if (head.indexOf('%PDF') === 0) return 'pdf'
+  if (head.indexOf('PK') === 0) return 'docx'
+  return 'text'
+}
+
+async function extractPdfText(buffer) {
+  const pdfParse = require('pdf-parse')
+  const pdfData = await pdfParse(buffer)
+  return (pdfData.text || '').trim()
+}
+
+async function extractPdfPages(buffer) {
+  const pdfParse = require('pdf-parse')
+  const pages = []
+  await pdfParse(buffer, {
+    pagerender: function(pageData) {
+      return pageData.getTextContent().then(function(textContent) {
+        var lastY, text = ''
+        var items = textContent.items
+        for (var i = 0; i < items.length; i++) {
+          var item = items[i]
+          var y = item.transform ? item.transform[5] : 0
+          if (lastY !== undefined && Math.abs(y - lastY) > 5) {
+            text += '\n'
+          } else if (text.length > 0 && !text.endsWith('\n')) {
+            text += ' '
+          }
+          text += item.str
+          lastY = y
+        }
+        text = text.replace(/\n\s*\d+\s*\/\s*\d+\s*\n/g, '\n')
+        pages.push({ pageNo: pages.length + 1, text: text.trim() })
+        return text
+      })
+    }
+  })
+  if (!pages.length || !pages.some(page => page.text && page.text.trim())) {
+    const fallbackText = await extractPdfText(buffer)
+    if (fallbackText) pages.push({ pageNo: 1, text: fallbackText })
+  }
+  return pages
+}
+
+async function extractAnyFileText(buffer, fileName) {
+  const kind = detectFileKind(buffer, fileName)
+  if (kind === 'pdf') {
+    return { kind: kind, rawText: await extractPdfText(buffer) }
+  }
+  if (kind === 'doc') {
+    return { kind: kind, rawText: '', error: '暂不支持旧版 .doc 文件，请另存为 .docx 后再上传' }
+  }
+  if (kind === 'docx') {
+    const mammoth = require('mammoth')
+    const result = await mammoth.extractRawText({ buffer: buffer })
+    let rawText = result.value || ''
+    if (!rawText.trim()) rawText = await extractDocxTextFallback(buffer)
+    return { kind: kind, rawText: rawText }
+  }
+  return { kind: kind, rawText: buffer.toString('utf-8') }
+}
+
 function fixJSON(str) {
   let s = str
   s = s.replace(/[“”「」『』]/g, "'")
@@ -47,7 +157,7 @@ function tryParse(str) {
 
 // 普通解析（非分页模式）
 async function callAI(text) {
-  const prompt = '从以下文本中提取选择题。文本已经尽量按完整候选题块分组，但仍可能包含少量相邻题干上下文。严格按步骤执行：\n\nStep 1 — 识别完整题目\n一道完整题目 = 题干 + 至少2个明确选项。选项标记可能是 A/B/C/D、A、B、C、D、（A）（B）、1/2/3/4、1、2、3、4、（1）（2）、①②③④。只有候选题块不完整时才跳过，不要因为题目跨页就漏掉后半组选项。\n\nStep 2 — 识别选项组\n如果原文用 1/2/3/4 或 ①②③④ 表示选项，请按原始顺序放入 options，并把答案统一转换成 A/B/C/D：1或①=A，2或②=B，3或③=C，4或④=D。\n\nStep 3 — 清洗题干\n删除题干中嵌入的答案标记（如（B）(A) 【C】等）和题型标记（如【单选题】）。其余文字完全保留原文，不改写。\n例：原文"关于XX正确的是（B）" → stem为"关于XX正确的是"\n\nStep 4 — 提取或生成答案\n如果原文明确给出答案，按原文答案转换成 A/B/C/D 填入 answer。若原文没有答案，必须根据题干和选项判断最可能的正确答案并填入 answer，不要留空。多选题可返回多个字母，如 AC。\n\nStep 5 — 提取选项、答案、原文解析\n选项逐字照抄原文，但不要把选项标签本身重复写入选项内容。只有原文明确出现“解析/答案解析”等解析内容时，才填入 explanation；原文没有解析时 explanation 必须为空字符串，不要生成、推理或补写解析。\n\nStep 6 — 按原始顺序输出JSON\n格式：[{"stem":"题干","options":["选项1","选项2","选项3","选项4"],"answer":"A","explanation":""}]\n只输出JSON数组，不要markdown，不要其他文字。\n\n文本：\n' + text
+  const prompt = '从以下文本中提取选择题。文本已经尽量按完整候选题块分组，但仍可能包含少量相邻题干上下文。严格按步骤执行：\n\nStep 1 — 识别完整题目\n一道完整题目 = 题干 + 至少2个明确选项。选项标记可能是 A/B/C/D、A、B、C、D、（A）（B）、1/2/3/4、1、2、3、4、（1）（2）、①②③④。只有候选题块不完整时才跳过，不要因为题目跨页就漏掉后半组选项。\n\nStep 2 — 识别选项组\n如果原文用 1/2/3/4 或 ①②③④ 表示选项，请按原始顺序放入 options，并把答案统一转换成 A/B/C/D：1或①=A，2或②=B，3或③=C，4或④=D。\n\nStep 3 — 清洗题干\n删除题干中嵌入的答案标记（如（B）(A) 【C】等）和题型标记（如【单选题】）。其余文字完全保留原文，不改写。\n例：原文"关于XX正确的是（B）" → stem为"关于XX正确的是"\n\nStep 4 — 提取或生成答案\n如果原文明确给出答案，按原文答案转换成 A/B/C/D 填入 answer。若原文没有答案，必须根据题干和选项判断最可能的正确答案并填入 answer，不要留空。多选题可返回多个字母，如 AC。\n\nStep 5 — 提取选项、答案、原文解析\n选项逐字照抄原文，但不要把选项标签本身重复写入选项内容。只有原文明确出现“解析/答案解析”等解析内容时，才填入 explanation；原文没有解析时 explanation 必须为空字符串，不要生成、推理或补写解析。题干或选项中的积分、求和、上下标、希腊字母和变换公式必须完整保留，转换成 Unicode/普通文本，不得省略公式，不要输出 LaTeX 命令。\n\nStep 6 — 按原始顺序输出JSON\n格式：[{"stem":"题干","options":["选项1","选项2","选项3","选项4"],"answer":"A","explanation":""}]\n只输出JSON数组，不要markdown，不要其他文字。\n\n文本：\n' + text
 
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
@@ -96,7 +206,8 @@ async function callAIWindow(text, windowIndex) {
     '7. 如果原文格式是“长题干……（ABCD）[多选题]\\nA. ...\\nB. ...”，stem 必须取 A 选项之前的完整长题干，不能把 A 选项当成 stem。\n' +
     '8. 只有原文明确出现“解析/答案解析”等解析内容时，才填入 explanation；原文没有解析时 explanation 必须为空字符串，不要生成、推理或补写解析。\n' +
     '9. sourceText 放该题在窗口中的关键原文片段，尽量简短但足够回溯。\n' +
-    '10. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
+    '10. 题干或选项中的积分、求和、上下标、希腊字母和变换公式必须完整保留，转换成 Unicode/普通文本，不得省略公式，不要输出 LaTeX 命令。\n' +
+    '11. 只输出 JSON 对象，不要 markdown，不要解释。\n\n' +
     '返回格式：{"questions":[{"stem":"题干","options":["选项1","选项2"],"answer":"A","explanation":"","knowledgePoint":"","status":"complete","sourceText":"原文片段"}]}\n\n' +
     '窗口编号：' + windowIndex + '\n' +
     '窗口文本：\n' + text
@@ -394,6 +505,7 @@ async function callAIChat(messages) {
     '3. 根据用户需求整理资料、生成复习建议和冲刺计划\n' +
     '4. 保持友好、鼓励的语气，适合学生用户\n\n' +
     '回答要简洁清晰（一般 100-200 字），如果需要详细讲解可稍长。\n' +
+    '不要使用 Markdown 格式，不要输出星号、加粗符号或标题标记，直接用纯文本回答。\n' +
     '如果用户问与学习无关的问题，礼貌地引导回学习话题。'
 
   const requestBody = {
@@ -422,11 +534,236 @@ async function callAIChat(messages) {
     if (!res.ok || data.error) {
       throw new Error(data.error?.message || 'API返回错误: ' + res.status)
     }
-    return data.choices?.[0]?.message?.content || ''
+    return sanitizeAiText(data.choices?.[0]?.message?.content || '')
   } catch (e) {
     console.error('callAIChat error:', e.message)
     throw e
   }
+}
+
+// 答题页学习助手：带当前题目上下文的对话
+async function callAIQuizChat(messages, question) {
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    throw new Error('消息不能为空')
+  }
+
+  question = question || {}
+  const optionLines = (question.options || []).map((text, index) => {
+    const label = String.fromCharCode(65 + index)
+    return `${label}. ${text}`
+  }).join('\n')
+  const selected = (question.selected || []).join('') || '未选择'
+  const questionContext = [
+    `题型：${question.qtype || '选择题'}`,
+    `题干：${question.stem || ''}`,
+    `选项：\n${optionLines}`,
+    `正确答案：${question.answer || '未知'}`,
+    `用户当前选择：${selected}`,
+    `是否已经提交：${question.isSubmitted ? '是' : '否'}`,
+    `原解析：${question.explanation || '暂无'}`
+  ].join('\n')
+
+  const systemPrompt = '你是 ExamPilot AI 学习助手，正在陪学生做一道选择题。你必须基于当前题目回答，不要脱离题目。\n\n' +
+    '答题规则：\n' +
+    '1. 用户问“讲讲这题”时，先解释题干考点，再逐项分析选项，最后给出结论。\n' +
+    '2. 用户问“给我提示”时，不要直接透露答案，给 1-3 条启发式提示。\n' +
+    '3. 如果用户已经提交或明确问答案，可以说明正确答案和原因。\n' +
+    '4. 语言要简洁、鼓励，适合手机弹窗阅读，优先控制在 80-180 字。\n' +
+    '5. 不要使用 Markdown 格式，不要输出星号、加粗符号或标题标记，直接用纯文本回答。\n\n' +
+    '当前题目上下文：\n' + questionContext
+
+  const requestBody = {
+    model: 'deepseek-chat',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      ...messages
+    ],
+    temperature: 0.55,
+    stream: false,
+    max_tokens: 2048
+  }
+
+  try {
+    const res = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + DEEPSEEK_KEY
+      },
+      body: JSON.stringify(requestBody),
+      timeout: 15000
+    })
+
+    const data = await res.json()
+    if (!res.ok || data.error) {
+      throw new Error(data.error?.message || 'API返回错误: ' + res.status)
+    }
+    return sanitizeAiText(data.choices?.[0]?.message?.content || '')
+  } catch (e) {
+    console.error('callAIQuizChat error:', e.message)
+    throw e
+  }
+}
+
+async function callAIClassifyMaterial(text, fileName) {
+  const prompt = '请判断用户上传的考试复习资料类型，并输出严格 JSON 对象。不要 markdown，不要解释。\n\n' +
+    '你需要判断它更像：题库、复习大纲、课件、教材笔记、历年题、混合资料。\n' +
+    '同时识别科目、考试目标、章节、可能考点，并给出建议处理方式。\n\n' +
+    'recommendedAction 只能是：\n' +
+    '- organizeQuestions：文档中已经有较多完整题目，适合按原文题目整理成题库。\n' +
+    '- generateFromMaterial：文档主要是复习资料/大纲/讲义，适合提炼考点后自由出题。\n\n' +
+    '返回格式：{"materialType":"复习大纲","subject":"科目","examGoal":"大学期末考试","confidence":0.82,"chapters":["章节"],"keyPoints":["考点"],"questionEvidence":"是否发现原文题目及依据","recommendedAction":"generateFromMaterial","summary":"一句话判断"}\n\n' +
+    '文件名：' + (fileName || '') + '\n\n' +
+    '资料片段：\n' + String(text || '').slice(0, 12000)
+
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + DEEPSEEK_KEY
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: '你是考试复习资料分类助手。必须输出可 JSON.parse 的 JSON 对象。' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.1,
+      stream: false,
+      max_tokens: 2048
+    }),
+    timeout: 15000
+  })
+
+  const data = await res.json()
+  if (!res.ok || data.error) throw new Error(data.error?.message || 'API返回错误: ' + res.status)
+  const content = data.choices?.[0]?.message?.content || ''
+  const parsed = tryParse(fixJSON(content))
+  if (parsed && !Array.isArray(parsed)) return parsed
+  return {
+    materialType: '混合资料',
+    subject: '未识别科目',
+    examGoal: '考试复习',
+    confidence: 0.5,
+    chapters: [],
+    keyPoints: [],
+    questionEvidence: '',
+    recommendedAction: 'generateFromMaterial',
+    summary: sanitizeAiText(content || 'AI 已完成初步判断，请手动选择处理方式。')
+  }
+}
+
+async function callAIGenerateStudyQuestions(text, analysis, targetCount, batchIndex, totalBatches, existingStems, level, levelLabel) {
+  analysis = analysis || {}
+  targetCount = Math.max(3, Math.min(10, Number(targetCount) || 8))
+  batchIndex = Math.max(1, Number(batchIndex) || 1)
+  totalBatches = Math.max(1, Number(totalBatches) || 1)
+  existingStems = Array.isArray(existingStems) ? existingStems.slice(0, 30) : []
+  const levelMap = {
+    basic: {
+      label: '基础保过',
+      perPoint: '每个核心考点至少 2-3 道题',
+      positioning: '核心考点 + 经典速通题 + 易混辨析，保证不挂科',
+      requirement: '不要只生成概念判断题。题目要像期末速通攻略里会重点讲解的经典题，包含核心概念题、经典高频题、易混辨析题、简单应用题。难度以基础到中等为主，解析要讲清知识点和常见误区。'
+    },
+    improve: {
+      label: '稳定提分',
+      perPoint: '每个重要考点至少 3-4 道题',
+      positioning: '在经典题基础上增加常考变式、陷阱题、章节综合',
+      requirement: '在基础经典题之外加入常考变式、干扰项、相近概念辨析和章节内综合题。难度以中等为主，解析要说明正确依据，也要说明错误选项为什么容易误选。'
+    },
+    sprint: {
+      label: '高分冲刺',
+      perPoint: '每个重要考点至少 4-6 道题',
+      positioning: '增加难题、多选题、材料题、跨章节综合题',
+      requirement: '提高题目综合性和难度，加入多选题、反向问法、材料分析题、跨章节综合题。干扰项要更接近正确答案，解析要包含答题思路、易错陷阱和知识点关联。'
+    }
+  }
+  const levelConfig = levelMap[level] || levelMap.basic
+  levelLabel = levelLabel || levelConfig.label
+
+  const prompt = '你是一个大学期末考试复习出题助手。用户会上传复习资料、PPT、笔记、题库或考试大纲。你需要先识别资料中的科目、章节结构、核心考点、重点难点和原文例题，然后根据用户选择的复习等级生成选择题。\n\n' +
+    '本批任务：第 ' + batchIndex + '/' + totalBatches + ' 批，目标生成 ' + targetCount + ' 道选择题。\n' +
+    '用户选择的复习等级：' + levelLabel + '。\n' +
+    '等级定位：' + levelConfig.positioning + '。\n' +
+    '题量基准：' + levelConfig.perPoint + '。\n' +
+    '本等级出题要求：' + levelConfig.requirement + '\n\n' +
+    '核心流程：\n' +
+    '1. 先识别资料中的章节、单元、小节和知识点，结合资料判断科目和考试复习目标。\n' +
+    '2. 按考点覆盖出题；如果本批题量不够覆盖全部考点，优先覆盖资料中出现频率高、标题层级高、疑似老师强调的考点。\n' +
+    '3. 原文里有例题、练习题、思考题、测试题或选择题时，必须优先加入，放在 questions 前面；这些题 sourceType 填 original，sourceLabel 填 原题，sourceText 填原文片段。\n' +
+    '4. 原文已有题不要随意改写题干和选项，只做必要清洗。若原文没给答案，请根据题目和选项推断答案，并在 explanation 说明“答案由 AI 根据原题推断”。\n' +
+    '5. 没有原文例题的考点，再由 AI 补充选择题；这些题 sourceType 填 generated，sourceLabel 填 AI生成。\n' +
+    '6. 不要重复已生成题干；如果 existingStems 里已有相同或高度相似题干，请换一个考点或换一种问法。\n' +
+    '7. 每题必须包含 stem、options、answer、explanation、knowledgePoint、difficulty、questionStyle、sourceType、sourceLabel。options 至少 4 个，answer 用 A/B/C/D/E 表示，多选可返回 ABC。\n' +
+    '8. 输出题量尽量接近本批目标，不要只生成少量题；除非资料极短，否则不能少于目标题量的 80%。\n' +
+    '9. 题目涉及定义式、积分、求和、矩阵、上下标或变换公式时，必须把答题所需的完整公式直接写进 stem 或对应 option，不能省略为“由上式”“如下图”。公式使用 Unicode 和普通文本表达，例如 F(ω)=∫₋∞⁺∞ f(t)e⁻ⁱωᵗdt；不要输出 LaTeX 命令、美元符号或依赖图片的公式。\n' +
+    '10. 正确答案位置必须在 A/B/C/D 间均衡随机分布，不能连续多题都为 A。解析尽量按选项内容说明，不依赖固定答案字母，方便系统重排选项。\n\n' +
+    'questionStyle 可取：核心概念题、经典速通题、易混辨析题、简单应用题、常考变式题、陷阱题、章节综合题、多选题、材料题、跨章节综合题。\n' +
+    'difficulty 可取：基础、中等、较难。\n\n' +
+    '返回格式：{"questions":[{"stem":"题干","options":["选项A","选项B","选项C","选项D"],"answer":"A","explanation":"解析","knowledgePoint":"考点","difficulty":"基础","questionStyle":"经典速通题","sourceType":"original","sourceLabel":"原题","sourceText":"原文片段"}],"studyPack":{"subject":"识别到的科目","examGoal":"考试目标","level":"' + levelLabel + '","summary":"资料总结","chapters":["章节"],"keyPoints":["考点"],"coverage":[{"knowledgePoint":"考点","questionCount":2,"hasOriginal":true}],"reviewPlan":["步骤"]}}\n\n' +
+    '资料判断：' + JSON.stringify(analysis || {}) + '\n\n' +
+    '已有题干，必须避开重复：' + JSON.stringify(existingStems) + '\n\n' +
+    '复习资料：\n' + String(text || '').slice(0, 18000)
+
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + DEEPSEEK_KEY
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: '你是考试出题与复习资料整理助手。必须输出可 JSON.parse 的 JSON 对象。' },
+        { role: 'user', content: prompt }
+      ],
+      response_format: { type: 'json_object' },
+      temperature: 0.45,
+      stream: false,
+      max_tokens: 4096
+    }),
+    timeout: 45000
+  })
+
+  const data = await res.json()
+  if (!res.ok || data.error) throw new Error(data.error?.message || 'API返回错误: ' + res.status)
+  const content = data.choices?.[0]?.message?.content || ''
+  let parsed = tryParse(fixJSON(content))
+  if (!parsed) {
+    const repairPrompt = '请把下面这段内容修复成严格 JSON 对象，只保留 questions 和 studyPack 字段。不要 markdown，不要解释。每道题必须包含 stem、options、answer、explanation、knowledgePoint、difficulty、questionStyle、sourceType、sourceLabel。\n\n原始内容：\n' + content.slice(0, 12000)
+    const repairRes = await fetch('https://api.deepseek.com/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + DEEPSEEK_KEY
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: '你是 JSON 修复器。只能输出可 JSON.parse 的 JSON 对象。' },
+          { role: 'user', content: repairPrompt }
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0,
+        stream: false,
+        max_tokens: 4096
+      }),
+      timeout: 30000
+    })
+    const repairData = await repairRes.json()
+    if (repairRes.ok && !repairData.error) {
+      parsed = tryParse(fixJSON(repairData.choices?.[0]?.message?.content || ''))
+    }
+  }
+  const questions = Array.isArray(parsed) ? parsed : (parsed && parsed.questions)
+  if (questions && Array.isArray(questions)) {
+    return {
+      questions: questions,
+      studyPack: parsed.studyPack || {}
+    }
+  }
+  throw new Error('AI生成题目格式异常，请重试')
 }
 
 exports.main = async (event) => {
@@ -438,6 +775,43 @@ exports.main = async (event) => {
         success: true,
         mode: 'chat',
         reply: reply
+      }
+    }
+
+    if (event.mode === 'quizChat') {
+      const reply = await callAIQuizChat(event.messages || [], event.question || {})
+      return {
+        success: true,
+        mode: 'quizChat',
+        reply: reply
+      }
+    }
+
+    if (event.mode === 'classifyMaterial') {
+      const analysis = await callAIClassifyMaterial(event.text || '', event.fileName || '')
+      return {
+        success: true,
+        mode: 'classifyMaterial',
+        analysis: analysis
+      }
+    }
+
+    if (event.mode === 'generateStudyQuestions') {
+      const result = await callAIGenerateStudyQuestions(
+        event.text || '',
+        event.analysis || {},
+        event.targetCount || 20,
+        event.batchIndex || 1,
+        event.totalBatches || 1,
+        event.existingStems || [],
+        event.level || 'basic',
+        event.levelLabel || ''
+      )
+      return {
+        success: true,
+        mode: 'generateStudyQuestions',
+        questions: result.questions,
+        studyPack: result.studyPack
       }
     }
 
@@ -481,34 +855,12 @@ exports.main = async (event) => {
     if (event.mode === 'extractPages' && event.fileID) {
       const downloadRes = await cloud.downloadFile({ fileID: event.fileID })
       const fileName = (event.fileName || '').toLowerCase()
-      if (!fileName.endsWith('.pdf')) {
+      const kind = detectFileKind(downloadRes.fileContent, fileName)
+      if (kind !== 'pdf') {
         return { success: false, error: 'extractPages 仅支持 PDF 文件' }
       }
-      const pdfParse = require('pdf-parse')
-      const pages = []
-      await pdfParse(downloadRes.fileContent, {
-        pagerender: function(pageData) {
-          return pageData.getTextContent().then(function(textContent) {
-            var lastY, text = ''
-            var items = textContent.items
-            for (var i = 0; i < items.length; i++) {
-              var item = items[i]
-              var y = item.transform ? item.transform[5] : 0
-              if (lastY !== undefined && Math.abs(y - lastY) > 5) {
-                text += '\n'
-              } else if (text.length > 0 && !text.endsWith('\n')) {
-                text += ' '
-              }
-              text += item.str
-              lastY = y
-            }
-            text = text.replace(/\n\s*\d+\s*\/\s*\d+\s*\n/g, '\n')
-            pages.push({ pageNo: pageData.pageIndex + 1, text: text.trim() })
-            return text
-          })
-        }
-      })
-      return { success: true, mode: 'extractPages', pages: pages, totalPages: pages.length }
+      const pages = await extractPdfPages(downloadRes.fileContent)
+      return { success: true, mode: 'extractPages', pages: pages, totalPages: pages.length, extractKind: kind }
     }
 
     // === 以下为原有逻辑（Word/文本文件/手动输入）===
@@ -518,31 +870,28 @@ exports.main = async (event) => {
     if (event.fileID) {
       const downloadRes = await cloud.downloadFile({ fileID: event.fileID })
       const fileName = (event.fileName || '').toLowerCase()
-
-      if (fileName.endsWith('.pdf')) {
-        const pdfParse = require('pdf-parse')
-        const pdfData = await pdfParse(downloadRes.fileContent)
-        rawText = pdfData.text
-      } else if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
-        const mammoth = require('mammoth')
-        const result = await mammoth.extractRawText({ buffer: downloadRes.fileContent })
-        rawText = result.value
-      } else {
-        rawText = downloadRes.fileContent.toString('utf-8')
-      }
+      const extracted = await extractAnyFileText(downloadRes.fileContent, fileName)
+      if (extracted.error) return { success: false, error: extracted.error, extractKind: extracted.kind }
+      rawText = extracted.rawText
+      event._extractKind = extracted.kind
     }
 
     if (event.rawText) rawText = event.rawText
 
     if (!rawText || !rawText.trim()) {
-      return { success: false, error: '文件中未找到文字' }
+      return {
+        success: false,
+        error: '文件中未找到可复制文字。若是扫描版 PDF 或图片版资料，需要先接入 OCR；若是 Word，请确认上传 .docx 且文字不是图片。',
+        extractKind: event._extractKind || '',
+        fileName: event.fileName || ''
+      }
     }
 
     rawText = rawText.replace(/\n\s*\d+\s*\/\s*\d+\s*\n/g, '\n')
 
     // 提取模式
     if (event.fileID && !event.rawText) {
-      return { success: true, mode: 'extract', rawText: rawText, totalLength: rawText.length }
+      return { success: true, mode: 'extract', rawText: rawText, totalLength: rawText.length, extractKind: event._extractKind || '' }
     }
 
     // 普通解析模式

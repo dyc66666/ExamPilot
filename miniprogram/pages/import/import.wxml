@@ -181,17 +181,17 @@ module.exports = { countChecked: countChecked };
     <view class="import-navbar">
       <view class="back-action" bindtap="closeUploadPanel">‹</view>
       <view class="import-step">
-        <text class="step-count">{{importSuccess ? '4/4' : (isParsing || parsedQuestions.length ? '2/4' : '1/4')}}</text>
-        <text>{{importSuccess ? '导入完成' : (isParsing || parsedQuestions.length ? 'AI 识别中' : '上传文件')}}</text>
+        <text class="step-count">{{importSuccess ? '4/4' : (parsedQuestions.length ? '3/4' : (showMaterialDecision ? '2/4' : (isParsing ? '2/4' : '1/4')))}}</text>
+        <text>{{importSuccess ? '导入完成' : (parsedQuestions.length ? '核对入库' : (showMaterialDecision ? '确认方式' : (isParsing ? 'AI 判断中' : '上传文件')))}}</text>
       </view>
       <text class="import-title">导入资料</text>
       <view class="nav-spacer"></view>
     </view>
 
-    <view class="upload-card" bindtap="chooseFile" wx:if="{{!importSuccess && !isParsing && !isUploading && parsedQuestions.length === 0}}">
+    <view class="upload-card" bindtap="chooseFile" wx:if="{{!importSuccess && !isParsing && !isUploading && !showMaterialDecision && parsedQuestions.length === 0}}">
       <view class="upload-cloud">☁</view>
-      <text class="upload-title">点击上传或拖拽文件到此处</text>
-      <text class="upload-desc">支持 PDF / Word / 图片 / PPT</text>
+      <text class="upload-title">点击选择 PDF / Word 文件上传</text>
+      <text class="upload-desc">当前支持 PDF / Word（.docx），AI 会先判断资料类型</text>
       <text class="upload-hint">文件大小不超过 20MB</text>
     </view>
 
@@ -210,6 +210,65 @@ module.exports = { countChecked: countChecked };
     <view class="card warning-card" wx:if="{{parseWarning}}">
       <text class="warning-title">需要核对</text>
       <text class="warning-text">{{parseWarning}}</text>
+    </view>
+
+    <view class="material-decision-card" wx:if="{{!importSuccess && showMaterialDecision && materialAnalysis}}">
+      <view class="material-decision-head">
+        <view>
+          <text class="card-title">AI 已完成资料判断</text>
+          <text class="card-subtitle">请确认接下来按哪种方式处理</text>
+        </view>
+        <view class="material-confidence">{{materialAnalysis.confidence}}%</view>
+      </view>
+      <view class="material-type-row">
+        <text class="material-type-pill">{{materialAnalysis.materialTypeLabel}}</text>
+        <text class="material-subject">{{materialAnalysis.subject}}</text>
+      </view>
+      <text class="material-summary">{{materialAnalysis.summary}}</text>
+      <view class="material-info-grid">
+        <view class="material-info-item">
+          <text class="material-info-label">考试目标</text>
+          <text class="material-info-value">{{materialAnalysis.examGoal}}</text>
+        </view>
+        <view class="material-info-item">
+          <text class="material-info-label">文件</text>
+          <text class="material-info-value">{{materialAnalysis.fileName}}</text>
+        </view>
+      </view>
+      <view class="material-section" wx:if="{{materialAnalysis.chapters.length}}">
+        <text class="material-section-title">识别到的章节</text>
+        <view class="material-tags">
+          <text class="material-tag" wx:for="{{materialAnalysis.chapters}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      <view class="material-section" wx:if="{{materialAnalysis.keyPoints.length}}">
+        <text class="material-section-title">可能考点</text>
+        <view class="material-tags">
+          <text class="material-tag key" wx:for="{{materialAnalysis.keyPoints}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      <view class="material-evidence" wx:if="{{materialAnalysis.questionEvidence}}">
+        <text>{{materialAnalysis.questionEvidence}}</text>
+      </view>
+      <view class="generate-level-section">
+        <view class="generate-level-head">
+          <text class="material-section-title">自由出题等级</text>
+          <text class="generate-level-hint">系统会按考点自动估算题量</text>
+        </view>
+        <view class="generate-level-options">
+          <view class="generate-level-option {{generateLevel == item.value ? 'active' : ''}}" wx:for="{{generateLevelOptions}}" wx:key="value" data-level="{{item.value}}" bindtap="chooseGenerateLevel">
+            <view class="generate-level-title-row">
+              <text class="generate-level-title">{{item.title}}</text>
+              <text class="generate-level-badge">{{item.perPoint}}</text>
+            </view>
+            <text class="generate-level-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="material-actions">
+        <button class="material-action-primary" data-mode="generate" bindtap="chooseMaterialMode">提炼考点，自由出题</button>
+        <button class="material-action-secondary" data-mode="organize" bindtap="chooseMaterialMode">按文档题目整理入库</button>
+      </view>
     </view>
 
     <view class="success-card" wx:if="{{importSuccess}}">
@@ -300,7 +359,7 @@ module.exports = { countChecked: countChecked };
         <view class="sheet-icon icon-import"></view>
         <view>
           <text class="sheet-title">导入资料</text>
-          <text class="sheet-desc">从 PDF / Word / 图片等导入题目</text>
+          <text class="sheet-desc">AI 先判断资料类型，再选择整理题库或自由出题</text>
         </view>
       </view>
       <view class="sheet-option" bindtap="openCameraCapture">

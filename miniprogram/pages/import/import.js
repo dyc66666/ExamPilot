@@ -1,3 +1,5 @@
+var questionUtils = require('../../utils/question-utils')
+
 Page({
   data: {
     questions: [],
@@ -8,6 +10,15 @@ Page({
     progress: '',
     parseProgress: 0,
     parsedQuestions: [],
+    showMaterialDecision: false,
+    materialAnalysis: null,
+    materialDecisionMode: '',
+    generateLevel: 'basic',
+    generateLevelOptions: [
+      { value: 'basic', title: '基础保过', desc: '核心考点 + 经典速通题 + 易混辨析', perPoint: '每考点2-3题' },
+      { value: 'improve', title: '稳定提分', desc: '常考变式 + 陷阱题 + 章节综合', perPoint: '每考点3-4题' },
+      { value: 'sprint', title: '高分冲刺', desc: '难题 + 多选题 + 材料题 + 跨章节综合', perPoint: '每考点4-6题' }
+    ],
     duplicateCount: 0,
     duplicateGroupCount: 0,
     duplicateExtraCount: 0,
@@ -154,6 +165,10 @@ Page({
       importSuccess: false,
       importSavedCount: 0,
       parsedQuestions: [],
+      showMaterialDecision: false,
+      materialAnalysis: null,
+      materialDecisionMode: '',
+      generateLevel: 'basic',
       errorMsg: '',
       parseWarning: '',
       progress: '',
@@ -165,6 +180,7 @@ Page({
   },
 
   closeUploadPanel: function() {
+    this._pendingImport = null
     this.setData({ showUploadPanel: false, importSuccess: false })
   },
 
@@ -174,6 +190,7 @@ Page({
       importSuccess: false,
       parsedQuestions: []
     })
+    this._pendingImport = null
   },
 
   continueImport: function() {
@@ -182,6 +199,10 @@ Page({
       importSuccess: false,
       importSavedCount: 0,
       parsedQuestions: [],
+      showMaterialDecision: false,
+      materialAnalysis: null,
+      materialDecisionMode: '',
+      generateLevel: 'basic',
       errorMsg: '',
       parseWarning: '',
       progress: '',
@@ -319,8 +340,12 @@ Page({
       success: function(res) {
         var file = res.tempFiles[0]
         var name = (file.name || '').toLowerCase()
-        if (name && !name.endsWith('.pdf') && !name.endsWith('.doc') && !name.endsWith('.docx')) {
-          wx.showToast({ title: '请选择 PDF 或 Word 文件', icon: 'none' })
+        if (name && name.endsWith('.doc') && !name.endsWith('.docx')) {
+          wx.showToast({ title: '旧版 .doc 请另存为 .docx', icon: 'none' })
+          return
+        }
+        if (name && !name.endsWith('.pdf') && !name.endsWith('.docx')) {
+          wx.showToast({ title: '请选择 PDF 或 .docx 文件', icon: 'none' })
           return
         }
         if (file.size > 20 * 1024 * 1024) {
@@ -338,7 +363,20 @@ Page({
   },
 
   processFile: async function(file) {
-    this.setData({ isUploading: true, importSuccess: false, errorMsg: '', parseWarning: '', progress: '正在上传文件...', parseProgress: 8 })
+    this._pendingImport = null
+    this.setData({
+      isUploading: true,
+      importSuccess: false,
+      errorMsg: '',
+      parseWarning: '',
+      progress: '正在上传文件...',
+      parseProgress: 8,
+      parsedQuestions: [],
+      showMaterialDecision: false,
+      materialAnalysis: null,
+      materialDecisionMode: '',
+      generateLevel: 'basic'
+    })
     wx.showLoading({ title: '上传中...' })
     try {
       var uploadRes = await wx.cloud.uploadFile({
@@ -346,16 +384,252 @@ Page({
         filePath: file.path
       })
 
-      var name = (file.name || '').toLowerCase()
-
-      if (name.endsWith('.pdf')) {
-        await this.processPDF(uploadRes.fileID, file.name)
-      } else {
-        await this.processChunked(uploadRes.fileID, file.name)
-      }
+      await this.processExtractedFile(uploadRes.fileID, file.name)
     } catch(err) {
       wx.hideLoading()
       this.setData({ isParsing: false, isUploading: false, errorMsg: err.errMsg || err.message || '错误' })
+    }
+  },
+
+  buildMaterialSampleFromPages: function(pages) {
+    var chunks = []
+    for (var i = 0; i < pages.length; i++) {
+      if (!pages[i] || !pages[i].text) continue
+      chunks.push('第' + pages[i].pageNo + '页：\n' + pages[i].text)
+      if (chunks.join('\n\n').length > 12000) break
+    }
+    return chunks.join('\n\n').slice(0, 12000)
+  },
+
+  buildMaterialSampleFromText: function(text) {
+    return String(text || '').slice(0, 12000)
+  },
+
+  getPendingMaterialText: function(maxLength) {
+    var pending = this._pendingImport || {}
+    var text = pending.rawText || ''
+    if (!text && pending.pages) {
+      text = pending.pages.map(function(page) {
+        return '第' + page.pageNo + '页：\n' + (page.text || '')
+      }).join('\n\n')
+    }
+    return maxLength ? text.slice(0, maxLength) : text
+  },
+
+  normalizeMaterialAnalysis: function(analysis, fileName) {
+    analysis = analysis || {}
+    var type = analysis.materialType || '混合资料'
+    var intent = analysis.recommendedAction || ''
+    return {
+      materialType: type,
+      materialTypeLabel: type,
+      subject: analysis.subject || '未识别科目',
+      examGoal: analysis.examGoal || '考试复习',
+      confidence: typeof analysis.confidence === 'number' ? Math.round(analysis.confidence * 100) : 70,
+      summary: analysis.summary || 'AI 已完成资料初步判断，请选择接下来的处理方式。',
+      chapters: (analysis.chapters || []).slice(0, 8),
+      keyPoints: (analysis.keyPoints || []).slice(0, 12),
+      questionEvidence: analysis.questionEvidence || '',
+      recommendedAction: intent || (type.indexOf('题库') !== -1 ? 'organizeQuestions' : 'generateFromMaterial'),
+      fileName: fileName || ''
+    }
+  },
+
+  classifyPendingMaterial: async function(sampleText, fileName) {
+    this.setData({ isUploading: false, isParsing: true, progress: 'AI 正在判断资料类型...', parseProgress: 22 })
+    var res = await wx.cloud.callFunction({
+      name: 'aiParse',
+      data: {
+        mode: 'classifyMaterial',
+        text: sampleText,
+        fileName: fileName
+      }
+    })
+    if (!res.result || !res.result.success) {
+      throw new Error((res.result && res.result.error) || '资料类型判断失败')
+    }
+    var analysis = this.normalizeMaterialAnalysis(res.result.analysis, fileName)
+    this.setData({
+      isParsing: false,
+      progress: '',
+      parseProgress: 30,
+      showMaterialDecision: true,
+      materialAnalysis: analysis
+    })
+  },
+
+  chooseMaterialMode: async function(e) {
+    var mode = e.currentTarget.dataset.mode
+    if (!this._pendingImport) {
+      wx.showToast({ title: '请重新上传资料', icon: 'none' })
+      return
+    }
+    this.setData({
+      materialDecisionMode: mode,
+      showMaterialDecision: false,
+      isParsing: true,
+      errorMsg: '',
+      parseWarning: ''
+    })
+    try {
+      if (mode === 'generate') {
+        await this.generateQuestionsFromMaterialBatched()
+      } else {
+        await this.organizeQuestionsFromDocument()
+      }
+    } catch (err) {
+      this.setData({
+        isParsing: false,
+        errorMsg: err.errMsg || err.message || '处理失败，请重试'
+      })
+    }
+  },
+
+  chooseGenerateLevel: function(e) {
+    var level = e.currentTarget.dataset.level || 'basic'
+    this.setData({ generateLevel: level })
+  },
+
+  getGenerateLevelConfig: function(level) {
+    var configs = {
+      basic: { label: '基础保过', minPerPoint: 2, maxPerPoint: 3, fallbackCount: 30, maxCount: 80 },
+      improve: { label: '稳定提分', minPerPoint: 3, maxPerPoint: 4, fallbackCount: 45, maxCount: 120 },
+      sprint: { label: '高分冲刺', minPerPoint: 4, maxPerPoint: 6, fallbackCount: 60, maxCount: 160 }
+    }
+    return configs[level] || configs.basic
+  },
+
+  estimateGenerateTargetCount: function(level, analysis) {
+    var config = this.getGenerateLevelConfig(level)
+    analysis = analysis || {}
+    var keyPointCount = (analysis.keyPoints || []).length
+    var chapterCount = (analysis.chapters || []).length
+    var baseCount = keyPointCount ? keyPointCount * config.minPerPoint : config.fallbackCount
+    if (!keyPointCount && chapterCount) baseCount = chapterCount * 6
+    return Math.max(config.fallbackCount, Math.min(config.maxCount, baseCount))
+  },
+
+  organizeQuestionsFromDocument: async function() {
+    var pending = this._pendingImport || {}
+    this.setData({ progress: '正在按原文整理题目...', parseProgress: 12 })
+    var allQuestions = []
+    if (pending.pages && pending.pages.length) {
+      var windowsFromPages = this.makeSlidingWindowsFromPages(pending.pages)
+      allQuestions = await this.parseSlidingWindows(windowsFromPages)
+    } else {
+      var windowsFromText = this.makeSlidingWindowsFromText(pending.rawText || '')
+      allQuestions = await this.parseSlidingWindows(windowsFromText)
+    }
+    this.finishParsedQuestions(allQuestions)
+  },
+
+  generateQuestionsFromMaterialBatched: async function() {
+    var level = this.data.generateLevel || 'basic'
+    var levelConfig = this.getGenerateLevelConfig(level)
+    var targetCount = this.estimateGenerateTargetCount(level, this.data.materialAnalysis || {})
+    var batchSize = 8
+    var totalBatches = Math.max(1, Math.ceil(targetCount / batchSize))
+    var allQuestions = []
+    var materialText = this.getPendingMaterialText(18000)
+    this.setData({ progress: 'AI 正在按「' + levelConfig.label + '」识别章节和考点...', parseProgress: 35 })
+    try {
+      for (var i = 0; i < totalBatches && allQuestions.length < targetCount; i++) {
+        var remaining = targetCount - allQuestions.length
+        var currentTarget = Math.min(batchSize, remaining)
+        var percent = 35 + Math.round(((i + 1) / totalBatches) * 48)
+        this.setData({
+          progress: 'AI 正在按考点生成第 ' + (i + 1) + '/' + totalBatches + ' 批题目...',
+          parseProgress: percent
+        })
+        var res = null
+        var batchError = null
+        try {
+          res = await wx.cloud.callFunction({
+            name: 'aiParse',
+            data: {
+              mode: 'generateStudyQuestions',
+              text: materialText,
+              analysis: this.data.materialAnalysis || {},
+              targetCount: currentTarget,
+              level: level,
+              levelLabel: levelConfig.label,
+              batchIndex: i + 1,
+              totalBatches: totalBatches,
+              existingStems: allQuestions.slice(-30).map(function(q) { return q.stem || '' }).filter(Boolean)
+            }
+          })
+        } catch (err) {
+          batchError = err
+        }
+        if ((batchError || !res || !res.result || !res.result.success) && currentTarget > 3) {
+          this.setData({
+            progress: '第 ' + (i + 1) + ' 批生成较慢，正在缩小批量重试...',
+            parseProgress: percent
+          })
+          res = await wx.cloud.callFunction({
+            name: 'aiParse',
+            data: {
+              mode: 'generateStudyQuestions',
+              text: materialText.slice(0, 12000),
+              analysis: this.data.materialAnalysis || {},
+              targetCount: 3,
+              level: level,
+              levelLabel: levelConfig.label,
+              batchIndex: i + 1,
+              totalBatches: totalBatches,
+              existingStems: allQuestions.slice(-30).map(function(q) { return q.stem || '' }).filter(Boolean)
+            }
+          })
+        }
+        if (batchError && (!res || !res.result)) {
+          throw batchError
+        }
+        if (!res || !res.result || !res.result.success) {
+          throw new Error((res && res.result && res.result.error) || '生成题目失败')
+        }
+        var batchQuestions = res.result.questions || []
+        for (var j = 0; j < batchQuestions.length; j++) {
+          if (allQuestions.length >= targetCount) break
+          allQuestions.push(batchQuestions[j])
+        }
+      }
+      if (!allQuestions.length) {
+        throw new Error('AI 未生成可用题目')
+      }
+      this.setData({
+        parseWarning: '已按「' + levelConfig.label + '」生成题目：原文例题优先加入，缺少例题的考点由 AI 补题；预计约 ' + targetCount + ' 题，实际生成 ' + allQuestions.length + ' 题，请核对后再入库'
+      })
+      this.finishParsedQuestions(allQuestions)
+    } catch (err) {
+      this.setData({
+        isParsing: false,
+        errorMsg: err.errMsg || err.message || '生成题目失败'
+      })
+    }
+  },
+
+  generateQuestionsFromMaterial: async function() {
+    this.setData({ progress: 'AI 正在提炼考点并生成题目...', parseProgress: 35 })
+    try {
+      var res = await wx.cloud.callFunction({
+        name: 'aiParse',
+        data: {
+          mode: 'generateStudyQuestions',
+          text: this.getPendingMaterialText(24000),
+          analysis: this.data.materialAnalysis || {}
+        }
+      })
+      if (!res.result || !res.result.success) {
+        throw new Error((res.result && res.result.error) || '生成题目失败')
+      }
+      var questions = res.result.questions || []
+      this.setData({ parseWarning: '已优先保留资料中的原题，其余知识点由 AI 补充出题，请核对后再入库' })
+      this.finishParsedQuestions(questions)
+    } catch (err) {
+      this.setData({
+        isParsing: false,
+        errorMsg: err.errMsg || err.message || '生成题目失败'
+      })
     }
   },
 
@@ -987,6 +1261,11 @@ Page({
     }
     q.explanation = String(q.explanation || '').trim()
     q.knowledgePoint = String(q.knowledgePoint || '').trim()
+    q.difficulty = String(q.difficulty || '').trim()
+    q.questionStyle = String(q.questionStyle || '').trim()
+    q.sourceType = q.sourceType === 'original' ? 'original' : (q.sourceType === 'generated' ? 'generated' : '')
+    q.sourceLabel = q.sourceLabel || (q.sourceType === 'original' ? '原题' : (q.sourceType === 'generated' ? 'AI生成' : ''))
+    q.sourceText = String(q.sourceText || '').trim()
     return q
   },
 
@@ -1285,6 +1564,15 @@ Page({
     }
   },
 
+  processExtractedFile: async function(fileID, fileName) {
+    var lowerName = (fileName || '').toLowerCase()
+    if (lowerName.endsWith('.pdf')) {
+      await this.processPDF(fileID, fileName)
+    } else {
+      await this.processChunked(fileID, fileName)
+    }
+  },
+
   processPDF: async function(fileID, fileName) {
     wx.showLoading({ title: '提取页面...' })
     var pagesRes = await wx.cloud.callFunction({
@@ -1293,19 +1581,22 @@ Page({
     })
     wx.hideLoading()
     if (!pagesRes.result || !pagesRes.result.success) {
-      this.setData({ isUploading: false, errorMsg: pagesRes.result.error || '页面提取失败' })
+      await this.processChunked(fileID, fileName)
       return
     }
     var pages = pagesRes.result.pages || []
     if (!pages.length) {
-      this.setData({ isUploading: false, errorMsg: 'PDF 未提取到文字' })
+      await this.processChunked(fileID, fileName)
       return
     }
 
-    this.setData({ isUploading: false, isParsing: true, progress: '切分滑动窗口...', parseProgress: 12 })
-    var windows = this.makeSlidingWindowsFromPages(pages)
-    var allQuestions = await this.parseSlidingWindows(windows)
-    this.finishParsedQuestions(allQuestions)
+    this._pendingImport = {
+      kind: 'pdf',
+      fileID: fileID,
+      fileName: fileName,
+      pages: pages
+    }
+    await this.classifyPendingMaterial(this.buildMaterialSampleFromPages(pages), fileName)
   },
 
   // ===== Word/文本 分段解析（原有逻辑）=====
@@ -1317,14 +1608,17 @@ Page({
     })
     wx.hideLoading()
     if (!extractRes.result || !extractRes.result.success) {
-      this.setData({ isUploading: false, errorMsg: extractRes.result.error || '提取失败' })
+      this.setData({ isUploading: false, errorMsg: (extractRes.result && extractRes.result.error) || '提取失败' })
       return
     }
     var rawText = extractRes.result.rawText || ''
-    this.setData({ isUploading: false, isParsing: true, progress: '切分滑动窗口...', parseProgress: 12 })
-    var windows = this.makeSlidingWindowsFromText(rawText)
-    var allQuestions = await this.parseSlidingWindows(windows)
-    this.finishParsedQuestions(allQuestions)
+    this._pendingImport = {
+      kind: 'text',
+      fileID: fileID,
+      fileName: fileName,
+      rawText: rawText
+    }
+    await this.classifyPendingMaterial(this.buildMaterialSampleFromText(rawText), fileName)
   },
 
   // ===== 去重：题干前30字+答案 → 保留选项多的 =====
@@ -1386,18 +1680,24 @@ Page({
 
   buildDuplicateKey: function(q) {
     var stem = this.normalizeText(q && q.stem || '')
-    var answer = this.normalizeAnswerLetters(q && q.answer || '')
     var options = (q && q.options || []).map(function(option) {
       return String(option || '').replace(/\s+/g, '').replace(/[，。；：、,.．:;()（）【】\[\]]/g, '').toUpperCase()
-    }).join('|')
-    return stem.slice(0, 80) + '||' + answer + '||' + options
+    }).sort().join('|')
+    return stem.slice(0, 120) + '||' + options
   },
 
   markDuplicateQuestions: function(list) {
     var groups = {}
+    var existingQuestions = wx.getStorageSync('questions') || []
+    var existingKeys = {}
+    for (var e = 0; e < existingQuestions.length; e++) {
+      var existingKey = this.buildDuplicateKey(existingQuestions[e])
+      if (existingKey) existingKeys[existingKey] = true
+    }
     for (var i = 0; i < list.length; i++) {
       var q = list[i]
       q._duplicate = false
+      q._duplicateExisting = false
       q._duplicateGroup = ''
       q._duplicateLabel = ''
       var key = this.buildDuplicateKey(q)
@@ -1422,7 +1722,34 @@ Page({
         duplicateCount++
       }
     }
-    this.setData({ duplicateCount: duplicateCount, duplicateGroupCount: groupNo, duplicateExtraCount: duplicateCount - groupNo })
+    for (var x = 0; x < list.length; x++) {
+      var currentKey = this.buildDuplicateKey(list[x])
+      if (!currentKey || !existingKeys[currentKey]) continue
+      if (!list[x]._duplicate) {
+        groupNo++
+        duplicateCount++
+      }
+      list[x]._duplicate = true
+      list[x]._duplicateExisting = true
+      list[x]._duplicateGroup = 'existing-' + currentKey.slice(0, 16)
+      list[x]._duplicateLabel = '题库中已存在'
+      list[x]._checked = false
+    }
+    duplicateCount = list.filter(function(item) { return item._duplicate }).length
+    var keptInternalGroups = {}
+    var removableCount = 0
+    for (var r = 0; r < list.length; r++) {
+      var duplicateItem = list[r]
+      if (!duplicateItem._duplicate) continue
+      if (duplicateItem._duplicateExisting) {
+        removableCount++
+      } else if (keptInternalGroups[duplicateItem._duplicateGroup]) {
+        removableCount++
+      } else {
+        keptInternalGroups[duplicateItem._duplicateGroup] = true
+      }
+    }
+    this.setData({ duplicateCount: duplicateCount, duplicateGroupCount: groupNo, duplicateExtraCount: removableCount })
     return list
   },
 
@@ -1532,6 +1859,10 @@ Page({
     var keptGroups = {}
     var qs = this.data.parsedQuestions.map(function(q) {
       if (!q._duplicate) return q
+      if (q._duplicateExisting) {
+        q._checked = false
+        return q
+      }
       if (!keptGroups[q._duplicateGroup]) {
         keptGroups[q._duplicateGroup] = true
         q._checked = true
@@ -1558,6 +1889,7 @@ Page({
         var keptGroups = {}
         var qs = that.data.parsedQuestions.filter(function(q) {
           if (!q._duplicate) return true
+          if (q._duplicateExisting) return false
           if (!keptGroups[q._duplicateGroup]) {
             keptGroups[q._duplicateGroup] = true
             return true
@@ -1579,18 +1911,32 @@ Page({
     var targetBank = this.data.useNewImportBank ? (this.data.importNewBankName || '').trim() : this.data.importBankName
     if (!targetBank) { wx.showToast({ title: '请选择题库', icon: 'none' }); return }
     var questions = wx.getStorageSync('questions') || []
+    var createdBanks = wx.getStorageSync('createdBanks') || []
+    if (this.data.useNewImportBank) {
+      var existsBank = createdBanks.some(function(bank) { return bank.name === targetBank })
+      if (!existsBank) {
+        createdBanks.push({
+          name: targetBank,
+          colorClass: 'deck-color-' + (createdBanks.length % 6)
+        })
+      }
+    }
     checked.forEach(function(q) {
       delete q._checked
       delete q._warn
       delete q._duplicate
       delete q._duplicateGroup
       delete q._duplicateLabel
+      delete q._duplicateExisting
       q.knowledgePoint = targetBank
       q.wrongCount = 0
       q.status = 'new'
-      questions.unshift(q)
+      questions.unshift(questionUtils.randomizeQuestionOptions(q, questions.length))
     })
     wx.setStorageSync('questions', questions)
+    wx.setStorageSync('createdBanks', createdBanks)
+    wx.setStorageSync('currentBank', targetBank)
+    wx.removeStorageSync('quizProgress')
     getApp().globalData.questions = questions
     wx.showToast({ title: '已入库 ' + checked.length + ' 题', icon: 'success' })
     this.setData({
@@ -1605,9 +1951,10 @@ Page({
       useNewImportBank: false,
       importNewBankName: '',
       importBankName: targetBank,
+      createdBanks: createdBanks,
       questions: questions,
       bankSummary: this.buildBankSummary(questions),
-      bankDecks: this.buildBankDecks(questions, this.data.favoriteDecks, this.data.createdBanks)
+      bankDecks: this.buildBankDecks(questions, this.data.favoriteDecks, createdBanks)
     })
   },
 
