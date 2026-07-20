@@ -94,10 +94,22 @@ module.exports = { countChecked: countChecked };
       <view class="form-sheet-scroll">
         <text class="form-sheet-title">手动录入</text>
         <view class="form-group">
+          <text class="form-label">题型</text>
+          <view class="question-type-switch">
+            <view class="question-type-option {{newQuestion.type !== 'subjective' ? 'active' : ''}}" data-type="choice" bindtap="chooseNewQuestionType">选择题</view>
+            <view class="question-type-option {{newQuestion.type === 'subjective' ? 'active' : ''}}" data-type="subjective" bindtap="chooseNewQuestionType">主观题</view>
+          </view>
+        </view>
+        <view class="rag-reference" wx:if="{{activeParsedQuestion.ragReference}}">
+          <text class="rag-reference-title">KNN 参考来源</text>
+          <text class="rag-reference-text">{{activeParsedQuestion.ragReference}}</text>
+          <text class="rag-reference-score" wx:if="{{activeParsedQuestion.ragSimilarityText}}">相似度 {{activeParsedQuestion.ragSimilarityText}}</text>
+        </view>
+        <view class="form-group">
           <text class="form-label">题干</text>
           <textarea class="form-textarea" placeholder="请输入题目内容" value="{{newQuestion.stem}}" bindinput="onStemInput" />
         </view>
-        <view class="form-group">
+        <view class="form-group" wx:if="{{newQuestion.type !== 'subjective'}}">
           <text class="form-label">选项</text>
           <view class="opt-row" wx:for="{{['A','B','C','D']}}" wx:key="*this" wx:for-index="idx">
             <text class="opt-letter">{{item}}</text>
@@ -105,8 +117,9 @@ module.exports = { countChecked: countChecked };
           </view>
         </view>
         <view class="form-group">
-          <text class="form-label">正确答案</text>
-          <input class="form-input" placeholder="如：A" value="{{newQuestion.answer}}" bindinput="onAnswerInput" />
+          <text class="form-label">{{newQuestion.type === 'subjective' ? '参考答案' : '正确答案'}}</text>
+          <textarea wx:if="{{newQuestion.type === 'subjective'}}" class="form-textarea short" placeholder="请输入用于 AI 批改的参考答案" value="{{newQuestion.answer}}" bindinput="onAnswerInput" />
+          <input wx:else class="form-input" placeholder="如：A" value="{{newQuestion.answer}}" bindinput="onAnswerInput" />
         </view>
         <view class="form-group">
           <text class="form-label">解析</text>
@@ -190,9 +203,9 @@ module.exports = { countChecked: countChecked };
 
     <view class="upload-card" bindtap="chooseFile" wx:if="{{!importSuccess && !isParsing && !isUploading && !showMaterialDecision && parsedQuestions.length === 0}}">
       <view class="upload-cloud">☁</view>
-      <text class="upload-title">点击选择 PDF / Word 文件上传</text>
-      <text class="upload-desc">当前支持 PDF / Word（.docx），AI 会先判断资料类型</text>
-      <text class="upload-hint">文件大小不超过 20MB</text>
+      <text class="upload-title">点击选择 PDF / Word / PPT 文件上传</text>
+      <text class="upload-desc">支持 PDF、Word（.docx）和 PowerPoint（.pptx）</text>
+      <text class="upload-hint">文件大小不超过 50MB，图片型页面暂不支持文字提取</text>
     </view>
 
     <view class="recognizing-card" wx:if="{{isParsing || isUploading}}">
@@ -313,7 +326,22 @@ module.exports = { countChecked: countChecked };
         <view class="bank-choice new {{useNewImportBank ? 'active' : ''}}" bindtap="useNewBankForImport">
           <text>+ 新建题库</text>
         </view>
-        <input class="bank-name-input" wx:if="{{useNewImportBank}}" placeholder="请输入新题库名称" value="{{importNewBankName}}" bindinput="onImportNewBankInput" />
+        <view class="import-bank-create" wx:if="{{useNewImportBank}}">
+          <input
+            class="bank-name-input"
+            placeholder="请输入新题库名称"
+            maxlength="20"
+            value="{{importNewBankName}}"
+            bindinput="onImportNewBankInput"
+            confirm-type="done"
+            bindconfirm="confirmImportNewBank"
+            focus="{{true}}"
+          />
+          <view class="import-bank-actions">
+            <button class="import-bank-action secondary" bindtap="cancelImportNewBank">取消</button>
+            <button class="import-bank-action primary" disabled="{{!canCreateImportBank}}" bindtap="confirmImportNewBank">创建题库</button>
+          </view>
+        </view>
       </view>
       <view class="review-bar">
         <text class="link-btn" bindtap="selectAllParsed">全选</text>
@@ -332,8 +360,10 @@ module.exports = { countChecked: countChecked };
           </view>
           <view class="parsed-meta">
             <text class="parsed-duplicate" wx:if="{{item._duplicate}}">{{item._duplicateLabel}}</text>
-            <text class="parsed-answer">答案：{{item.answer}}</text>
-            <text class="parsed-answer">选项：{{item.options.length}}</text>
+            <text class="parsed-answer">{{item.type === 'subjective' ? '参考答案' : '答案'}}：{{item.answer}}</text>
+            <text class="parsed-answer" wx:if="{{item.type !== 'subjective'}}">选项：{{item.options.length}}</text>
+            <text class="parsed-source parsed-source-{{item.sourceType}}" wx:if="{{item.sourceLabel}}">{{item.sourceLabel}}</text>
+            <text class="parsed-tag" wx:if="{{item.type === 'subjective'}}">主观题</text>
             <text class="parsed-tag" wx:if="{{item.knowledgePoint}}">{{item.knowledgePoint}}</text>
           </view>
           <view class="parsed-warn" wx:if="{{item._warn}}">
@@ -388,10 +418,17 @@ module.exports = { countChecked: countChecked };
       </view>
       <scroll-view class="modal-scroll" scroll-y>
         <view class="form-group">
+          <text class="form-label">题型</text>
+          <view class="question-type-switch">
+            <view class="question-type-option {{activeParsedQuestion.type !== 'subjective' ? 'active' : ''}}" data-type="choice" bindtap="chooseParsedQuestionType">选择题</view>
+            <view class="question-type-option {{activeParsedQuestion.type === 'subjective' ? 'active' : ''}}" data-type="subjective" bindtap="chooseParsedQuestionType">主观题</view>
+          </view>
+        </view>
+        <view class="form-group">
           <text class="form-label">题干</text>
           <textarea class="form-textarea" value="{{activeParsedQuestion.stem}}" bindinput="onParsedStemInput" />
         </view>
-        <view class="form-group">
+        <view class="form-group" wx:if="{{activeParsedQuestion.type !== 'subjective'}}">
           <text class="form-label">选项</text>
           <view class="opt-row parsed-opt-row" wx:for="{{activeParsedQuestion.options}}" wx:key="index" wx:for-index="idx">
             <text class="opt-letter">{{['A','B','C','D','E','F','G','H','I','J'][idx]}}</text>
@@ -401,8 +438,9 @@ module.exports = { countChecked: countChecked };
           <text class="add-option" bindtap="addParsedOption">+ 添加选项</text>
         </view>
         <view class="form-group">
-          <text class="form-label">正确答案</text>
-          <input class="form-input" placeholder="如：A 或 AC" value="{{activeParsedQuestion.answer}}" bindinput="onParsedAnswerInput" />
+          <text class="form-label">{{activeParsedQuestion.type === 'subjective' ? '参考答案' : '正确答案'}}</text>
+          <textarea wx:if="{{activeParsedQuestion.type === 'subjective'}}" class="form-textarea short" value="{{activeParsedQuestion.answer}}" bindinput="onParsedAnswerInput" />
+          <input wx:else class="form-input" placeholder="如：A 或 AC" value="{{activeParsedQuestion.answer}}" bindinput="onParsedAnswerInput" />
         </view>
         <view class="form-group">
           <text class="form-label">解析</text>

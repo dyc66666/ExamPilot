@@ -1,0 +1,3971 @@
+{
+  "schemaVersion": 2,
+  "kind": "exam_question_corpus",
+  "embedding": "char-ngram-tfidf-v2",
+  "document": {
+    "title": "中科大《数据结构及其算法》往年题",
+    "school": "中国科学技术大学",
+    "course": "数据结构及其算法",
+    "courseKey": "data_structure",
+    "courseAliases": [
+      "数据结构",
+      "数据结构与算法",
+      "Data Structures"
+    ],
+    "sourceFile": "数据.pdf",
+    "sourceType": "past_exam",
+    "status": "published",
+    "paperYears": [
+      "2008-2009",
+      "2009-2010",
+      "2017-2018",
+      "2018-2019"
+    ],
+    "hasOfficialAnswers": false
+  },
+  "records": [
+    {
+      "id": "ustc-ds-20082009-1-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 1,
+      "questionType": "fill_blank",
+      "stem": "按增长率升序排列函数2100, (2/3)n, nn, n, n3/2, logn, nlogn： 。\n2 2",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "按增长率升序排列函数2100, (2/3)n, nn, n, n3/2, logn, nlogn： 。\n2 2",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n算法复杂度 算法与程序设计\n按增长率升序排列函数2100, (2/3)n, nn, n, n3/2, logn, nlogn： 。\n2 2"
+    },
+    {
+      "id": "ustc-ds-20082009-1-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 2,
+      "questionType": "fill_blank",
+      "stem": "n个结点的完全二叉树中，叶子结点数是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "n个结点的完全二叉树中，叶子结点数是 。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n树与二叉树\nn个结点的完全二叉树中，叶子结点数是 。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 3,
+      "questionType": "fill_blank",
+      "stem": "如果进站的车厢序列为123，则可能得到的出站车厢序列是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "如果进站的车厢序列为123，则可能得到的出站车厢序列是 。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n栈与队列\n如果进站的车厢序列为123，则可能得到的出站车厢序列是 。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 4,
+      "questionType": "fill_blank",
+      "stem": "对n个结点的单链表查找值为x的结点，在查找成功的情况下，平均需比较 个结\n点。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表",
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对n个结点的单链表查找值为x的结点，在查找成功的情况下，平均需比较 个结\n点。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n线性表与链表 查找\n对n个结点的单链表查找值为x的结点，在查找成功的情况下，平均需比较 个结\n点。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 5,
+      "questionType": "fill_blank",
+      "stem": "树高为h的二叉树上只有度为0和2的结点，则它所包含的结点数至少为 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "树高为h的二叉树上只有度为0和2的结点，则它所包含的结点数至少为 。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n树与二叉树\n树高为h的二叉树上只有度为0和2的结点，则它所包含的结点数至少为 。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 6,
+      "questionType": "fill_blank",
+      "stem": "已知一个图的邻阶矩阵表示，计算第i个结点的入度方法是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知一个图的邻阶矩阵表示，计算第i个结点的入度方法是 。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n数组矩阵与广义表\n已知一个图的邻阶矩阵表示，计算第i个结点的入度方法是 。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-07",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 7,
+      "questionType": "fill_blank",
+      "stem": "有一个长度为12的有序表，按二分查找法对该表进行查找，在表内各元素等概率情况\n下，查找成功所需的平均比较次数为 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "有一个长度为12的有序表，按二分查找法对该表进行查找，在表内各元素等概率情况\n下，查找成功所需的平均比较次数为 。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n查找\n有一个长度为12的有序表，按二分查找法对该表进行查找，在表内各元素等概率情况\n下，查找成功所需的平均比较次数为 。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-08",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 8,
+      "questionType": "fill_blank",
+      "stem": "已知5个字符的权值分别为4，2，3，7，5，构造相应的Huffman树，其带权路径长\n度（WPL）为 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "哈夫曼树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知5个字符的权值分别为4，2，3，7，5，构造相应的Huffman树，其带权路径长\n度（WPL）为 。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nfill_blank\n哈夫曼树\n已知5个字符的权值分别为4，2，3，7，5，构造相应的Huffman树，其带权路径长\n度（WPL）为 。"
+    },
+    {
+      "id": "ustc-ds-20082009-1-09",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 9,
+      "questionType": "choice",
+      "stem": "按照二叉树的定义，具有3个结点的二叉树有（ ）种。",
+      "options": [
+        {
+          "label": "A",
+          "text": "3"
+        },
+        {
+          "label": "B",
+          "text": "4"
+        },
+        {
+          "label": "C",
+          "text": "5"
+        },
+        {
+          "label": "D",
+          "text": "6"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "按照二叉树的定义，具有3个结点的二叉树有（ ）种。\nA. 3 B. 4 C. 5 D. 6",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n树与二叉树\n按照二叉树的定义，具有3个结点的二叉树有（ ）种。\n3 4 5 6"
+    },
+    {
+      "id": "ustc-ds-20082009-1-10",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 10,
+      "questionType": "choice",
+      "stem": "某二叉树的前序遍历结点访问顺序是abdgcefh，中序遍历结点访问顺序是dgbaechf，\n则其后序遍历结点访问顺序是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "bdgcefha"
+        },
+        {
+          "label": "B",
+          "text": "gdbecfba"
+        },
+        {
+          "label": "C",
+          "text": "bdgaechf"
+        },
+        {
+          "label": "D",
+          "text": "gdbehfca"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "某二叉树的前序遍历结点访问顺序是abdgcefh，中序遍历结点访问顺序是dgbaechf，\n则其后序遍历结点访问顺序是（ ）。\nA. bdgcefha B. gdbecfba C. bdgaechf D. gdbehfca",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n树与二叉树\n某二叉树的前序遍历结点访问顺序是abdgcefh，中序遍历结点访问顺序是dgbaechf，\n则其后序遍历结点访问顺序是（ ）。\nbdgcefha gdbecfba bdgaechf gdbehfca"
+    },
+    {
+      "id": "ustc-ds-20082009-1-11",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 11,
+      "questionType": "choice",
+      "stem": "图的深度优先遍历算法类似于二叉树的（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "先序遍历"
+        },
+        {
+          "label": "B",
+          "text": "中序遍历"
+        },
+        {
+          "label": "C",
+          "text": "后序遍历"
+        },
+        {
+          "label": "D",
+          "text": "层序遍历"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "图的深度优先遍历算法类似于二叉树的（ ）。\nA. 先序遍历 B. 中序遍历 C. 后序遍历 D. 层序遍历",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n树与二叉树\n图的深度优先遍历算法类似于二叉树的（ ）。\n先序遍历 中序遍历 后序遍历 层序遍历"
+    },
+    {
+      "id": "ustc-ds-20082009-1-12",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 12,
+      "questionType": "choice",
+      "stem": "判断一个有向图是否存在回路，除了可以利用拓扑排序方法外，还可以利用（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "求关键路径法"
+        },
+        {
+          "label": "B",
+          "text": "求最短路径法"
+        },
+        {
+          "label": "C",
+          "text": "广度优先遍历法"
+        },
+        {
+          "label": "D",
+          "text": "深度优先遍历法"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树",
+        "图",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "判断一个有向图是否存在回路，除了可以利用拓扑排序方法外，还可以利用（ ）。\nA. 求关键路径法 B. 求最短路径法 C. 广度优先遍历法 D.深度优先遍历法",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n树与二叉树 图 排序\n判断一个有向图是否存在回路，除了可以利用拓扑排序方法外，还可以利用（ ）。\n求关键路径法 求最短路径法 广度优先遍历法 深度优先遍历法"
+    },
+    {
+      "id": "ustc-ds-20082009-1-13",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 13,
+      "questionType": "choice",
+      "stem": "线性表若采取链式存储结构，则要求内存中可用存储单元的地址（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "必须是连续的"
+        },
+        {
+          "label": "B",
+          "text": "部分地址必须是连续的"
+        },
+        {
+          "label": "C",
+          "text": "一定是不连续的"
+        },
+        {
+          "label": "D",
+          "text": "连续与否都行"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "线性表若采取链式存储结构，则要求内存中可用存储单元的地址（ ）。\nA. 必须是连续的 B.部分地址必须是连续的 C. 一定是不连续的 D.连续与否都行",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n线性表与链表\n线性表若采取链式存储结构，则要求内存中可用存储单元的地址（ ）。\n必须是连续的 部分地址必须是连续的 一定是不连续的 连续与否都行"
+    },
+    {
+      "id": "ustc-ds-20082009-1-14",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 14,
+      "questionType": "choice",
+      "stem": "设有1000个无序元素，希望用最快的速度挑选出其中前3个最大的元素，最好采用\n（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "起泡排序"
+        },
+        {
+          "label": "B",
+          "text": "快速排序"
+        },
+        {
+          "label": "C",
+          "text": "堆排序"
+        },
+        {
+          "label": "D",
+          "text": "归并排序"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有1000个无序元素，希望用最快的速度挑选出其中前3个最大的元素，最好采用\n（ ）。\nA. 起泡排序 B. 快速排序 C. 堆排序 D. 归并排序",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n排序\n设有1000个无序元素，希望用最快的速度挑选出其中前3个最大的元素，最好采用\n（ ）。\n起泡排序 快速排序 堆排序 归并排序"
+    },
+    {
+      "id": "ustc-ds-20082009-1-15",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 15,
+      "questionType": "choice",
+      "stem": "在待排序的元素序列基本有序的前提下，效率最高的排序方法是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "插入排序"
+        },
+        {
+          "label": "B",
+          "text": "选择排序"
+        },
+        {
+          "label": "C",
+          "text": "快速排序"
+        },
+        {
+          "label": "D",
+          "text": "归并排序"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在待排序的元素序列基本有序的前提下，效率最高的排序方法是（ ）。\nA. 插入排序 B. 选择排序 C. 快速排序 D. 归并排序",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n排序\n在待排序的元素序列基本有序的前提下，效率最高的排序方法是（ ）。\n插入排序 选择排序 快速排序 归并排序"
+    },
+    {
+      "id": "ustc-ds-20082009-1-16",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 16,
+      "questionType": "choice",
+      "stem": "以下关于n个结点连通网的最小生成树的描述中，错误的是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "含n-1条边"
+        },
+        {
+          "label": "B",
+          "text": "没有回路"
+        },
+        {
+          "label": "C",
+          "text": "含权值最小的n-1条边"
+        },
+        {
+          "label": "D",
+          "text": "含n个结点"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        2
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "以下关于n个结点连通网的最小生成树的描述中，错误的是（ ）。\nA. 含n-1条边 B. 没有回路 C. 含权值最小的n-1条边 D. 含n个结点",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n图\n以下关于n个结点连通网的最小生成树的描述中，错误的是（ ）。\n含n-1条边 没有回路 含权值最小的n-1条边 含n个结点"
+    },
+    {
+      "id": "ustc-ds-20082009-1-17",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 17,
+      "questionType": "choice",
+      "stem": "设有两个串p和q，求q在p中首次出现的位置的运算称作（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "连接"
+        },
+        {
+          "label": "B",
+          "text": "模式匹配"
+        },
+        {
+          "label": "C",
+          "text": "求子串"
+        },
+        {
+          "label": "D",
+          "text": "求串长"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "串与模式匹配"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        3
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有两个串p和q，求q在p中首次出现的位置的运算称作（ ）。\nA. 连接 B. 模式匹配 C. 求子串 D. 求串长",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n串与模式匹配\n设有两个串p和q，求q在p中首次出现的位置的运算称作（ ）。\n连接 模式匹配 求子串 求串长"
+    },
+    {
+      "id": "ustc-ds-20082009-1-18",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "选择和填空（选择每题1 分，填空每题 2分，共26 分）",
+      "sectionIndex": 1,
+      "questionNumber": 18,
+      "questionType": "choice",
+      "stem": "在具有n个单元的循环队列中，队满时共有（ ）个元素。",
+      "options": [
+        {
+          "label": "A",
+          "text": "n/2"
+        },
+        {
+          "label": "B",
+          "text": "n-1"
+        },
+        {
+          "label": "C",
+          "text": "logn"
+        },
+        {
+          "label": "D",
+          "text": "n2\n2"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        3
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在具有n个单元的循环队列中，队满时共有（ ）个元素。\nA. n/2 B. n-1 C. logn D. n2\n2",
+      "retrievalText": "数据结构及其算法\n2008-2009\n选择和填空（选择每题1 分，填空每题 2分，共26 分）\nchoice\n算法复杂度 栈与队列\n在具有n个单元的循环队列中，队满时共有（ ）个元素。\nn/2 n-1 logn n2\n2"
+    },
+    {
+      "id": "ustc-ds-20082009-2-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "应用题（共五题，50 分）",
+      "sectionIndex": 2,
+      "questionNumber": 1,
+      "questionType": "subjective",
+      "stem": "给定一组关键字(14, 3, 17, 32, 9, 31, 6, 12, 24, 7, 20)，写出用下列算法从小到大排序时\n第一趟结束时的序列：（9分）\n(1)起泡排序 (2)归并排序 (3)基数排序",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 9,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        3
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "给定一组关键字(14, 3, 17, 32, 9, 31, 6, 12, 24, 7, 20)，写出用下列算法从小到大排序时\n第一趟结束时的序列：（9分）\n(1)起泡排序 (2)归并排序 (3)基数排序",
+      "retrievalText": "数据结构及其算法\n2008-2009\n应用题（共五题，50 分）\nsubjective\n排序\n给定一组关键字(14, 3, 17, 32, 9, 31, 6, 12, 24, 7, 20)，写出用下列算法从小到大排序时\n第一趟结束时的序列：（9分）\n(1)起泡排序 (2)归并排序 (3)基数排序"
+    },
+    {
+      "id": "ustc-ds-20082009-2-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "应用题（共五题，50 分）",
+      "sectionIndex": 2,
+      "questionNumber": 2,
+      "questionType": "subjective",
+      "stem": "按照低下标优先存储的原则存储整数数组A[8][7][6][5]，每个整数占用4个字节。假设\n第一个元素的地址是100，试计算下列几个元素的存储地址：a 、a 、a 。（6\n0000 1111 1234\n分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        3
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "按照低下标优先存储的原则存储整数数组A[8][7][6][5]，每个整数占用4个字节。假设\n第一个元素的地址是100，试计算下列几个元素的存储地址：a 、a 、a 。（6\n0000 1111 1234\n分）",
+      "retrievalText": "数据结构及其算法\n2008-2009\n应用题（共五题，50 分）\nsubjective\n数组矩阵与广义表\n按照低下标优先存储的原则存储整数数组A[8][7][6][5]，每个整数占用4个字节。假设\n第一个元素的地址是100，试计算下列几个元素的存储地址：a 、a 、a 。（6\n0000 1111 1234\n分）"
+    },
+    {
+      "id": "ustc-ds-20082009-2-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "应用题（共五题，50 分）",
+      "sectionIndex": 2,
+      "questionNumber": 3,
+      "questionType": "subjective",
+      "stem": "已知后缀表达式为”abcde+f*/-g*+h-”，其中所有运算符都是双目运算符。（10分）\n(1) 画出等价的表达式二叉树；\n(2) 写出等价的、包含括号的中缀表达式；\n(3) 用表达式二叉树的树根的一个空栈S为实参，调用下面算法，写出算法执行后全\n局变量m的值。\nint m = 0;//全局变量\nvoid cal(BiTree* T, Stack& S) {\nif (!T) return;\npush(S, T);\nif (m < StackLength(S))m = StackLength(S);\ncal(T->lchild, S);\ncal(T->rchild, S);\npop(S);\n}",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 10,
+      "topics": [
+        "栈与队列",
+        "树与二叉树",
+        "算法与程序设计"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        3
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知后缀表达式为”abcde+f*/-g*+h-”，其中所有运算符都是双目运算符。（10分）\n(1) 画出等价的表达式二叉树；\n(2) 写出等价的、包含括号的中缀表达式；\n(3) 用表达式二叉树的树根的一个空栈S为实参，调用下面算法，写出算法执行后全\n局变量m的值。\nint m = 0;//全局变量\nvoid cal(BiTree* T, Stack& S) {\nif (!T) return;\npush(S, T);\nif (m < StackLength(S))m = StackLength(S);\ncal(T->lchild, S);\ncal(T->rchild, S);\npop(S);\n}",
+      "retrievalText": "数据结构及其算法\n2008-2009\n应用题（共五题，50 分）\nsubjective\n栈与队列 树与二叉树 算法与程序设计\n已知后缀表达式为”abcde+f*/-g*+h-”，其中所有运算符都是双目运算符。（10分）\n(1) 画出等价的表达式二叉树；\n(2) 写出等价的、包含括号的中缀表达式；\n(3) 用表达式二叉树的树根的一个空栈S为实参，调用下面算法，写出算法执行后全\n局变量m的值。\nint m = 0;//全局变量\nvoid cal(BiTree* T, Stack& S) {\nif (!T) return;\npush(S, T);\nif (m < StackLength(S))m = StackLength(S);\ncal(T->lchild, S);\ncal(T->rchild, S);\npop(S);\n}"
+    },
+    {
+      "id": "ustc-ds-20082009-2-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "应用题（共五题，50 分）",
+      "sectionIndex": 2,
+      "questionNumber": 4,
+      "questionType": "subjective",
+      "stem": "AOE网G及其存储结构如图1所示，其存储类型定义如下：（14分）\n#define N 20\ntypedef struct {\nint arcs[N][N]; //邻接矩阵\nchar vexs[N]; //存放顶点的数组\nint vexnum, arcnum, kind; //顶点数、边数、图的类型\n}MGraph;\nG.vexs 0 1 2 3 4 5 6 7\nV1 V2 V3 V4 V5 V6 V7 V8\nG.arcs 0 1 2 3 4 5 6 7\n0 ∞ 6 5 30 ∞ ∞ ∞ ∞\n1 ∞ ∞ 11 ∞ 43 6 ∞ ∞\n2 ∞ ∞ ∞ ∞ ∞ 12 ∞ ∞\n3 ∞ ∞ 8 ∞ ∞ 18 12 ∞\n4 ∞ ∞ ∞ ∞ ∞ ∞ ∞ 8\n5 ∞ ∞ ∞ ∞ 38 ∞ 24 ∞\n6 ∞ ∞ ∞ ∞ ∞ ∞ ∞ 22\n7 ∞ ∞ ∞ ∞ ∞ ∞ ∞ ∞\n求解下列问题：\n(1) 用G和int v=0做实参，执行算法调用DFS1(G, v); 。写出算法的输出序列\nint visited[N] = { 0 };//全局数组\nvoid DFS1(MGraph G, int v) {\nint i;\nprintf(G.vexs[v]);\nvisited[v] = 1;\nfor (i = 0; i < G.vexnum; i++)\nif (!visited[i] && G.arcs[v][i] != ∞)DFS1(G, i);\n}//DFS1\n(2) 用G和int v=0做实参，执行算法调用DFS2(G, v); 。写出算法的输出序列\nint visited[N] = { 0 };//全局数组\nvoid DFS2(MGraph G, int v) {\nint i;\nvisited[v] = 1;\nfor (i = 0; i < G.vexnum; i++)\nif (!visited[i] && G.arcs[v][i] != ∞)DFS2(G, i);\nprintf(G.vexs[v]);\n}//DFS2\n(3) 写出AOE网中每个顶点的最早发生时间和最迟发生时间、每个活动的最早开始时\n间和最迟开始时间；写出AOE网的关键路径；哪些活动提前一天完成将导致整个\n工程提前一天完成。\n每个顶点的最早发生时间ve和最迟发生时间vl\n顶点 V1 V2 V3 V4 V5 V6 V7 V8\nve\nvl\n每个活动的最早开始时间e(i)和最迟开始时间l(i)\n活动 a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14\ne(i)\nl(i)",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 14,
+      "topics": [
+        "数组矩阵与广义表",
+        "图",
+        "算法与程序设计"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        3,
+        4
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "AOE网G及其存储结构如图1所示，其存储类型定义如下：（14分）\n#define N 20\ntypedef struct {\nint arcs[N][N]; //邻接矩阵\nchar vexs[N]; //存放顶点的数组\nint vexnum, arcnum, kind; //顶点数、边数、图的类型\n}MGraph;\nG.vexs 0 1 2 3 4 5 6 7\nV1 V2 V3 V4 V5 V6 V7 V8\nG.arcs 0 1 2 3 4 5 6 7\n0 ∞ 6 5 30 ∞ ∞ ∞ ∞\n1 ∞ ∞ 11 ∞ 43 6 ∞ ∞\n2 ∞ ∞ ∞ ∞ ∞ 12 ∞ ∞\n3 ∞ ∞ 8 ∞ ∞ 18 12 ∞\n4 ∞ ∞ ∞ ∞ ∞ ∞ ∞ 8\n5 ∞ ∞ ∞ ∞ 38 ∞ 24 ∞\n6 ∞ ∞ ∞ ∞ ∞ ∞ ∞ 22\n7 ∞ ∞ ∞ ∞ ∞ ∞ ∞ ∞\n求解下列问题：\n(1) 用G和int v=0做实参，执行算法调用DFS1(G, v); 。写出算法的输出序列\nint visited[N] = { 0 };//全局数组\nvoid DFS1(MGraph G, int v) {\nint i;\nprintf(G.vexs[v]);\nvisited[v] = 1;\nfor (i = 0; i < G.vexnum; i++)\nif (!visited[i] && G.arcs[v][i] != ∞)DFS1(G, i);\n}//DFS1\n(2) 用G和int v=0做实参，执行算法调用DFS2(G, v); 。写出算法的输出序列\nint visited[N] = { 0 };//全局数组\nvoid DFS2(MGraph G, int v) {\nint i;\nvisited[v] = 1;\nfor (i = 0; i < G.vexnum; i++)\nif (!visited[i] && G.arcs[v][i] != ∞)DFS2(G, i);\nprintf(G.vexs[v]);\n}//DFS2\n(3) 写出AOE网中每个顶点的最早发生时间和最迟发生时间、每个活动的最早开始时\n间和最迟开始时间；写出AOE网的关键路径；哪些活动提前一天完成将导致整个\n工程提前一天完成。\n每个顶点的最早发生时间ve和最迟发生时间vl\n顶点 V1 V2 V3 V4 V5 V6 V7 V8\nve\nvl\n每个活动的最早开始时间e(i)和最迟开始时间l(i)\n活动 a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14\ne(i)\nl(i)",
+      "retrievalText": "数据结构及其算法\n2008-2009\n应用题（共五题，50 分）\nsubjective\n数组矩阵与广义表 图 算法与程序设计\nAOE网G及其存储结构如图1所示，其存储类型定义如下：（14分）\n#define N 20\ntypedef struct {\nint arcs[N][N]; //邻接矩阵\nchar vexs[N]; //存放顶点的数组\nint vexnum, arcnum, kind; //顶点数、边数、图的类型\n}MGraph;\nG.vexs 0 1 2 3 4 5 6 7\nV1 V2 V3 V4 V5 V6 V7 V8\nG.arcs 0 1 2 3 4 5 6 7\n0 ∞ 6 5 30 ∞ ∞ ∞ ∞\n1 ∞ ∞ 11 ∞ 43 6 ∞ ∞\n2 ∞ ∞ ∞ ∞ ∞ 12 ∞ ∞\n3 ∞ ∞ 8 ∞ ∞ 18 12 ∞\n4 ∞ ∞ ∞ ∞ ∞ ∞ ∞ 8\n5 ∞ ∞ ∞ ∞ 38 ∞ 24 ∞\n6 ∞ ∞ ∞ ∞ ∞ ∞ ∞ 22\n7 ∞ ∞ ∞ ∞ ∞ ∞ ∞ ∞\n求解下列问题：\n(1) 用G和int v=0做实参，执行算法调用DFS1(G, v); 。写出算法的输出序列\nint visited[N] = { 0 };//全局数组\nvoid DFS1(MGraph G, int v) {\nint i;\nprintf(G.vexs[v]);\nvisited[v] = 1;\nfor (i = 0; i < G.vexnum; i++)\nif (!visited[i] && G.arcs[v][i] != ∞)DFS1(G, i);\n}//DFS1\n(2) 用G和int v=0做实参，执行算法调用DFS2(G, v); 。写出算法的输出序列\nint visited[N] = { 0 };//全局数组\nvoid DFS2(MGraph G, int v) {\nint i;\nvisited[v] = 1;\nfor (i = 0; i < G.vexnum; i++)\nif (!visited[i] && G.arcs[v][i] != ∞)DFS2(G, i);\nprintf(G.vexs[v]);\n}//DFS2\n(3) 写出AOE网中每个顶点的最早发生时间和最迟发生时间、每个活动的最早开始时\n间和最迟开始时间；写出AOE网的关键路径；哪些活动提前一天完成将导致整个\n工程提前一天完成。\n每个顶点的最早发生时间ve和最迟发生时间vl\n顶点 V1 V2 V3 V4 V5 V6 V7 V8\nve\nvl\n每个活动的最早开始时间e(i)和最迟开始时间l(i)\n活动 a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14\ne(i)\nl(i)"
+    },
+    {
+      "id": "ustc-ds-20082009-2-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "应用题（共五题，50 分）",
+      "sectionIndex": 2,
+      "questionNumber": 5,
+      "questionType": "subjective",
+      "stem": "有10个元素欲形成二叉检索树，元素值和概率的对应关系如下表，按照某种次序插\n入二叉检索树后形成图2。（11分）\n元素的值 26 14 23 1 66 20 55 5 18 9\n概率 0.25 0.1 0.08 0.02 0.1 0.14 0.12 0.06 0.08 0.05\n(1) 请将这10个元素填写到下图所示的二叉检索树中。\n(2) 求这棵二叉检索树在查找成功情况下的平均查找长度ASL。\n(3) 现要删除值为18的元素，画出删除操作后二叉检索树的形状。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 11,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        5
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "有10个元素欲形成二叉检索树，元素值和概率的对应关系如下表，按照某种次序插\n入二叉检索树后形成图2。（11分）\n元素的值 26 14 23 1 66 20 55 5 18 9\n概率 0.25 0.1 0.08 0.02 0.1 0.14 0.12 0.06 0.08 0.05\n(1) 请将这10个元素填写到下图所示的二叉检索树中。\n(2) 求这棵二叉检索树在查找成功情况下的平均查找长度ASL。\n(3) 现要删除值为18的元素，画出删除操作后二叉检索树的形状。",
+      "retrievalText": "数据结构及其算法\n2008-2009\n应用题（共五题，50 分）\nsubjective\n查找\n有10个元素欲形成二叉检索树，元素值和概率的对应关系如下表，按照某种次序插\n入二叉检索树后形成图2。（11分）\n元素的值 26 14 23 1 66 20 55 5 18 9\n概率 0.25 0.1 0.08 0.02 0.1 0.14 0.12 0.06 0.08 0.05\n(1) 请将这10个元素填写到下图所示的二叉检索树中。\n(2) 求这棵二叉检索树在查找成功情况下的平均查找长度ASL。\n(3) 现要删除值为18的元素，画出删除操作后二叉检索树的形状。"
+    },
+    {
+      "id": "ustc-ds-20082009-3-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "算法设计（共 24分）",
+      "sectionIndex": 3,
+      "questionNumber": 1,
+      "questionType": "algorithm",
+      "stem": "利用两个栈S1和S2来模拟一个队列。若不存在栈溢出问题，则请写出用栈的操作来\n实现队列的入队列EnQueue和出队列DeQueue的算法。（8分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 8,
+      "topics": [
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        5
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "利用两个栈S1和S2来模拟一个队列。若不存在栈溢出问题，则请写出用栈的操作来\n实现队列的入队列EnQueue和出队列DeQueue的算法。（8分）",
+      "retrievalText": "数据结构及其算法\n2008-2009\n算法设计（共 24分）\nalgorithm\n栈与队列\n利用两个栈S1和S2来模拟一个队列。若不存在栈溢出问题，则请写出用栈的操作来\n实现队列的入队列EnQueue和出队列DeQueue的算法。（8分）"
+    },
+    {
+      "id": "ustc-ds-20082009-3-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "算法设计（共 24分）",
+      "sectionIndex": 3,
+      "questionNumber": 2,
+      "questionType": "algorithm",
+      "stem": "现有一个单链表（每个结点包含data域和next域，不带头结点），其头指针为\npHead，假设其内容已从小到大排好序。（12分）\n(1) 完成一个折半查找算法BiSearch(pHead, key, low, high)，若找到则返回相应的序\n号，否则返回-1。要求空间复杂度为O(1)。（8分）\n(2) 若找不到，则将key插入到其中适当位置，使得该链表仍然有序。（4分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 12,
+      "topics": [
+        "算法复杂度",
+        "线性表与链表",
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        5
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "现有一个单链表（每个结点包含data域和next域，不带头结点），其头指针为\npHead，假设其内容已从小到大排好序。（12分）\n(1) 完成一个折半查找算法BiSearch(pHead, key, low, high)，若找到则返回相应的序\n号，否则返回-1。要求空间复杂度为O(1)。（8分）\n(2) 若找不到，则将key插入到其中适当位置，使得该链表仍然有序。（4分）",
+      "retrievalText": "数据结构及其算法\n2008-2009\n算法设计（共 24分）\nalgorithm\n算法复杂度 线性表与链表 查找\n现有一个单链表（每个结点包含data域和next域，不带头结点），其头指针为\npHead，假设其内容已从小到大排好序。（12分）\n(1) 完成一个折半查找算法BiSearch(pHead, key, low, high)，若找到则返回相应的序\n号，否则返回-1。要求空间复杂度为O(1)。（8分）\n(2) 若找不到，则将key插入到其中适当位置，使得该链表仍然有序。（4分）"
+    },
+    {
+      "id": "ustc-ds-20082009-3-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2008-2009",
+      "sectionTitle": "算法设计（共 24分）",
+      "sectionIndex": 3,
+      "questionNumber": 3,
+      "questionType": "algorithm",
+      "stem": "编写一个算法，判断一个二叉树是否是完全二叉树。设二叉树的根为T，每个结点的\n三个域分别是data、lchild和rchild。（4分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 4,
+      "topics": [
+        "树与二叉树",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        5
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "编写一个算法，判断一个二叉树是否是完全二叉树。设二叉树的根为T，每个结点的\n三个域分别是data、lchild和rchild。（4分）",
+      "retrievalText": "数据结构及其算法\n2008-2009\n算法设计（共 24分）\nalgorithm\n树与二叉树 算法与程序设计\n编写一个算法，判断一个二叉树是否是完全二叉树。设二叉树的根为T，每个结点的\n三个域分别是data、lchild和rchild。（4分）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-19",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 19,
+      "questionType": "true_false",
+      "stem": "采用顺序存储结构表示的线性表可以随机地访问任一个数据元素。（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "采用顺序存储结构表示的线性表可以随机地访问任一个数据元素。（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n线性表与链表\n采用顺序存储结构表示的线性表可以随机地访问任一个数据元素。（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-20",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 20,
+      "questionType": "true_false",
+      "stem": "栈和队列都是限制存取位置的线性结构。（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "栈和队列都是限制存取位置的线性结构。（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n栈与队列\n栈和队列都是限制存取位置的线性结构。（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-21",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 21,
+      "questionType": "true_false",
+      "stem": "不管原始数据的初始排列状态如何，快速排序都是速度最快的一种排序方法。（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "不管原始数据的初始排列状态如何，快速排序都是速度最快的一种排序方法。（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n排序\n不管原始数据的初始排列状态如何，快速排序都是速度最快的一种排序方法。（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-22",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 22,
+      "questionType": "true_false",
+      "stem": "若输入序列为1,2,3,4,5,6，则通过一个栈可以输出序列1,3,2,5,6,4。( )",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若输入序列为1,2,3,4,5,6，则通过一个栈可以输出序列1,3,2,5,6,4。( )",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n栈与队列\n若输入序列为1,2,3,4,5,6，则通过一个栈可以输出序列1,3,2,5,6,4。( )"
+    },
+    {
+      "id": "ustc-ds-20092010-1-23",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 23,
+      "questionType": "true_false",
+      "stem": "当要求时间复杂度为O(nlog2n)的稳定排序算法时，可以采用堆排序或归并排序。\n（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "当要求时间复杂度为O(nlog2n)的稳定排序算法时，可以采用堆排序或归并排序。\n（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n算法复杂度 排序\n当要求时间复杂度为O(nlog2n)的稳定排序算法时，可以采用堆排序或归并排序。\n（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-24",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 24,
+      "questionType": "true_false",
+      "stem": "在二叉树的先序序列中，若结点A在结点B之前，则结点A一定是结点B的祖先。\n（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在二叉树的先序序列中，若结点A在结点B之前，则结点A一定是结点B的祖先。\n（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n树与二叉树\n在二叉树的先序序列中，若结点A在结点B之前，则结点A一定是结点B的祖先。\n（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-25",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 25,
+      "questionType": "true_false",
+      "stem": "如果一个完全二叉树的按层次遍历序列是大顶堆（最大堆），则在该二叉树中每个结点\n的值均≥其所有子孙的值。（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "如果一个完全二叉树的按层次遍历序列是大顶堆（最大堆），则在该二叉树中每个结点\n的值均≥其所有子孙的值。（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n树与二叉树\n如果一个完全二叉树的按层次遍历序列是大顶堆（最大堆），则在该二叉树中每个结点\n的值均≥其所有子孙的值。（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-26",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 26,
+      "questionType": "true_false",
+      "stem": "图G有n个顶点和e条边。用邻接矩阵表示法存储图G时，存储空间的大小只取决于\nn，与e无关。（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表",
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "图G有n个顶点和e条边。用邻接矩阵表示法存储图G时，存储空间的大小只取决于\nn，与e无关。（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n数组矩阵与广义表 图\n图G有n个顶点和e条边。用邻接矩阵表示法存储图G时，存储空间的大小只取决于\nn，与e无关。（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-27",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 27,
+      "questionType": "true_false",
+      "stem": "散列表的基本思想是用记录的关键码的值来确定记录的存储地址。（ ）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "散列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "散列表的基本思想是用记录的关键码的值来确定记录的存储地址。（ ）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n散列\n散列表的基本思想是用记录的关键码的值来确定记录的存储地址。（ ）"
+    },
+    {
+      "id": "ustc-ds-20092010-1-28",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "判断题（每题 1 分，共10 分）",
+      "sectionIndex": 1,
+      "questionNumber": 28,
+      "questionType": "true_false",
+      "stem": "哈希表的存储空间越大，查找效率越高。( )",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找",
+        "散列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        6
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "哈希表的存储空间越大，查找效率越高。( )",
+      "retrievalText": "数据结构及其算法\n2009-2010\n判断题（每题 1 分，共10 分）\ntrue_false\n查找 散列\n哈希表的存储空间越大，查找效率越高。( )"
+    },
+    {
+      "id": "ustc-ds-20092010-2-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 1,
+      "questionType": "choice",
+      "stem": "设有一个带头结点的非空双向循环链表，指针域prior指向结点的直接前驱，指针域\nnext指向直接后继。设指针P指向链表中的一个结点，指针Q指向一个待插入的新结\n点，能正确将*Q插入到*P之前的语句是( ) 。",
+      "options": [
+        {
+          "label": "A",
+          "text": "Q->prior=P->prior; Q->next=P; P->prior=Q; P->prior->next=Q"
+        },
+        {
+          "label": "B",
+          "text": "P->prior=Q; Q->next=P; P->prior->next=Q; Q->prior=P"
+        },
+        {
+          "label": "C",
+          "text": "Q->prior=P->prior; Q->prior->next=Q; P->prior=Q; Q->next=P"
+        },
+        {
+          "label": "D",
+          "text": "前三者都不正确"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有一个带头结点的非空双向循环链表，指针域prior指向结点的直接前驱，指针域\nnext指向直接后继。设指针P指向链表中的一个结点，指针Q指向一个待插入的新结\n点，能正确将*Q插入到*P之前的语句是( ) 。\nA. Q->prior=P->prior; Q->next=P; P->prior=Q; P->prior->next=Q;\nB. P->prior=Q; Q->next=P; P->prior->next=Q; Q->prior=P;\nC. Q->prior=P->prior; Q->prior->next=Q; P->prior=Q; Q->next=P;\nD. 前三者都不正确",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n线性表与链表\n设有一个带头结点的非空双向循环链表，指针域prior指向结点的直接前驱，指针域\nnext指向直接后继。设指针P指向链表中的一个结点，指针Q指向一个待插入的新结\n点，能正确将*Q插入到*P之前的语句是( ) 。\nQ->prior=P->prior; Q->next=P; P->prior=Q; P->prior->next=Q P->prior=Q; Q->next=P; P->prior->next=Q; Q->prior=P Q->prior=P->prior; Q->prior->next=Q; P->prior=Q; Q->next=P 前三者都不正确"
+    },
+    {
+      "id": "ustc-ds-20092010-2-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 2,
+      "questionType": "choice",
+      "stem": "对由n(n>0)中不同字符组成的电文采用二进制Huffman编码，每个字符编码的长度最\n长可达到( ) 个二进制位。",
+      "options": [
+        {
+          "label": "A",
+          "text": "n-1"
+        },
+        {
+          "label": "B",
+          "text": "n/2"
+        },
+        {
+          "label": "C",
+          "text": "n+1"
+        },
+        {
+          "label": "D",
+          "text": "n"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "哈夫曼树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对由n(n>0)中不同字符组成的电文采用二进制Huffman编码，每个字符编码的长度最\n长可达到( ) 个二进制位。\nA. n-1 B. n/2 C. n+1 D. n",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n哈夫曼树\n对由n(n>0)中不同字符组成的电文采用二进制Huffman编码，每个字符编码的长度最\n长可达到( ) 个二进制位。\nn-1 n/2 n+1 n"
+    },
+    {
+      "id": "ustc-ds-20092010-2-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 3,
+      "questionType": "choice",
+      "stem": "若串S1=”ABCDEFG”，S2=”123”，则执行以下操作的结果是( ) 。\nconcat(replace(S1.substring(S1.index(S1, ’E’, 1, 3), S2, “XY”)",
+      "options": [
+        {
+          "label": "A",
+          "text": "ABCD123XY"
+        },
+        {
+          "label": "B",
+          "text": "XYABC123G"
+        },
+        {
+          "label": "C",
+          "text": "ABC123GXY"
+        },
+        {
+          "label": "D",
+          "text": "ABCXY123"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "串与模式匹配"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若串S1=”ABCDEFG”，S2=”123”，则执行以下操作的结果是( ) 。\nconcat(replace(S1.substring(S1.index(S1, ’E’, 1, 3), S2, “XY”)\nA. ABCD123XY B. XYABC123G C. ABC123GXY D. ABCXY123",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n串与模式匹配\n若串S1=”ABCDEFG”，S2=”123”，则执行以下操作的结果是( ) 。\nconcat(replace(S1.substring(S1.index(S1, ’E’, 1, 3), S2, “XY”)\nABCD123XY XYABC123G ABC123GXY ABCXY123"
+    },
+    {
+      "id": "ustc-ds-20092010-2-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 4,
+      "questionType": "choice",
+      "stem": "下列算法中经一趟排序未必能选出一个元素放在其最终位置的是( ) 。",
+      "options": [
+        {
+          "label": "A",
+          "text": "选择"
+        },
+        {
+          "label": "B",
+          "text": "起泡"
+        },
+        {
+          "label": "C",
+          "text": "堆"
+        },
+        {
+          "label": "D",
+          "text": "归并"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下列算法中经一趟排序未必能选出一个元素放在其最终位置的是( ) 。\nA. 选择 B. 起泡 C. 堆 D. 归并",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n排序\n下列算法中经一趟排序未必能选出一个元素放在其最终位置的是( ) 。\n选择 起泡 堆 归并"
+    },
+    {
+      "id": "ustc-ds-20092010-2-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 5,
+      "questionType": "choice",
+      "stem": "以数组A[0..m-1]实现的循环队列中，其头尾指针分别为 front和rear，队列中最多存\n放m-1个元素，则队列中的元素个数为( ) 。",
+      "options": [
+        {
+          "label": "A",
+          "text": "(rear-front+m)%m"
+        },
+        {
+          "label": "B",
+          "text": "rear-front+1"
+        },
+        {
+          "label": "C",
+          "text": "(front-rear+m)%m"
+        },
+        {
+          "label": "D",
+          "text": "(rear-front)%m"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列",
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "以数组A[0..m-1]实现的循环队列中，其头尾指针分别为 front和rear，队列中最多存\n放m-1个元素，则队列中的元素个数为( ) 。\nA. (rear-front+m)%m B. rear-front+1 C. (front-rear+m)%m D. (rear-front)%m",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n栈与队列 数组矩阵与广义表\n以数组A[0..m-1]实现的循环队列中，其头尾指针分别为 front和rear，队列中最多存\n放m-1个元素，则队列中的元素个数为( ) 。\n(rear-front+m)%m rear-front+1 (front-rear+m)%m (rear-front)%m"
+    },
+    {
+      "id": "ustc-ds-20092010-2-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 6,
+      "questionType": "choice",
+      "stem": "对稀疏矩阵进行压缩存储的目的是( ) 。",
+      "options": [
+        {
+          "label": "A",
+          "text": "便于运算"
+        },
+        {
+          "label": "B",
+          "text": "便于输入和输出"
+        },
+        {
+          "label": "C",
+          "text": "节省存储空间"
+        },
+        {
+          "label": "D",
+          "text": "降低运算的时间复杂度"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对稀疏矩阵进行压缩存储的目的是( ) 。\nA. 便于运算 B. 便于输入和输出\nC. 节省存储空间 D. 降低运算的时间复杂度",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n算法复杂度 数组矩阵与广义表\n对稀疏矩阵进行压缩存储的目的是( ) 。\n便于运算 便于输入和输出 节省存储空间 降低运算的时间复杂度"
+    },
+    {
+      "id": "ustc-ds-20092010-2-07",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 7,
+      "questionType": "choice",
+      "stem": "如果二叉排序树上包含了关键字值分别为(16, 28, 40, 37, 19, 30)等多个结点，则下列序\n列中( ) 不可能是在二叉排序树上查找关键字值等于37的结点而得到的比较序列。",
+      "options": [
+        {
+          "label": "A",
+          "text": "16, 40, 28, 37"
+        },
+        {
+          "label": "B",
+          "text": "19, 28, 40, 37"
+        },
+        {
+          "label": "C",
+          "text": "40, 30, 28, 37"
+        },
+        {
+          "label": "D",
+          "text": "40, 16, 30, 37"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "如果二叉排序树上包含了关键字值分别为(16, 28, 40, 37, 19, 30)等多个结点，则下列序\n列中( ) 不可能是在二叉排序树上查找关键字值等于37的结点而得到的比较序列。\nA. 16, 40, 28, 37 B. 19, 28, 40, 37 C. 40, 30, 28, 37 D. 40, 16, 30, 37",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nchoice\n查找\n如果二叉排序树上包含了关键字值分别为(16, 28, 40, 37, 19, 30)等多个结点，则下列序\n列中( ) 不可能是在二叉排序树上查找关键字值等于37的结点而得到的比较序列。\n16, 40, 28, 37 19, 28, 40, 37 40, 30, 28, 37 40, 16, 30, 37"
+    },
+    {
+      "id": "ustc-ds-20092010-2-08",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 8,
+      "questionType": "fill_blank",
+      "stem": "若以(2, 3, 6, 7, 10)作为叶子结点的权值构造Huffman树，则其带权路径长度是( ) 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树",
+        "哈夫曼树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若以(2, 3, 6, 7, 10)作为叶子结点的权值构造Huffman树，则其带权路径长度是( ) 。",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nfill_blank\n树与二叉树 哈夫曼树\n若以(2, 3, 6, 7, 10)作为叶子结点的权值构造Huffman树，则其带权路径长度是( ) 。"
+    },
+    {
+      "id": "ustc-ds-20092010-2-09",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 9,
+      "questionType": "fill_blank",
+      "stem": "已知函数如下：int f(int x){return ((x!=0)?x*f(x-1):2);}。则f(f(1))的返回值是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知函数如下：int f(int x){return ((x!=0)?x*f(x-1):2);}。则f(f(1))的返回值是 。",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nfill_blank\n算法与程序设计\n已知函数如下：int f(int x){return ((x!=0)?x*f(x-1):2);}。则f(f(1))的返回值是 。"
+    },
+    {
+      "id": "ustc-ds-20092010-2-10",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）",
+      "sectionIndex": 2,
+      "questionNumber": 10,
+      "questionType": "fill_blank",
+      "stem": "对有890个结点的完全二叉树T按自上而下、自左而右的次序编号，树根的编号为\n1，111号结点位于T的第 层，是T 子树上的结点；以111号结点为根的子\n树上有 个结点；中序遍历以111号结点为根的子树时，最后被访问的结点的编\n号是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        7
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对有890个结点的完全二叉树T按自上而下、自左而右的次序编号，树根的编号为\n1，111号结点位于T的第 层，是T 子树上的结点；以111号结点为根的子\n树上有 个结点；中序遍历以111号结点为根的子树时，最后被访问的结点的编\n号是 。",
+      "retrievalText": "数据结构及其算法\n2009-2010\n选择和填空（1-6题每题1 分，7-10 题每题 2 分，共20 分）\nfill_blank\n树与二叉树\n对有890个结点的完全二叉树T按自上而下、自左而右的次序编号，树根的编号为\n1，111号结点位于T的第 层，是T 子树上的结点；以111号结点为根的子\n树上有 个结点；中序遍历以111号结点为根的子树时，最后被访问的结点的编\n号是 。"
+    },
+    {
+      "id": "ustc-ds-20092010-3-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "应用题（共 5 题，50 分）",
+      "sectionIndex": 3,
+      "questionNumber": 1,
+      "questionType": "subjective",
+      "stem": "利用Prim算法和Kruskal算法，分别求出下图的最小生成树，把生成过程在右侧图中\n表示出来（画出生成树的边，并标出边生成的先后顺序1、2、3……）。（10分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 10,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        8
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "利用Prim算法和Kruskal算法，分别求出下图的最小生成树，把生成过程在右侧图中\n表示出来（画出生成树的边，并标出边生成的先后顺序1、2、3……）。（10分）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n应用题（共 5 题，50 分）\nsubjective\n图\n利用Prim算法和Kruskal算法，分别求出下图的最小生成树，把生成过程在右侧图中\n表示出来（画出生成树的边，并标出边生成的先后顺序1、2、3……）。（10分）"
+    },
+    {
+      "id": "ustc-ds-20092010-3-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "应用题（共 5 题，50 分）",
+      "sectionIndex": 3,
+      "questionNumber": 2,
+      "questionType": "subjective",
+      "stem": "已知如下AOE图（图中权值为天数），请回答以下问题：（12分）\n(1) 列表给出每项活动ai的最早开始时间e(ai)和最迟开始时间l(ai);\n(2) 完成此项工程至少需要多少时间；\n(3) 哪些活动是关键活动；\n(4) 是否存在某项活动，当其提高速度后，可以缩短整个工程的工期。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 12,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        8
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知如下AOE图（图中权值为天数），请回答以下问题：（12分）\n(1) 列表给出每项活动ai的最早开始时间e(ai)和最迟开始时间l(ai);\n(2) 完成此项工程至少需要多少时间；\n(3) 哪些活动是关键活动；\n(4) 是否存在某项活动，当其提高速度后，可以缩短整个工程的工期。",
+      "retrievalText": "数据结构及其算法\n2009-2010\n应用题（共 5 题，50 分）\nsubjective\n图\n已知如下AOE图（图中权值为天数），请回答以下问题：（12分）\n(1) 列表给出每项活动ai的最早开始时间e(ai)和最迟开始时间l(ai);\n(2) 完成此项工程至少需要多少时间；\n(3) 哪些活动是关键活动；\n(4) 是否存在某项活动，当其提高速度后，可以缩短整个工程的工期。"
+    },
+    {
+      "id": "ustc-ds-20092010-3-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "应用题（共 5 题，50 分）",
+      "sectionIndex": 3,
+      "questionNumber": 3,
+      "questionType": "subjective",
+      "stem": "依次读入给定的整数序列{7, 16, 4, 8, 20, 9, 6}，完成下列操作：（10分）\n(1) 构造一棵二叉排序树，计算在等概率情况下该二叉排序树的平均查找长度ASL；\n(2) 若变更序列中元素的排列，可构造出平均查找长度达到最小的二叉排序树，列出\n满足上述要求的序列中的第一个元素。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 10,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        9
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "依次读入给定的整数序列{7, 16, 4, 8, 20, 9, 6}，完成下列操作：（10分）\n(1) 构造一棵二叉排序树，计算在等概率情况下该二叉排序树的平均查找长度ASL；\n(2) 若变更序列中元素的排列，可构造出平均查找长度达到最小的二叉排序树，列出\n满足上述要求的序列中的第一个元素。",
+      "retrievalText": "数据结构及其算法\n2009-2010\n应用题（共 5 题，50 分）\nsubjective\n查找\n依次读入给定的整数序列{7, 16, 4, 8, 20, 9, 6}，完成下列操作：（10分）\n(1) 构造一棵二叉排序树，计算在等概率情况下该二叉排序树的平均查找长度ASL；\n(2) 若变更序列中元素的排列，可构造出平均查找长度达到最小的二叉排序树，列出\n满足上述要求的序列中的第一个元素。"
+    },
+    {
+      "id": "ustc-ds-20092010-3-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "应用题（共 5 题，50 分）",
+      "sectionIndex": 3,
+      "questionNumber": 4,
+      "questionType": "subjective",
+      "stem": "现有一有向图如下图所示，求从顶点V1到顶点V4顶点最短路径及其长度，要求给出\n求解过程。（10分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 10,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        9
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "现有一有向图如下图所示，求从顶点V1到顶点V4顶点最短路径及其长度，要求给出\n求解过程。（10分）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n应用题（共 5 题，50 分）\nsubjective\n图\n现有一有向图如下图所示，求从顶点V1到顶点V4顶点最短路径及其长度，要求给出\n求解过程。（10分）"
+    },
+    {
+      "id": "ustc-ds-20092010-3-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "应用题（共 5 题，50 分）",
+      "sectionIndex": 3,
+      "questionNumber": 5,
+      "questionType": "subjective",
+      "stem": "以二叉链表作为二叉树的存储结构，阅读算法f5，并回答问题：（8分）\n(1) 设二叉树T如图所示，写出执行f5(T)的返回值；\n(2) 简述算法f5的功能\nint f5(BiTree* T){\nint m, n;\nif (!T)return 0;\nelse {\nm = f5(T->lchild);\nn = f5(T->rchild);\nif (m > n)return m + 1;\nelse return n + 1;\n}\n}",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 8,
+      "topics": [
+        "线性表与链表",
+        "树与二叉树",
+        "算法与程序设计"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        10
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "以二叉链表作为二叉树的存储结构，阅读算法f5，并回答问题：（8分）\n(1) 设二叉树T如图所示，写出执行f5(T)的返回值；\n(2) 简述算法f5的功能\nint f5(BiTree* T){\nint m, n;\nif (!T)return 0;\nelse {\nm = f5(T->lchild);\nn = f5(T->rchild);\nif (m > n)return m + 1;\nelse return n + 1;\n}\n}",
+      "retrievalText": "数据结构及其算法\n2009-2010\n应用题（共 5 题，50 分）\nsubjective\n线性表与链表 树与二叉树 算法与程序设计\n以二叉链表作为二叉树的存储结构，阅读算法f5，并回答问题：（8分）\n(1) 设二叉树T如图所示，写出执行f5(T)的返回值；\n(2) 简述算法f5的功能\nint f5(BiTree* T){\nint m, n;\nif (!T)return 0;\nelse {\nm = f5(T->lchild);\nn = f5(T->rchild);\nif (m > n)return m + 1;\nelse return n + 1;\n}\n}"
+    },
+    {
+      "id": "ustc-ds-20092010-4-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "算法设计（共 20分）",
+      "sectionIndex": 4,
+      "questionNumber": 1,
+      "questionType": "algorithm",
+      "stem": "设一棵二叉树以二叉链表为存储结构，结点结构为(lchild, data, rchild)，设计一个算法\n求二叉树中层次数为L的结点数。（9分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 9,
+      "topics": [
+        "线性表与链表",
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        10
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设一棵二叉树以二叉链表为存储结构，结点结构为(lchild, data, rchild)，设计一个算法\n求二叉树中层次数为L的结点数。（9分）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n算法设计（共 20分）\nalgorithm\n线性表与链表 树与二叉树\n设一棵二叉树以二叉链表为存储结构，结点结构为(lchild, data, rchild)，设计一个算法\n求二叉树中层次数为L的结点数。（9分）"
+    },
+    {
+      "id": "ustc-ds-20092010-4-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2009-2010",
+      "sectionTitle": "算法设计（共 20分）",
+      "sectionIndex": 4,
+      "questionNumber": 2,
+      "questionType": "algorithm",
+      "stem": "已知不带头结点的单链表L，链表中结点结构为(data, next)，其中data为数据域，\nnext为指针域。请编写一算法，将该链表按结点数据域值的大小重新链接。要求处理\n过程中不得开辟任何结点空间。（11分）",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 11,
+      "topics": [
+        "线性表与链表",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        10
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知不带头结点的单链表L，链表中结点结构为(data, next)，其中data为数据域，\nnext为指针域。请编写一算法，将该链表按结点数据域值的大小重新链接。要求处理\n过程中不得开辟任何结点空间。（11分）",
+      "retrievalText": "数据结构及其算法\n2009-2010\n算法设计（共 20分）\nalgorithm\n线性表与链表 算法与程序设计\n已知不带头结点的单链表L，链表中结点结构为(data, next)，其中data为数据域，\nnext为指针域。请编写一算法，将该链表按结点数据域值的大小重新链接。要求处理\n过程中不得开辟任何结点空间。（11分）"
+    },
+    {
+      "id": "ustc-ds-20172018-1-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 1,
+      "questionType": "choice",
+      "stem": "从逻辑上可以把数据结构分为（ ）两大类。",
+      "options": [
+        {
+          "label": "A",
+          "text": "动态结构、静态结构"
+        },
+        {
+          "label": "B",
+          "text": "顺序结构、链式结构"
+        },
+        {
+          "label": "C",
+          "text": "线性结构、非线性结构"
+        },
+        {
+          "label": "D",
+          "text": "基本结构、构造型结构"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "从逻辑上可以把数据结构分为（ ）两大类。\nA. 动态结构、静态结构 B. 顺序结构、链式结构\nC. 线性结构、非线性结构 D. 基本结构、构造型结构",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n线性表与链表\n从逻辑上可以把数据结构分为（ ）两大类。\n动态结构、静态结构 顺序结构、链式结构 线性结构、非线性结构 基本结构、构造型结构"
+    },
+    {
+      "id": "ustc-ds-20172018-1-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 2,
+      "questionType": "choice",
+      "stem": "若某线性表最常用的操作是存取任一指定序号的元素和在最后进行插入和删除运算，则\n利用（ ）存储方式最节省时间。",
+      "options": [
+        {
+          "label": "A",
+          "text": "顺序表"
+        },
+        {
+          "label": "B",
+          "text": "双链表"
+        },
+        {
+          "label": "C",
+          "text": "带头结点的双循环链表"
+        },
+        {
+          "label": "D",
+          "text": "单循环链表"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若某线性表最常用的操作是存取任一指定序号的元素和在最后进行插入和删除运算，则\n利用（ ）存储方式最节省时间。\nA. 顺序表 B. 双链表 C. 带头结点的双循环链表 D. 单循环链表",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n线性表与链表\n若某线性表最常用的操作是存取任一指定序号的元素和在最后进行插入和删除运算，则\n利用（ ）存储方式最节省时间。\n顺序表 双链表 带头结点的双循环链表 单循环链表"
+    },
+    {
+      "id": "ustc-ds-20172018-1-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 3,
+      "questionType": "choice",
+      "stem": "若允许表达式内多种括号混合嵌套，则为检查表达式中括号是否正确配对的算法，通常\n选用的辅助结构是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "栈"
+        },
+        {
+          "label": "B",
+          "text": "线性表"
+        },
+        {
+          "label": "C",
+          "text": "队列"
+        },
+        {
+          "label": "D",
+          "text": "二叉排序树"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表",
+        "栈与队列",
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若允许表达式内多种括号混合嵌套，则为检查表达式中括号是否正确配对的算法，通常\n选用的辅助结构是（ ）。\nA. 栈 B. 线性表 C. 队列 D. 二叉排序树",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n线性表与链表 栈与队列 查找\n若允许表达式内多种括号混合嵌套，则为检查表达式中括号是否正确配对的算法，通常\n选用的辅助结构是（ ）。\n栈 线性表 队列 二叉排序树"
+    },
+    {
+      "id": "ustc-ds-20172018-1-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 4,
+      "questionType": "choice",
+      "stem": "对于顺序存储的线性表，访问结点和增加／删除结点的时间复杂度为（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "O(n), O(n)"
+        },
+        {
+          "label": "B",
+          "text": "O(n), O(1)"
+        },
+        {
+          "label": "C",
+          "text": "O(1), O(n)"
+        },
+        {
+          "label": "D",
+          "text": "O(1), O(1)"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对于顺序存储的线性表，访问结点和增加／删除结点的时间复杂度为（ ）。\nA. O(n), O(n) B.O(n), O(1) C. O(1), O(n) D. O(1), O(1)",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n算法复杂度 线性表与链表\n对于顺序存储的线性表，访问结点和增加／删除结点的时间复杂度为（ ）。\nO(n), O(n) O(n), O(1) O(1), O(n) O(1), O(1)"
+    },
+    {
+      "id": "ustc-ds-20172018-1-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 5,
+      "questionType": "choice",
+      "stem": "栈和队列的共同特点是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "只允许在端点处插入和删除元素"
+        },
+        {
+          "label": "B",
+          "text": "都是先进后出"
+        },
+        {
+          "label": "C",
+          "text": "都是先进先出"
+        },
+        {
+          "label": "D",
+          "text": "没有共同点"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "栈和队列的共同特点是（ ）。\nA. 只允许在端点处插入和删除元素 B. 都是先进后出\nC. 都是先进先出 D. 没有共同点",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n栈与队列\n栈和队列的共同特点是（ ）。\n只允许在端点处插入和删除元素 都是先进后出 都是先进先出 没有共同点"
+    },
+    {
+      "id": "ustc-ds-20172018-1-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 6,
+      "questionType": "choice",
+      "stem": "设有6个结点的无向连通图，该图至少应有（ ）条边。",
+      "options": [
+        {
+          "label": "A",
+          "text": "5"
+        },
+        {
+          "label": "B",
+          "text": "6"
+        },
+        {
+          "label": "C",
+          "text": "7"
+        },
+        {
+          "label": "D",
+          "text": "8"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数据结构综合"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有6个结点的无向连通图，该图至少应有（ ）条边。\nA. 5 B. 6 C. 7 D. 8",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n数据结构综合\n设有6个结点的无向连通图，该图至少应有（ ）条边。\n5 6 7 8"
+    },
+    {
+      "id": "ustc-ds-20172018-1-07",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 7,
+      "questionType": "choice",
+      "stem": "在关键字序列（12,23,34,45,56,67,78,89,91）中二分查找关键字为45结点时，所需进行\n的比较次数分别为（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "3"
+        },
+        {
+          "label": "B",
+          "text": "4"
+        },
+        {
+          "label": "C",
+          "text": "5"
+        },
+        {
+          "label": "D",
+          "text": "6"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在关键字序列（12,23,34,45,56,67,78,89,91）中二分查找关键字为45结点时，所需进行\n的比较次数分别为（ ）。\nA. 3 B. 4 C. 5 D. 6",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n查找\n在关键字序列（12,23,34,45,56,67,78,89,91）中二分查找关键字为45结点时，所需进行\n的比较次数分别为（ ）。\n3 4 5 6"
+    },
+    {
+      "id": "ustc-ds-20172018-1-08",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 8,
+      "questionType": "choice",
+      "stem": "下列序列中，（ ）是执行第一趟快速排序后得到的序列。",
+      "options": [
+        {
+          "label": "A",
+          "text": "[da,ax,eb,de,bb]ff[ha,gc]"
+        },
+        {
+          "label": "B",
+          "text": "[ed,eb,ax,da]ff[ha,gc,bb]"
+        },
+        {
+          "label": "C",
+          "text": "[gc,ax,eb,cd,bb]ff[da,ha]"
+        },
+        {
+          "label": "D",
+          "text": "[ax,bb,cd,da]ff[eb,gc,ha]"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下列序列中，（ ）是执行第一趟快速排序后得到的序列。\nA. [da,ax,eb,de,bb]ff[ha,gc] B. [ed,eb,ax,da]ff[ha,gc,bb]\nC. [gc,ax,eb,cd,bb]ff[da,ha] D. [ax,bb,cd,da]ff[eb,gc,ha]",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n排序\n下列序列中，（ ）是执行第一趟快速排序后得到的序列。\n[da,ax,eb,de,bb]ff[ha,gc] [ed,eb,ax,da]ff[ha,gc,bb] [gc,ax,eb,cd,bb]ff[da,ha] [ax,bb,cd,da]ff[eb,gc,ha]"
+    },
+    {
+      "id": "ustc-ds-20172018-1-09",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 9,
+      "questionType": "choice",
+      "stem": "一个有500个顶点、500条边的有向图的邻接矩阵有（ ）个非零元素？",
+      "options": [
+        {
+          "label": "A",
+          "text": "500"
+        },
+        {
+          "label": "B",
+          "text": "400"
+        },
+        {
+          "label": "C",
+          "text": "300"
+        },
+        {
+          "label": "D",
+          "text": "200"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表",
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "一个有500个顶点、500条边的有向图的邻接矩阵有（ ）个非零元素？\nA. 500 B. 400 C. 300 D. 200",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n数组矩阵与广义表 图\n一个有500个顶点、500条边的有向图的邻接矩阵有（ ）个非零元素？\n500 400 300 200"
+    },
+    {
+      "id": "ustc-ds-20172018-1-10",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 10,
+      "questionType": "choice",
+      "stem": "算术表达式a＋b＊（c＋d／e）转为后缀表达式后为（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "ab+cde/*"
+        },
+        {
+          "label": "B",
+          "text": "abcde/+*+"
+        },
+        {
+          "label": "C",
+          "text": "abcde/*++"
+        },
+        {
+          "label": "D",
+          "text": "abcde*/++"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数据结构综合"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "算术表达式a＋b＊（c＋d／e）转为后缀表达式后为（ ）。\nA. ab+cde/* B. abcde/+*+ C. abcde/*++ D. abcde*/++",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n数据结构综合\n算术表达式a＋b＊（c＋d／e）转为后缀表达式后为（ ）。\nab+cde/* abcde/+*+ abcde/*++ abcde*/++"
+    },
+    {
+      "id": "ustc-ds-20172018-1-11",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 11,
+      "questionType": "choice",
+      "stem": "在一棵三叉树中度为 3的结点数为2 个，度为 2 的结点数为1 个，度为 1 的结点数为\n2个，则度为0的结点数为（ ）个。",
+      "options": [
+        {
+          "label": "A",
+          "text": "4"
+        },
+        {
+          "label": "B",
+          "text": "5"
+        },
+        {
+          "label": "C",
+          "text": "6"
+        },
+        {
+          "label": "D",
+          "text": "7"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数据结构综合"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        11,
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在一棵三叉树中度为 3的结点数为2 个，度为 2 的结点数为1 个，度为 1 的结点数为\n2个，则度为0的结点数为（ ）个。\nA. 4 B. 5 C. 6 D. 7",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n数据结构综合\n在一棵三叉树中度为 3的结点数为2 个，度为 2 的结点数为1 个，度为 1 的结点数为\n2个，则度为0的结点数为（ ）个。\n4 5 6 7"
+    },
+    {
+      "id": "ustc-ds-20172018-1-12",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 12,
+      "questionType": "choice",
+      "stem": "下面的序列中能构成最小堆（小根堆）的是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "10、60、20、50、30、26、35、40"
+        },
+        {
+          "label": "B",
+          "text": "70、40、36、30、20、16、28、10"
+        },
+        {
+          "label": "C",
+          "text": "20、60、50、40、30、10、8、72"
+        },
+        {
+          "label": "D",
+          "text": "10、30、20、50、40、26、35、60"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数据结构综合"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下面的序列中能构成最小堆（小根堆）的是（ ）。\nA.10、60、20、50、30、26、35、40 B.70、40、36、30、20、16、28、10\nC.20、60、50、40、30、10、8、72 D.10、30、20、50、40、26、35、60",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n数据结构综合\n下面的序列中能构成最小堆（小根堆）的是（ ）。\n10、60、20、50、30、26、35、40 70、40、36、30、20、16、28、10 20、60、50、40、30、10、8、72 10、30、20、50、40、26、35、60"
+    },
+    {
+      "id": "ustc-ds-20172018-1-13",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 13,
+      "questionType": "choice",
+      "stem": "下列各种排序算法中平均时间复杂度为0（n）是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "快速排序"
+        },
+        {
+          "label": "B",
+          "text": "堆排序"
+        },
+        {
+          "label": "C",
+          "text": "归并排序"
+        },
+        {
+          "label": "D",
+          "text": "冒泡排序"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下列各种排序算法中平均时间复杂度为0（n）是（ ）。\nA. 快速排序 B. 堆排序 C. 归并排序 D. 冒泡排序",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n算法复杂度 排序\n下列各种排序算法中平均时间复杂度为0（n）是（ ）。\n快速排序 堆排序 归并排序 冒泡排序"
+    },
+    {
+      "id": "ustc-ds-20172018-1-14",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "选择题（共20 分，1-6 每题1 分，其余每题 2 分）",
+      "sectionIndex": 1,
+      "questionNumber": 14,
+      "questionType": "choice",
+      "stem": "设有向无环图G中的有向边集合E={<1,2>,<2,3>,<3,4>,<1,4>},｝，则下列属于该有向无\n环图G的一种拓扑排序序列是（ ）。",
+      "options": [
+        {
+          "label": "A",
+          "text": "1,2,3,4"
+        },
+        {
+          "label": "B",
+          "text": "2,3,4,1"
+        },
+        {
+          "label": "C",
+          "text": "1,4,2,3"
+        },
+        {
+          "label": "D",
+          "text": "1,2,4,3"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有向无环图G中的有向边集合E={<1,2>,<2,3>,<3,4>,<1,4>},｝，则下列属于该有向无\n环图G的一种拓扑排序序列是（ ）。\nA. 1,2,3,4 B. 2,3,4,1 C. 1,4,2,3 D. 1,2,4,3",
+      "retrievalText": "数据结构及其算法\n2017-2018\n选择题（共20 分，1-6 每题1 分，其余每题 2 分）\nchoice\n图\n设有向无环图G中的有向边集合E={<1,2>,<2,3>,<3,4>,<1,4>},｝，则下列属于该有向无\n环图G的一种拓扑排序序列是（ ）。\n1,2,3,4 2,3,4,1 1,4,2,3 1,2,4,3"
+    },
+    {
+      "id": "ustc-ds-20172018-2-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 1,
+      "questionType": "fill_blank",
+      "stem": "L是一个带有头结点的单链表的头指针，则该链表为空的判断条件是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "L是一个带有头结点的单链表的头指针，则该链表为空的判断条件是 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n线性表与链表\nL是一个带有头结点的单链表的头指针，则该链表为空的判断条件是 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 2,
+      "questionType": "fill_blank",
+      "stem": "在希尔、快速、归并、堆、基数排序中，平均时间复杂度为0（n log n）并且稳定的排\n序方法是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在希尔、快速、归并、堆、基数排序中，平均时间复杂度为0（n log n）并且稳定的排\n序方法是 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n算法复杂度 排序\n在希尔、快速、归并、堆、基数排序中，平均时间复杂度为0（n log n）并且稳定的排\n序方法是 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 3,
+      "questionType": "fill_blank",
+      "stem": "设字符串S=\"Tree ＆ Graph”，则字符串S的存储长度为 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "串与模式匹配"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设字符串S=\"Tree ＆ Graph”，则字符串S的存储长度为 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n串与模式匹配\n设字符串S=\"Tree ＆ Graph”，则字符串S的存储长度为 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 4,
+      "questionType": "fill_blank",
+      "stem": "求无向图的最小生成树的两种算法中， 更适合稀疏图。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表",
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "求无向图的最小生成树的两种算法中， 更适合稀疏图。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n数组矩阵与广义表 图\n求无向图的最小生成树的两种算法中， 更适合稀疏图。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 5,
+      "questionType": "fill_blank",
+      "stem": "程序段 j=2; while(j+2 < n) ＋＋j; 的时间复杂度是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "程序段 j=2; while(j+2 < n) ＋＋j; 的时间复杂度是 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n算法复杂度 算法与程序设计\n程序段 j=2; while(j+2 < n) ＋＋j; 的时间复杂度是 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 6,
+      "questionType": "fill_blank",
+      "stem": "设有一个按行优先次序存储的三维数组A［3］［4］［5］，已知其首元素A［0］［0］［0］\n的地址为 1000，元素 A［1］［2］［1］的地址为 1186，每个数组元素占 字节数；\n存储地址为1342的数组元素的下标是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有一个按行优先次序存储的三维数组A［3］［4］［5］，已知其首元素A［0］［0］［0］\n的地址为 1000，元素 A［1］［2］［1］的地址为 1186，每个数组元素占 字节数；\n存储地址为1342的数组元素的下标是 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n数组矩阵与广义表\n设有一个按行优先次序存储的三维数组A［3］［4］［5］，已知其首元素A［0］［0］［0］\n的地址为 1000，元素 A［1］［2］［1］的地址为 1186，每个数组元素占 字节数；\n存储地址为1342的数组元素的下标是 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-07",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 7,
+      "questionType": "fill_blank",
+      "stem": "写出 ReplaceAll (“ababababa”, “aba”, “XY”)的结果串 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数据结构综合"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "写出 ReplaceAll (“ababababa”, “aba”, “XY”)的结果串 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n数据结构综合\n写出 ReplaceAll (“ababababa”, “aba”, “XY”)的结果串 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-08",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 8,
+      "questionType": "fill_blank",
+      "stem": "若对有向图执行拓扑排序算法，不能成功，则该图存在 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "图",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若对有向图执行拓扑排序算法，不能成功，则该图存在 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n图 排序\n若对有向图执行拓扑排序算法，不能成功，则该图存在 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-09",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 9,
+      "questionType": "fill_blank",
+      "stem": "二叉树中两个结点m和n互为兄弟，后序遍历该二叉树时m在n之后，则先序遍历时\nm在n 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "二叉树中两个结点m和n互为兄弟，后序遍历该二叉树时m在n之后，则先序遍历时\nm在n 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n树与二叉树\n二叉树中两个结点m和n互为兄弟，后序遍历该二叉树时m在n之后，则先序遍历时\nm在n 。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-10",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 10,
+      "questionType": "fill_blank",
+      "stem": "对一个长度为9的有序表进行二分查找，查找成功时的最多比较次数是 次。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对一个长度为9的有序表进行二分查找，查找成功时的最多比较次数是 次。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n查找\n对一个长度为9的有序表进行二分查找，查找成功时的最多比较次数是 次。"
+    },
+    {
+      "id": "ustc-ds-20172018-2-11",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "填空题（共20 分，1-4 每题1 分，其余每空 2 分）",
+      "sectionIndex": 2,
+      "questionNumber": 11,
+      "questionType": "fill_blank",
+      "stem": "一个循环队列存放在长度为 n 的数组中，不加队空或队满的标记，且只记录队头指针\nfront和队列长度length，则循环队列的长度最大为 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列",
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        12
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "一个循环队列存放在长度为 n 的数组中，不加队空或队满的标记，且只记录队头指针\nfront和队列长度length，则循环队列的长度最大为 。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n填空题（共20 分，1-4 每题1 分，其余每空 2 分）\nfill_blank\n栈与队列 数组矩阵与广义表\n一个循环队列存放在长度为 n 的数组中，不加队空或队满的标记，且只记录队头指针\nfront和队列长度length，则循环队列的长度最大为 。"
+    },
+    {
+      "id": "ustc-ds-20172018-3-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "应用题（共40 分）",
+      "sectionIndex": 3,
+      "questionNumber": 1,
+      "questionType": "subjective",
+      "stem": "由 2017 个结点构成的完全二叉树 T，从根结点开始，自上而下，从左向右连续编号 0,\n1…，其左、右子树分别为TL、TR，结点S编号为2016。回答下面问题：(3*3=9分)\n(1) S在TL还是TR上？\n(2) S在其所在的子树上，位于其左侧的叶子结点有多少个？\n(3) 若S在Tx子树上，且Tx的层次数为4，画出Tx子树。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "3*3=9",
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        13
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "由 2017 个结点构成的完全二叉树 T，从根结点开始，自上而下，从左向右连续编号 0,\n1…，其左、右子树分别为TL、TR，结点S编号为2016。回答下面问题：(3*3=9分)\n(1) S在TL还是TR上？\n(2) S在其所在的子树上，位于其左侧的叶子结点有多少个？\n(3) 若S在Tx子树上，且Tx的层次数为4，画出Tx子树。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n应用题（共40 分）\nsubjective\n树与二叉树\n由 2017 个结点构成的完全二叉树 T，从根结点开始，自上而下，从左向右连续编号 0,\n1…，其左、右子树分别为TL、TR，结点S编号为2016。回答下面问题：(3*3=9分)\n(1) S在TL还是TR上？\n(2) S在其所在的子树上，位于其左侧的叶子结点有多少个？\n(3) 若S在Tx子树上，且Tx的层次数为4，画出Tx子树。"
+    },
+    {
+      "id": "ustc-ds-20172018-3-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "应用题（共40 分）",
+      "sectionIndex": 3,
+      "questionNumber": 2,
+      "questionType": "subjective",
+      "stem": "已知关键字序列（11, 41, 31, 22, 46, 30, 13, 01, 70），哈希函数H(key)=key mod 11，表\n长m=11，试用线性探测法解决冲突，构建哈希表。(3*3=9分)\n(1) 画出构建的哈希表HT示意图。\n(2) 若在 HT 中删除关键字 22，求此时哈希表 HT 的关键字查找成功的平均查找长度\n（假设所有关键字等概率）。\n(3) 求删除关键字22后哈希表查找不成功的平均查找长度。\n0 1 2 3 4 5 6 7 8 9 10\nHT",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "3*3=9",
+      "topics": [
+        "查找",
+        "散列",
+        "算法与程序设计"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        13
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知关键字序列（11, 41, 31, 22, 46, 30, 13, 01, 70），哈希函数H(key)=key mod 11，表\n长m=11，试用线性探测法解决冲突，构建哈希表。(3*3=9分)\n(1) 画出构建的哈希表HT示意图。\n(2) 若在 HT 中删除关键字 22，求此时哈希表 HT 的关键字查找成功的平均查找长度\n（假设所有关键字等概率）。\n(3) 求删除关键字22后哈希表查找不成功的平均查找长度。\n0 1 2 3 4 5 6 7 8 9 10\nHT",
+      "retrievalText": "数据结构及其算法\n2017-2018\n应用题（共40 分）\nsubjective\n查找 散列 算法与程序设计\n已知关键字序列（11, 41, 31, 22, 46, 30, 13, 01, 70），哈希函数H(key)=key mod 11，表\n长m=11，试用线性探测法解决冲突，构建哈希表。(3*3=9分)\n(1) 画出构建的哈希表HT示意图。\n(2) 若在 HT 中删除关键字 22，求此时哈希表 HT 的关键字查找成功的平均查找长度\n（假设所有关键字等概率）。\n(3) 求删除关键字22后哈希表查找不成功的平均查找长度。\n0 1 2 3 4 5 6 7 8 9 10\nHT"
+    },
+    {
+      "id": "ustc-ds-20172018-3-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "应用题（共40 分）",
+      "sectionIndex": 3,
+      "questionNumber": 3,
+      "questionType": "subjective",
+      "stem": "对序列(34, 85, 43, 72, 95, 40, 49, 58, 65, 20 )进行下列排序算法：(3*3=9分)\n(1) 堆排序，排出一个最大值后重新调整为堆的状态；\n(2) 2路归并排序两趟以后的结果；\n(3) 增量为3的希尔排序一趟以后的结果。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "3*3=9",
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        13
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "对序列(34, 85, 43, 72, 95, 40, 49, 58, 65, 20 )进行下列排序算法：(3*3=9分)\n(1) 堆排序，排出一个最大值后重新调整为堆的状态；\n(2) 2路归并排序两趟以后的结果；\n(3) 增量为3的希尔排序一趟以后的结果。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n应用题（共40 分）\nsubjective\n排序\n对序列(34, 85, 43, 72, 95, 40, 49, 58, 65, 20 )进行下列排序算法：(3*3=9分)\n(1) 堆排序，排出一个最大值后重新调整为堆的状态；\n(2) 2路归并排序两趟以后的结果；\n(3) 增量为3的希尔排序一趟以后的结果。"
+    },
+    {
+      "id": "ustc-ds-20172018-3-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "应用题（共40 分）",
+      "sectionIndex": 3,
+      "questionNumber": 4,
+      "questionType": "subjective",
+      "stem": "一特殊矩阵A[n][n]如下，将其进行压缩存储到B[0. .2n-2]中,若A[i][j]存储在B[k]中，试\n写出k与(I, j)的函数关系。(7分)",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 7,
+      "topics": [
+        "数组矩阵与广义表",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        14
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "一特殊矩阵A[n][n]如下，将其进行压缩存储到B[0. .2n-2]中,若A[i][j]存储在B[k]中，试\n写出k与(I, j)的函数关系。(7分)",
+      "retrievalText": "数据结构及其算法\n2017-2018\n应用题（共40 分）\nsubjective\n数组矩阵与广义表 算法与程序设计\n一特殊矩阵A[n][n]如下，将其进行压缩存储到B[0. .2n-2]中,若A[i][j]存储在B[k]中，试\n写出k与(I, j)的函数关系。(7分)"
+    },
+    {
+      "id": "ustc-ds-20172018-3-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "应用题（共40 分）",
+      "sectionIndex": 3,
+      "questionNumber": 5,
+      "questionType": "subjective",
+      "stem": "已知某图的存储如下，从顶点V0出发，使用Dijkstra算法求解从V0到其他顶点的最短\n路径。当求出V0到V2的最短路轻后，请写出此时S，D和P数组相应的状态。(6分)\nG.vexs 0 1 2 3 4 5\nV0 V1 V2 V3 V4 V5\nG.arcs 0 1 2 3 4 5 S D P\n0 ∞ 28 30 10 ∞ ∞\n1 ∞ ∞ 10 ∞ ∞ ∞\n2 ∞ ∞ ∞ ∞ ∞ ∞\n3 ∞ 15 ∞ ∞ 7 ∞\n4 ∞ 3 2 ∞ ∞ 8\n5 ∞ ∞ ∞ 6 ∞ ∞",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 6,
+      "topics": [
+        "数组矩阵与广义表",
+        "图"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        14
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知某图的存储如下，从顶点V0出发，使用Dijkstra算法求解从V0到其他顶点的最短\n路径。当求出V0到V2的最短路轻后，请写出此时S，D和P数组相应的状态。(6分)\nG.vexs 0 1 2 3 4 5\nV0 V1 V2 V3 V4 V5\nG.arcs 0 1 2 3 4 5 S D P\n0 ∞ 28 30 10 ∞ ∞\n1 ∞ ∞ 10 ∞ ∞ ∞\n2 ∞ ∞ ∞ ∞ ∞ ∞\n3 ∞ 15 ∞ ∞ 7 ∞\n4 ∞ 3 2 ∞ ∞ 8\n5 ∞ ∞ ∞ 6 ∞ ∞",
+      "retrievalText": "数据结构及其算法\n2017-2018\n应用题（共40 分）\nsubjective\n数组矩阵与广义表 图\n已知某图的存储如下，从顶点V0出发，使用Dijkstra算法求解从V0到其他顶点的最短\n路径。当求出V0到V2的最短路轻后，请写出此时S，D和P数组相应的状态。(6分)\nG.vexs 0 1 2 3 4 5\nV0 V1 V2 V3 V4 V5\nG.arcs 0 1 2 3 4 5 S D P\n0 ∞ 28 30 10 ∞ ∞\n1 ∞ ∞ 10 ∞ ∞ ∞\n2 ∞ ∞ ∞ ∞ ∞ ∞\n3 ∞ 15 ∞ ∞ 7 ∞\n4 ∞ 3 2 ∞ ∞ 8\n5 ∞ ∞ ∞ 6 ∞ ∞"
+    },
+    {
+      "id": "ustc-ds-20172018-4-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "算法设计(共20 分)",
+      "sectionIndex": 4,
+      "questionNumber": 1,
+      "questionType": "algorithm",
+      "stem": "现有一个带有头结点的单链表，该链表的头结点指针为 pHead (每个结点两个分量：\nval 值和next指针)，编写一个函数完成以下任务：(3 分和5分)\n(1) 利用数组A, n个整数，建立数组的链表。\n(2) 完成该链表内容的颠倒。(如: 4,3,5→5,3,4)",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表",
+        "数组矩阵与广义表",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        15
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "现有一个带有头结点的单链表，该链表的头结点指针为 pHead (每个结点两个分量：\nval 值和next指针)，编写一个函数完成以下任务：(3 分和5分)\n(1) 利用数组A, n个整数，建立数组的链表。\n(2) 完成该链表内容的颠倒。(如: 4,3,5→5,3,4)",
+      "retrievalText": "数据结构及其算法\n2017-2018\n算法设计(共20 分)\nalgorithm\n线性表与链表 数组矩阵与广义表 算法与程序设计\n现有一个带有头结点的单链表，该链表的头结点指针为 pHead (每个结点两个分量：\nval 值和next指针)，编写一个函数完成以下任务：(3 分和5分)\n(1) 利用数组A, n个整数，建立数组的链表。\n(2) 完成该链表内容的颠倒。(如: 4,3,5→5,3,4)"
+    },
+    {
+      "id": "ustc-ds-20172018-4-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2017-2018",
+      "sectionTitle": "算法设计(共20 分)",
+      "sectionIndex": 4,
+      "questionNumber": 2,
+      "questionType": "algorithm",
+      "stem": "现有一个二叉树根结点指针pBTree，编程完成以下任务：(5分和7分)\n(1) 判断该二叉树是否为一个二叉检索树。\n(2) 计算该二叉检索树关键字等概率情况下的ASL。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树",
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        15
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "现有一个二叉树根结点指针pBTree，编程完成以下任务：(5分和7分)\n(1) 判断该二叉树是否为一个二叉检索树。\n(2) 计算该二叉检索树关键字等概率情况下的ASL。",
+      "retrievalText": "数据结构及其算法\n2017-2018\n算法设计(共20 分)\nalgorithm\n树与二叉树 查找\n现有一个二叉树根结点指针pBTree，编程完成以下任务：(5分和7分)\n(1) 判断该二叉树是否为一个二叉检索树。\n(2) 计算该二叉检索树关键字等概率情况下的ASL。"
+    },
+    {
+      "id": "ustc-ds-20182019-1-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 1,
+      "questionType": "choice",
+      "stem": "若长度为n的线性表采用顺序存储结构，在其第i个位置插入一个新元素的算法的时间\n复杂度为( ) (1 ≤i≤n+1)。",
+      "options": [
+        {
+          "label": "A",
+          "text": "O(0)"
+        },
+        {
+          "label": "B",
+          "text": "O(1)"
+        },
+        {
+          "label": "C",
+          "text": "O(n)"
+        },
+        {
+          "label": "D",
+          "text": "O(n2)"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "线性表与链表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若长度为n的线性表采用顺序存储结构，在其第i个位置插入一个新元素的算法的时间\n复杂度为( ) (1 ≤i≤n+1)。\nA. O(0) B. O(1) C. O(n) D. O(n2)",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n算法复杂度 线性表与链表\n若长度为n的线性表采用顺序存储结构，在其第i个位置插入一个新元素的算法的时间\n复杂度为( ) (1 ≤i≤n+1)。\nO(0) O(1) O(n) O(n2)"
+    },
+    {
+      "id": "ustc-ds-20182019-1-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 2,
+      "questionType": "choice",
+      "stem": "设森林F中有三棵树，第一、第二、第三棵树的结点个数分别为M1、M2和M3。与森\n林F对应的二叉树根结点的右子树上的结点个数是( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "M1"
+        },
+        {
+          "label": "B",
+          "text": "M1+M2"
+        },
+        {
+          "label": "C",
+          "text": "M3"
+        },
+        {
+          "label": "D",
+          "text": "M2+M3"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设森林F中有三棵树，第一、第二、第三棵树的结点个数分别为M1、M2和M3。与森\n林F对应的二叉树根结点的右子树上的结点个数是( )。\nA. M1 B. M1+M2 C. M3 D. M2+M3",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n树与二叉树\n设森林F中有三棵树，第一、第二、第三棵树的结点个数分别为M1、M2和M3。与森\n林F对应的二叉树根结点的右子树上的结点个数是( )。\nM1 M1+M2 M3 M2+M3"
+    },
+    {
+      "id": "ustc-ds-20182019-1-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 3,
+      "questionType": "choice",
+      "stem": "将有关二叉树的概念推广到三叉树，则棵有244个结点的完全三叉树的高度( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "4"
+        },
+        {
+          "label": "B",
+          "text": "5"
+        },
+        {
+          "label": "C",
+          "text": "6"
+        },
+        {
+          "label": "D",
+          "text": "7"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "将有关二叉树的概念推广到三叉树，则棵有244个结点的完全三叉树的高度( )。\nA. 4 B. 5 C. 6 D. 7",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n树与二叉树\n将有关二叉树的概念推广到三叉树，则棵有244个结点的完全三叉树的高度( )。\n4 5 6 7"
+    },
+    {
+      "id": "ustc-ds-20182019-1-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 4,
+      "questionType": "choice",
+      "stem": "以下说法中，正确的是( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "堆是一种完全二叉树"
+        },
+        {
+          "label": "B",
+          "text": "用顺序表来存储大顶堆，表头元素最大，表尾元素最小"
+        },
+        {
+          "label": "C",
+          "text": "堆排序的时间复杂度最高可以达到O(n2)"
+        },
+        {
+          "label": "D",
+          "text": "堆排序的空间复杂度是O(log n)"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "线性表与链表",
+        "树与二叉树",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "以下说法中，正确的是( )。\nA. 堆是一种完全二叉树\nB. 用顺序表来存储大顶堆，表头元素最大，表尾元素最小\nC. 堆排序的时间复杂度最高可以达到O(n2)\nD. 堆排序的空间复杂度是O(log n)",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n算法复杂度 线性表与链表 树与二叉树 排序\n以下说法中，正确的是( )。\n堆是一种完全二叉树 用顺序表来存储大顶堆，表头元素最大，表尾元素最小 堆排序的时间复杂度最高可以达到O(n2) 堆排序的空间复杂度是O(log n)"
+    },
+    {
+      "id": "ustc-ds-20182019-1-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 5,
+      "questionType": "choice",
+      "stem": "n个结点的完全有向图含有边的数目为( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "n*n"
+        },
+        {
+          "label": "B",
+          "text": "n (n+1)"
+        },
+        {
+          "label": "C",
+          "text": "n/2"
+        },
+        {
+          "label": "D",
+          "text": "n*(n-1)"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "n个结点的完全有向图含有边的数目为( )。\nA. n*n B. n (n+1) C. n/2 D. n*(n-1)",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n图\nn个结点的完全有向图含有边的数目为( )。\nn*n n (n+1) n/2 n*(n-1)"
+    },
+    {
+      "id": "ustc-ds-20182019-1-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 6,
+      "questionType": "choice",
+      "stem": "下面关于求关键路径的说法不正确的是( )",
+      "options": [
+        {
+          "label": "A",
+          "text": "求关键路径是以拓扑排序为基础的"
+        },
+        {
+          "label": "B",
+          "text": "一个事件的最早开始时间同以该事件为尾的弧的活动最早开始时间相同"
+        },
+        {
+          "label": "C",
+          "text": "一个事件的最迟开始时间为以该事件为尾的弧的活动最迟开始时间与该活动的持续\n时间的差"
+        },
+        {
+          "label": "D",
+          "text": "关键活动一定位于关键路径上"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下面关于求关键路径的说法不正确的是( )\nA. 求关键路径是以拓扑排序为基础的\nB. 一个事件的最早开始时间同以该事件为尾的弧的活动最早开始时间相同\nC. 一个事件的最迟开始时间为以该事件为尾的弧的活动最迟开始时间与该活动的持续\n时间的差\nD. 关键活动一定位于关键路径上",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n图\n下面关于求关键路径的说法不正确的是( )\n求关键路径是以拓扑排序为基础的 一个事件的最早开始时间同以该事件为尾的弧的活动最早开始时间相同 一个事件的最迟开始时间为以该事件为尾的弧的活动最迟开始时间与该活动的持续\n时间的差 关键活动一定位于关键路径上"
+    },
+    {
+      "id": "ustc-ds-20182019-1-07",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 7,
+      "questionType": "choice",
+      "stem": "下列哪一种图的邻接矩阵是对称矩阵？( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "有向图"
+        },
+        {
+          "label": "B",
+          "text": "无向图"
+        },
+        {
+          "label": "C",
+          "text": "AOV网"
+        },
+        {
+          "label": "D",
+          "text": "AOE网"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数组矩阵与广义表",
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下列哪一种图的邻接矩阵是对称矩阵？( )。\nA. 有向图 B. 无向图 C. AOV网 D. AOE网",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n数组矩阵与广义表 图\n下列哪一种图的邻接矩阵是对称矩阵？( )。\n有向图 无向图 AOV网 AOE网"
+    },
+    {
+      "id": "ustc-ds-20182019-1-08",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 8,
+      "questionType": "choice",
+      "stem": "在用邻接表表示图时，拓扑排序算法时间复杂度为( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "O(n)"
+        },
+        {
+          "label": "B",
+          "text": "O(n+e)"
+        },
+        {
+          "label": "C",
+          "text": "O(n2)"
+        },
+        {
+          "label": "D",
+          "text": "O(n3)"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "图",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在用邻接表表示图时，拓扑排序算法时间复杂度为( )。\nA. O(n) B. O(n+e) C. O(n2) D. O(n3)",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n算法复杂度 图 排序\n在用邻接表表示图时，拓扑排序算法时间复杂度为( )。\nO(n) O(n+e) O(n2) O(n3)"
+    },
+    {
+      "id": "ustc-ds-20182019-1-09",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 9,
+      "questionType": "choice",
+      "stem": "若串S=“software”，其子串的数目为( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "16"
+        },
+        {
+          "label": "B",
+          "text": "26"
+        },
+        {
+          "label": "C",
+          "text": "36"
+        },
+        {
+          "label": "D",
+          "text": "46"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "串与模式匹配"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "若串S=“software”，其子串的数目为( )。\nA. 16 B. 26 C. 36 D. 46",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n串与模式匹配\n若串S=“software”，其子串的数目为( )。\n16 26 36 46"
+    },
+    {
+      "id": "ustc-ds-20182019-1-10",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 10,
+      "questionType": "choice",
+      "stem": "下列基于排序码比较的排序算法中，( ) 算法的最坏情况下的时间复杂度不高于 O(n\nlogn)。",
+      "options": [
+        {
+          "label": "A",
+          "text": "起泡排序"
+        },
+        {
+          "label": "B",
+          "text": "希尔排序"
+        },
+        {
+          "label": "C",
+          "text": "归并排序"
+        },
+        {
+          "label": "D",
+          "text": "快速排序"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        16,
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下列基于排序码比较的排序算法中，( ) 算法的最坏情况下的时间复杂度不高于 O(n\nlogn)。\nA. 起泡排序 B. 希尔排序 C. 归并排序 D. 快速排序",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n算法复杂度 排序\n下列基于排序码比较的排序算法中，( ) 算法的最坏情况下的时间复杂度不高于 O(n\nlogn)。\n起泡排序 希尔排序 归并排序 快速排序"
+    },
+    {
+      "id": "ustc-ds-20182019-1-11",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 11,
+      "questionType": "choice",
+      "stem": "以下方法中，平均查找长度与表长无关的方法是( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "顺序查找"
+        },
+        {
+          "label": "B",
+          "text": "折半查找"
+        },
+        {
+          "label": "C",
+          "text": "哈希查找"
+        },
+        {
+          "label": "D",
+          "text": "二叉平衡树查找"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找",
+        "散列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "以下方法中，平均查找长度与表长无关的方法是( )。\nA. 顺序查找 B. 折半查找 C. 哈希查找 D. 二叉平衡树查找",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n查找 散列\n以下方法中，平均查找长度与表长无关的方法是( )。\n顺序查找 折半查找 哈希查找 二叉平衡树查找"
+    },
+    {
+      "id": "ustc-ds-20182019-1-12",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 12,
+      "questionType": "choice",
+      "stem": "已知一棵二叉树的前序遍历序列为 ABCDEF,中序遍历序列为 CBAEDF,则后序遍历的结\n果为( )。",
+      "options": [
+        {
+          "label": "A",
+          "text": "CBEFDA"
+        },
+        {
+          "label": "B",
+          "text": "FEDCBA"
+        },
+        {
+          "label": "C",
+          "text": "CBEDFA"
+        },
+        {
+          "label": "D",
+          "text": "不定"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知一棵二叉树的前序遍历序列为 ABCDEF,中序遍历序列为 CBAEDF,则后序遍历的结\n果为( )。\nA. CBEFDA B. FEDCBA C. CBEDFA D. 不定",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n树与二叉树\n已知一棵二叉树的前序遍历序列为 ABCDEF,中序遍历序列为 CBAEDF,则后序遍历的结\n果为( )。\nCBEFDA FEDCBA CBEDFA 不定"
+    },
+    {
+      "id": "ustc-ds-20182019-1-13",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "选择题(共15 分，1-11 每题1 分，其余2 分)",
+      "sectionIndex": 1,
+      "questionNumber": 13,
+      "questionType": "choice",
+      "stem": "下列序列中， ( )是执行第一趟快速排序后得到的序列。",
+      "options": [
+        {
+          "label": "A",
+          "text": "[da, ax, eb, de, bb]ff[ha, gc]"
+        },
+        {
+          "label": "B",
+          "text": "[cd, eb, ax, da]ff[ha, gC, bb]"
+        },
+        {
+          "label": "C",
+          "text": "[gc, ax, eb, cd, bb]ff[da, ha]"
+        },
+        {
+          "label": "D",
+          "text": "[ax, bb, cd, da]ff[eb, gc, ha]"
+        }
+      ],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "下列序列中， ( )是执行第一趟快速排序后得到的序列。\nA. [da, ax, eb, de, bb]ff[ha, gc] B. [cd, eb, ax, da]ff[ha, gC, bb]\nC. [gc, ax, eb, cd, bb]ff[da, ha] D. [ax, bb, cd, da]ff[eb, gc, ha]",
+      "retrievalText": "数据结构及其算法\n2018-2019\n选择题(共15 分，1-11 每题1 分，其余2 分)\nchoice\n排序\n下列序列中， ( )是执行第一趟快速排序后得到的序列。\n[da, ax, eb, de, bb]ff[ha, gc] [cd, eb, ax, da]ff[ha, gC, bb] [gc, ax, eb, cd, bb]ff[da, ha] [ax, bb, cd, da]ff[eb, gc, ha]"
+    },
+    {
+      "id": "ustc-ds-20182019-2-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 1,
+      "questionType": "fill_blank",
+      "stem": "S是一个不带头结点的链栈的栈项指针，判断栈为空的条件是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "栈与队列"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "S是一个不带头结点的链栈的栈项指针，判断栈为空的条件是 。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n栈与队列\nS是一个不带头结点的链栈的栈项指针，判断栈为空的条件是 。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 2,
+      "questionType": "fill_blank",
+      "stem": "在希尔、快速、归并、堆、基数排序中， 平均时间复杂度为 的排序方法是基数排\n序。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在希尔、快速、归并、堆、基数排序中， 平均时间复杂度为 的排序方法是基数排\n序。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n算法复杂度 排序\n在希尔、快速、归并、堆、基数排序中， 平均时间复杂度为 的排序方法是基数排\n序。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 3,
+      "questionType": "fill_blank",
+      "stem": "设一个无向图有n个项点和e条边，则用邻接矩阵存储该无向图的空间复杂度是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "数组矩阵与广义表",
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设一个无向图有n个项点和e条边，则用邻接矩阵存储该无向图的空间复杂度是 。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n算法复杂度 数组矩阵与广义表 图\n设一个无向图有n个项点和e条边，则用邻接矩阵存储该无向图的空间复杂度是 。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 4,
+      "questionType": "fill_blank",
+      "stem": "一棵二叉树有n个结点，用普通二叉链表表示时，链表中有 个空指针，用中序线\n索二叉链表表示时，链表中有 个空指针。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "线性表与链表",
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "一棵二叉树有n个结点，用普通二叉链表表示时，链表中有 个空指针，用中序线\n索二叉链表表示时，链表中有 个空指针。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n线性表与链表 树与二叉树\n一棵二叉树有n个结点，用普通二叉链表表示时，链表中有 个空指针，用中序线\n索二叉链表表示时，链表中有 个空指针。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 5,
+      "questionType": "fill_blank",
+      "stem": "程序段 i=0; while (i*i<=n) s+=(i++); 的时间复杂度是 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "算法复杂度",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "程序段 i=0; while (i*i<=n) s+=(i++); 的时间复杂度是 。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n算法复杂度 算法与程序设计\n程序段 i=0; while (i*i<=n) s+=(i++); 的时间复杂度是 。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 6,
+      "questionType": "fill_blank",
+      "stem": "一棵度为4 的树中，如果度为4的结点有2个， 度为3的结点有1个，没有度为2的\n结点，度为1的结点有5个，则度为0的结点有 个。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "数据结构综合"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "一棵度为4 的树中，如果度为4的结点有2个， 度为3的结点有1个，没有度为2的\n结点，度为1的结点有5个，则度为0的结点有 个。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n数据结构综合\n一棵度为4 的树中，如果度为4的结点有2个， 度为3的结点有1个，没有度为2的\n结点，度为1的结点有5个，则度为0的结点有 个。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-07",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 7,
+      "questionType": "fill_blank",
+      "stem": "一棵完全二叉树有2018个结点，则根的右子树有 个结点。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "一棵完全二叉树有2018个结点，则根的右子树有 个结点。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n树与二叉树\n一棵完全二叉树有2018个结点，则根的右子树有 个结点。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-08",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 8,
+      "questionType": "fill_blank",
+      "stem": "有10个顶点的有向图，它不是强连通的，则图中最多有 条边。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "有10个顶点的有向图，它不是强连通的，则图中最多有 条边。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n图\n有10个顶点的有向图，它不是强连通的，则图中最多有 条边。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-09",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 9,
+      "questionType": "fill_blank",
+      "stem": "如果一棵深度为 5 的二叉树的先序遍历序列与中序遍历序列相同，则该二叉树的结点\n数为 。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "树与二叉树"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "如果一棵深度为 5 的二叉树的先序遍历序列与中序遍历序列相同，则该二叉树的结点\n数为 。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n树与二叉树\n如果一棵深度为 5 的二叉树的先序遍历序列与中序遍历序列相同，则该二叉树的结点\n数为 。"
+    },
+    {
+      "id": "ustc-ds-20182019-2-10",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "填空题(共15 分，1-5 每题1 分，其余2分)",
+      "sectionIndex": 2,
+      "questionNumber": 10,
+      "questionType": "fill_blank",
+      "stem": "在关键字序列(13, 35, 57, 79, 91, 123, 234, 345, 456)中二分查找关键字 123 时，进行了\n次比较。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": null,
+      "topics": [
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        17
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "在关键字序列(13, 35, 57, 79, 91, 123, 234, 345, 456)中二分查找关键字 123 时，进行了\n次比较。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n填空题(共15 分，1-5 每题1 分，其余2分)\nfill_blank\n查找\n在关键字序列(13, 35, 57, 79, 91, 123, 234, 345, 456)中二分查找关键字 123 时，进行了\n次比较。"
+    },
+    {
+      "id": "ustc-ds-20182019-3-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "应用题(共50 分)",
+      "sectionIndex": 3,
+      "questionNumber": 1,
+      "questionType": "subjective",
+      "stem": "设有数组 a[5][4][x]， 按行优先次序存储。已知 a[0][0][0]的地址是 000 a[1][2][3]的地址\n是1180, a[2][3][4]的地址是1324, 求：(4+2+3-9分)\n(1) 数组a的第三维长度x；\n(2) 每个数组元素的长度；\n(3) 如果采用列优先次序存储，给出元素a[2][3][4]的地址。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "4+2+3-9",
+      "topics": [
+        "数组矩阵与广义表"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        18
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "设有数组 a[5][4][x]， 按行优先次序存储。已知 a[0][0][0]的地址是 000 a[1][2][3]的地址\n是1180, a[2][3][4]的地址是1324, 求：(4+2+3-9分)\n(1) 数组a的第三维长度x；\n(2) 每个数组元素的长度；\n(3) 如果采用列优先次序存储，给出元素a[2][3][4]的地址。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n应用题(共50 分)\nsubjective\n数组矩阵与广义表\n设有数组 a[5][4][x]， 按行优先次序存储。已知 a[0][0][0]的地址是 000 a[1][2][3]的地址\n是1180, a[2][3][4]的地址是1324, 求：(4+2+3-9分)\n(1) 数组a的第三维长度x；\n(2) 每个数组元素的长度；\n(3) 如果采用列优先次序存储，给出元素a[2][3][4]的地址。"
+    },
+    {
+      "id": "ustc-ds-20182019-3-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "应用题(共50 分)",
+      "sectionIndex": 3,
+      "questionNumber": 2,
+      "questionType": "subjective",
+      "stem": "已知关键字序列(3, 19, 20.11, 35, 30, 13, 01, 48)，取哈希函数H(key)=key mod 11，表长\nm=11，试用线性探测法 p(i, k)=i 解决冲突，填写构建后的哈希表，并计算删除关键字\n35以后的关键字查找成功的平均查找长度(3+3=6 分)\n0 1 2 3 4 5 6 7 8 9 10",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "3+3=6",
+      "topics": [
+        "查找",
+        "散列",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        18
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知关键字序列(3, 19, 20.11, 35, 30, 13, 01, 48)，取哈希函数H(key)=key mod 11，表长\nm=11，试用线性探测法 p(i, k)=i 解决冲突，填写构建后的哈希表，并计算删除关键字\n35以后的关键字查找成功的平均查找长度(3+3=6 分)\n0 1 2 3 4 5 6 7 8 9 10",
+      "retrievalText": "数据结构及其算法\n2018-2019\n应用题(共50 分)\nsubjective\n查找 散列 算法与程序设计\n已知关键字序列(3, 19, 20.11, 35, 30, 13, 01, 48)，取哈希函数H(key)=key mod 11，表长\nm=11，试用线性探测法 p(i, k)=i 解决冲突，填写构建后的哈希表，并计算删除关键字\n35以后的关键字查找成功的平均查找长度(3+3=6 分)\n0 1 2 3 4 5 6 7 8 9 10"
+    },
+    {
+      "id": "ustc-ds-20182019-3-03",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "应用题(共50 分)",
+      "sectionIndex": 3,
+      "questionNumber": 3,
+      "questionType": "subjective",
+      "stem": "已知一个完全二叉树T有2018个结点，从根节点开始自上往下自左向右，从1开始编\n号，考虑编号为2018的结点S1，编号为1013的结点S2： (2+3+4 =9分)\n(1) 求S1和S2结点共同的最近的祖先结点S3的编号是多少?\n(2) 由S1到S3、S2到S3两条路径及经过的结点(含首尾结点)构成的二叉树记作T1，\n结点编号作为data域，对T1进行中序遍历，写出中序遍历序列；\n(3) 将(2)中中序遍历序列依次插入一颗新的空二叉树查找树 T2，在插入过程中使用旋\n转平衡，保持T2是颗平衡二叉树，画出二叉树T2的最终状态。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "2+3+4=9",
+      "topics": [
+        "树与二叉树",
+        "查找"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        18
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "已知一个完全二叉树T有2018个结点，从根节点开始自上往下自左向右，从1开始编\n号，考虑编号为2018的结点S1，编号为1013的结点S2： (2+3+4 =9分)\n(1) 求S1和S2结点共同的最近的祖先结点S3的编号是多少?\n(2) 由S1到S3、S2到S3两条路径及经过的结点(含首尾结点)构成的二叉树记作T1，\n结点编号作为data域，对T1进行中序遍历，写出中序遍历序列；\n(3) 将(2)中中序遍历序列依次插入一颗新的空二叉树查找树 T2，在插入过程中使用旋\n转平衡，保持T2是颗平衡二叉树，画出二叉树T2的最终状态。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n应用题(共50 分)\nsubjective\n树与二叉树 查找\n已知一个完全二叉树T有2018个结点，从根节点开始自上往下自左向右，从1开始编\n号，考虑编号为2018的结点S1，编号为1013的结点S2： (2+3+4 =9分)\n(1) 求S1和S2结点共同的最近的祖先结点S3的编号是多少?\n(2) 由S1到S3、S2到S3两条路径及经过的结点(含首尾结点)构成的二叉树记作T1，\n结点编号作为data域，对T1进行中序遍历，写出中序遍历序列；\n(3) 将(2)中中序遍历序列依次插入一颗新的空二叉树查找树 T2，在插入过程中使用旋\n转平衡，保持T2是颗平衡二叉树，画出二叉树T2的最终状态。"
+    },
+    {
+      "id": "ustc-ds-20182019-3-04",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "应用题(共50 分)",
+      "sectionIndex": 3,
+      "questionNumber": 4,
+      "questionType": "subjective",
+      "stem": "AOE网G如题图，求: (3+4+4+3=14分)\n(1) 写出从V1出发的DFS序列，并画出相应的DFS生成树:\n(2) 计算每个顶点的最早发生时间和最迟发生时间:\n(3) 计算每条边的最早开始时间和最迟开始时间:\n(4) 给出G的所有关键路径。\n题(1)和题(2)答题要求:当有若干个顶点同时可选时， 优先选取序号最小的顶点。\nV1 V2 V3 V4 V5 V6 V7 V8\n顶点最早发生时间VE\n顶点最迟发生时间VL\na1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14\n活动最早开始时间e(i)\n活动最迟开始时间l(i)",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "3+4+4+3=14",
+      "topics": [
+        "图"
+      ],
+      "requiresFigure": true,
+      "sourcePages": [
+        19
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "AOE网G如题图，求: (3+4+4+3=14分)\n(1) 写出从V1出发的DFS序列，并画出相应的DFS生成树:\n(2) 计算每个顶点的最早发生时间和最迟发生时间:\n(3) 计算每条边的最早开始时间和最迟开始时间:\n(4) 给出G的所有关键路径。\n题(1)和题(2)答题要求:当有若干个顶点同时可选时， 优先选取序号最小的顶点。\nV1 V2 V3 V4 V5 V6 V7 V8\n顶点最早发生时间VE\n顶点最迟发生时间VL\na1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14\n活动最早开始时间e(i)\n活动最迟开始时间l(i)",
+      "retrievalText": "数据结构及其算法\n2018-2019\n应用题(共50 分)\nsubjective\n图\nAOE网G如题图，求: (3+4+4+3=14分)\n(1) 写出从V1出发的DFS序列，并画出相应的DFS生成树:\n(2) 计算每个顶点的最早发生时间和最迟发生时间:\n(3) 计算每条边的最早开始时间和最迟开始时间:\n(4) 给出G的所有关键路径。\n题(1)和题(2)答题要求:当有若干个顶点同时可选时， 优先选取序号最小的顶点。\nV1 V2 V3 V4 V5 V6 V7 V8\n顶点最早发生时间VE\n顶点最迟发生时间VL\na1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14\n活动最早开始时间e(i)\n活动最迟开始时间l(i)"
+    },
+    {
+      "id": "ustc-ds-20182019-3-05",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "应用题(共50 分)",
+      "sectionIndex": 3,
+      "questionNumber": 5,
+      "questionType": "subjective",
+      "stem": "数组A中存放了12个关键字，对A按升序进行堆排序，求: (6分)\nA 38 23 31 41 17 40 25 53 47 35 27 56\n0 1 2 3 4 5 6 7 8 9 10 11\n(1) 用筛选算法将A建成大顶堆，写出A的数据状态。\nA\n0 1 2 3 4 5 6 7 8 9 10 11\n(2) 现将A中堆项元素排序到位，并将其他元素调整成大项堆，写出A的数据状态。\nA\n0 1 2 3 4 5 6 7 8 9 10 11",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 6,
+      "topics": [
+        "数组矩阵与广义表",
+        "排序"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        19
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "数组A中存放了12个关键字，对A按升序进行堆排序，求: (6分)\nA 38 23 31 41 17 40 25 53 47 35 27 56\n0 1 2 3 4 5 6 7 8 9 10 11\n(1) 用筛选算法将A建成大顶堆，写出A的数据状态。\nA\n0 1 2 3 4 5 6 7 8 9 10 11\n(2) 现将A中堆项元素排序到位，并将其他元素调整成大项堆，写出A的数据状态。\nA\n0 1 2 3 4 5 6 7 8 9 10 11",
+      "retrievalText": "数据结构及其算法\n2018-2019\n应用题(共50 分)\nsubjective\n数组矩阵与广义表 排序\n数组A中存放了12个关键字，对A按升序进行堆排序，求: (6分)\nA 38 23 31 41 17 40 25 53 47 35 27 56\n0 1 2 3 4 5 6 7 8 9 10 11\n(1) 用筛选算法将A建成大顶堆，写出A的数据状态。\nA\n0 1 2 3 4 5 6 7 8 9 10 11\n(2) 现将A中堆项元素排序到位，并将其他元素调整成大项堆，写出A的数据状态。\nA\n0 1 2 3 4 5 6 7 8 9 10 11"
+    },
+    {
+      "id": "ustc-ds-20182019-3-06",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "应用题(共50 分)",
+      "sectionIndex": 3,
+      "questionNumber": 6,
+      "questionType": "subjective",
+      "stem": "读下列一段代码，写出实参调用func(list, 0, 4)的输出结果。(6分)\nint list[4] = { 1,2,3,4 };\nvoid Swap(int& a, int& b) { int t = a; a = b; b = t; }\nvoid func(int a[], int k, int n) {\nint i, state;\nif (k == n - 1) {\nstate = 0;\nfor (i = 0; i < n; i++)\nif (a[i] % 2 != (i + 1) % 2) { state = 1; break; };\nif (!state) {\nfor (i = 0; i < n; i++) printf(\"%d\", list[i]);\nprintf(\"\\n\");\n};\nreturn;\n}\nfor (i = k; i < n; i++) {\nSwap(a[k], a[i]);\nfunc(a, k + 1, n);\nSwap(a[k], a[i]);\n}\n}",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": 6,
+      "topics": [
+        "数组矩阵与广义表",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        20
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "读下列一段代码，写出实参调用func(list, 0, 4)的输出结果。(6分)\nint list[4] = { 1,2,3,4 };\nvoid Swap(int& a, int& b) { int t = a; a = b; b = t; }\nvoid func(int a[], int k, int n) {\nint i, state;\nif (k == n - 1) {\nstate = 0;\nfor (i = 0; i < n; i++)\nif (a[i] % 2 != (i + 1) % 2) { state = 1; break; };\nif (!state) {\nfor (i = 0; i < n; i++) printf(\"%d\", list[i]);\nprintf(\"\\n\");\n};\nreturn;\n}\nfor (i = k; i < n; i++) {\nSwap(a[k], a[i]);\nfunc(a, k + 1, n);\nSwap(a[k], a[i]);\n}\n}",
+      "retrievalText": "数据结构及其算法\n2018-2019\n应用题(共50 分)\nsubjective\n数组矩阵与广义表 算法与程序设计\n读下列一段代码，写出实参调用func(list, 0, 4)的输出结果。(6分)\nint list[4] = { 1,2,3,4 };\nvoid Swap(int& a, int& b) { int t = a; a = b; b = t; }\nvoid func(int a[], int k, int n) {\nint i, state;\nif (k == n - 1) {\nstate = 0;\nfor (i = 0; i < n; i++)\nif (a[i] % 2 != (i + 1) % 2) { state = 1; break; };\nif (!state) {\nfor (i = 0; i < n; i++) printf(\"%d\", list[i]);\nprintf(\"\\n\");\n};\nreturn;\n}\nfor (i = k; i < n; i++) {\nSwap(a[k], a[i]);\nfunc(a, k + 1, n);\nSwap(a[k], a[i]);\n}\n}"
+    },
+    {
+      "id": "ustc-ds-20182019-4-01",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "算法设计(共20 分)",
+      "sectionIndex": 4,
+      "questionNumber": 1,
+      "questionType": "algorithm",
+      "stem": "现有一个带有头结点的单链表，该链表的头结点指针为pHead (每个结点两个分\n量: val 值和next指针)，编写一个函数完成以下任务: (3+7=10 分)\n(1) 编写一个函数GetMinVal (NODE *plHead, int &minx)，获取该链表当前最小值，\n放到minx中；\n(2) 编写一个链表排序函数SortLinkedList (NODE *pHead)，使用选择法完成链表内容\n的排序。",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "3+7=10",
+      "topics": [
+        "线性表与链表",
+        "算法与程序设计"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        20
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "现有一个带有头结点的单链表，该链表的头结点指针为pHead (每个结点两个分\n量: val 值和next指针)，编写一个函数完成以下任务: (3+7=10 分)\n(1) 编写一个函数GetMinVal (NODE *plHead, int &minx)，获取该链表当前最小值，\n放到minx中；\n(2) 编写一个链表排序函数SortLinkedList (NODE *pHead)，使用选择法完成链表内容\n的排序。",
+      "retrievalText": "数据结构及其算法\n2018-2019\n算法设计(共20 分)\nalgorithm\n线性表与链表 算法与程序设计\n现有一个带有头结点的单链表，该链表的头结点指针为pHead (每个结点两个分\n量: val 值和next指针)，编写一个函数完成以下任务: (3+7=10 分)\n(1) 编写一个函数GetMinVal (NODE *plHead, int &minx)，获取该链表当前最小值，\n放到minx中；\n(2) 编写一个链表排序函数SortLinkedList (NODE *pHead)，使用选择法完成链表内容\n的排序。"
+    },
+    {
+      "id": "ustc-ds-20182019-4-02",
+      "school": "中国科学技术大学",
+      "course": "数据结构及其算法",
+      "courseKey": "data_structure",
+      "paperYear": "2018-2019",
+      "sectionTitle": "算法设计(共20 分)",
+      "sectionIndex": 4,
+      "questionNumber": 2,
+      "questionType": "algorithm",
+      "stem": "现有一个二叉树根结点指针pBTree, 编程完成以下任务: (4+6=10分)\n(1) 判断该二叉树是否为一个二叉检索树\n(2) 计算该二叉检索树查找成功的平均查找长度。 (提示: 每个结点层次值之和除以结\n点总数)",
+      "options": [],
+      "answer": "",
+      "answerStatus": "missing",
+      "explanation": "",
+      "score": "4+6=10",
+      "topics": [
+        "树与二叉树",
+        "查找"
+      ],
+      "requiresFigure": false,
+      "sourcePages": [
+        20
+      ],
+      "sourceFile": "数据.pdf",
+      "rawText": "现有一个二叉树根结点指针pBTree, 编程完成以下任务: (4+6=10分)\n(1) 判断该二叉树是否为一个二叉检索树\n(2) 计算该二叉检索树查找成功的平均查找长度。 (提示: 每个结点层次值之和除以结\n点总数)",
+      "retrievalText": "数据结构及其算法\n2018-2019\n算法设计(共20 分)\nalgorithm\n树与二叉树 查找\n现有一个二叉树根结点指针pBTree, 编程完成以下任务: (4+6=10分)\n(1) 判断该二叉树是否为一个二叉检索树\n(2) 计算该二叉检索树查找成功的平均查找长度。 (提示: 每个结点层次值之和除以结\n点总数)"
+    }
+  ]
+}

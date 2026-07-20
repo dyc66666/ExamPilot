@@ -33,7 +33,7 @@
       <view class="wrong-row" wx:for="{{item.questions}}" wx:key="id" wx:for-item="q">
         <view class="wrong-row__top"><text class="wrong-title">{{q.stem}}</text><text class="wrong-date">{{q.dateText}}</text></view>
         <view class="wrong-row__meta"><text class="wrong-label wrong-label--error">错因：{{q.confidenceText}}</text><text class="wrong-label wrong-label--success">错 {{q.wrongCount || 1}} 次</text></view>
-        <text class="wrong-answer">答案：{{q.answer}}</text>
+        <text class="wrong-answer">{{q.type === 'subjective' ? '参考答案' : '答案'}}：{{q.answer}}</text>
       </view>
     </view>
   </view>

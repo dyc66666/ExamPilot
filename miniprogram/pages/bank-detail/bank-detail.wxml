@@ -56,13 +56,12 @@
         class="question-item {{item._selected ? 'selected' : ''}}"
         wx:for="{{filteredQuestions}}"
         wx:key="id"
-        data-id="{{item.id}}"
         data-index="{{index}}"
         bindtap="{{editMode ? 'toggleSelect' : 'openQuestionDetail'}}"
       >
         <view class="q-top">
           <view class="q-left">
-            <view class="q-checkbox {{editMode ? 'visible' : ''}}" wx:if="{{editMode}}">
+            <view class="q-checkbox {{editMode ? 'visible' : ''}}" wx:if="{{editMode}}" data-index="{{index}}" catchtap="toggleSelect">
               <text class="check-fill" wx:if="{{item._selected}}">✓</text>
             </view>
             <text class="q-tag">{{item.knowledgePoint || '未分类'}}</text>
@@ -99,7 +98,7 @@
         </view>
 
         <view class="detail-section">
-          <text class="detail-section-label">正确答案</text>
+          <text class="detail-section-label">{{currentDetail.type === 'subjective' ? '参考答案' : '正确答案'}}</text>
           <text class="detail-answer">{{currentDetail.answer}}</text>
         </view>
 

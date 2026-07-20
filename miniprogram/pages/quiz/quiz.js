@@ -29,8 +29,13 @@ function sanitizeAiText(text) {
     .trim()
 }
 
-function getQuestionType(answer) {
-  return normalizeAnswer(answer).length > 1 ? '多选题' : '单选题'
+function isSubjectiveQuestion(question) {
+  return question && (question.type === 'subjective' || question.type === '主观题' || question.qtype === '主观题' || question.questionType === 'subjective' || question.questionType === '主观题')
+}
+
+function getQuestionType(question) {
+  if (isSubjectiveQuestion(question)) return '主观题'
+  return normalizeAnswer(question && question.answer).length > 1 ? '多选题' : '单选题'
 }
 
 function countDuplicateQuestions(questions) {
@@ -39,7 +44,8 @@ function countDuplicateQuestions(questions) {
 
 function decorateQuestion(question, state) {
   if (!question) return null
-  var ans = normalizeAnswer(question.answer)
+  var subjective = isSubjectiveQuestion(question)
+  var ans = subjective ? String(question.answer || '') : normalizeAnswer(question.answer)
   var opts = (question.options || []).map(function(raw, index) {
     var text = typeof raw === 'string' ? raw : (raw.text || '')
     var label = LETTERS[index]
@@ -60,15 +66,21 @@ function decorateQuestion(question, state) {
     stem: stem,
     stemHtml: questionUtils.toMathHtml(stem, { autoFormula: true, displayMode: true }),
     answer: ans,
+    answerHtml: questionUtils.toMathHtml(ans, { autoFormula: true }),
     knowledgePoint: question.knowledgePoint || '',
     explanation: explanation,
     explanationHtml: questionUtils.toMathHtml(explanation, { autoFormula: true }),
     id: question.id,
     order: question.order,
     sourceType: question.sourceType || '',
-    sourceLabel: question.sourceLabel || (question.sourceType === 'original' ? '原题' : (question.sourceType === 'generated' ? 'AI生成' : '')),
-    qtype: getQuestionType(ans),
-    optionItems: opts
+    sourceLabel: question.sourceLabel || (question.sourceType === 'original' ? '原题' : (question.sourceType === 'rag' ? '真题考法' : (question.sourceType === 'generated' ? 'AI生成' : ''))),
+    type: subjective ? 'subjective' : 'choice',
+    qtype: getQuestionType(question),
+    optionItems: opts,
+    userAnswer: state && state.userAnswer ? state.userAnswer : '',
+    gradingVerdict: state && state.gradingVerdict ? state.gradingVerdict : '',
+    gradingScore: state && typeof state.gradingScore === 'number' ? state.gradingScore : null,
+    gradingFeedback: state && state.gradingFeedback ? state.gradingFeedback : ''
   }
 }
 
@@ -92,6 +104,7 @@ Page({
     isSubmitted: false,
     isCorrect: false,
     explanationLoading: false,
+    subjectiveGrading: false,
     quizProgress: null,
     hasProgress: false,
     progressText: '0/0',
@@ -167,11 +180,12 @@ Page({
       currentQuestion: decorateQuestion(questions[index], state),
       isSubmitted: !!(state && state.submitted),
       isCorrect: !!(state && state.correct),
-      hasSelection: !!(state && state.selectedLabels && state.selectedLabels.length),
+      hasSelection: !!(state && ((state.selectedLabels && state.selectedLabels.length) || String(state.userAnswer || '').trim())),
       explanationLoading: false,
+      subjectiveGrading: false,
       progressText: (index + 1) + '/' + questions.length,
       progressClass: progressClass(index, questions.length),
-      mascotSrc: state && state.submitted ? (state.correct ? PETS.happy : PETS.wrong) : (state && state.selectedLabels && state.selectedLabels.length ? PETS.waiting : PETS.thinking)
+      mascotSrc: state && state.submitted ? (state.correct ? PETS.happy : PETS.wrong) : (state && ((state.selectedLabels && state.selectedLabels.length) || String(state.userAnswer || '').trim()) ? PETS.waiting : PETS.thinking)
     })
   },
 
@@ -181,6 +195,10 @@ Page({
     var key = this.getQuestionStateKey(this.data.questions[this.data.currentIndex], this.data.currentIndex)
     states[key] = {
       selectedLabels: (this.data.currentQuestion.optionItems || []).filter(function(item) { return item._sel }).map(function(item) { return item.label }),
+      userAnswer: this.data.currentQuestion.userAnswer || '',
+      gradingVerdict: this.data.currentQuestion.gradingVerdict || '',
+      gradingScore: this.data.currentQuestion.gradingScore,
+      gradingFeedback: this.data.currentQuestion.gradingFeedback || '',
       submitted: this.data.isSubmitted,
       correct: this.data.isCorrect
     }
@@ -307,6 +325,7 @@ Page({
       qtype: q.qtype || '选择题',
       options: (q.optionItems || []).map(function(o) { return o.text }),
       answer: q.answer || '',
+      userAnswer: q.userAnswer || '',
       explanation: q.explanation || '',
       selected: selected,
       isSubmitted: this.data.isSubmitted
@@ -330,13 +349,14 @@ Page({
     }).join('\n')
 
     return [
-      '我正在答一道选择题，请你作为学习助手，只围绕这道题回答。',
+      '我正在答一道题，请你作为学习助手，只围绕这道题回答。',
       '用户刚才的问题：' + nextUserText,
       '',
       '题型：' + q.qtype,
       '题干：' + (q.stem || '无'),
       '选项：',
       optionLines || '无',
+      '我的作答：' + (q.userAnswer || '未作答'),
       '正确答案：' + (q.answer || '未知'),
       '用户当前选择：' + ((q.selected || []).join('') || '未选择'),
       '是否已经提交：' + (q.isSubmitted ? '是' : '否'),
@@ -550,7 +570,21 @@ Page({
     })
   },
 
-  submitAnswer: function() {
+  onSubjectiveAnswerInput: function(e) {
+    if (this.data.isSubmitted || this.data.subjectiveGrading) return
+    var value = e.detail.value || ''
+    this.setData({
+      'currentQuestion.userAnswer': value,
+      hasSelection: !!value.trim(),
+      mascotSrc: value.trim() ? PETS.waiting : PETS.thinking
+    })
+  },
+
+  submitAnswer: async function() {
+    if (this.data.currentQuestion.qtype === '主观题') {
+      await this.submitSubjectiveAnswer()
+      return
+    }
     var items = this.data.currentQuestion.optionItems
     var hasSel = items.some(function(o) { return o._sel })
     if (!hasSel) {
@@ -590,6 +624,60 @@ Page({
     }
   },
 
+  submitSubjectiveAnswer: async function() {
+    var cur = this.data.currentQuestion
+    var userAnswer = String(cur.userAnswer || '').trim()
+    if (!userAnswer) {
+      wx.showToast({ title: '请先输入答案', icon: 'none' })
+      return
+    }
+    if (this.data.subjectiveGrading) return
+    this.setData({ subjectiveGrading: true, mascotSrc: PETS.thinking })
+    try {
+      var res = await wx.cloud.callFunction({
+        name: 'aiParse',
+        data: {
+          mode: 'gradeSubjective',
+          question: {
+            stem: cur.stem,
+            referenceAnswer: cur.answer,
+            explanation: cur.explanation,
+            knowledgePoint: cur.knowledgePoint
+          },
+          userAnswer: userAnswer
+        }
+      })
+      if (!res.result || !res.result.success || !res.result.grade) {
+        throw new Error((res.result && res.result.error) || 'AI批改失败')
+      }
+      var grade = res.result.grade
+      var verdict = grade.verdict === 'correct' ? 'correct' : (grade.verdict === 'partial' ? 'partial' : 'incorrect')
+      var correct = verdict === 'correct'
+      this.setData({
+        'currentQuestion.gradingVerdict': verdict,
+        'currentQuestion.gradingScore': Math.max(0, Math.min(100, Number(grade.score) || 0)),
+        'currentQuestion.gradingFeedback': sanitizeAiText(grade.feedback || ''),
+        isSubmitted: true,
+        isCorrect: correct,
+        subjectiveGrading: false,
+        mascotSrc: correct ? PETS.happy : PETS.wrong
+      })
+      var states = this.captureCurrentQuestionState()
+      this.setData({ questionStates: states })
+      this.saveProgress(this.data.currentIndex, this.data.questions, states)
+      if (correct) {
+        this.markQuestionStatus('mastered')
+      } else {
+        this.markQuestionStatus(verdict === 'partial' ? 'fuzzy' : 'wrong')
+        this.saveToWrongBook()
+      }
+    } catch (err) {
+      console.error('grade subjective failed', err)
+      this.setData({ subjectiveGrading: false, mascotSrc: PETS.waiting })
+      wx.showToast({ title: 'AI批改失败，请重试', icon: 'none' })
+    }
+  },
+
   markAsMastered: function() {
     if (this.data.isSubmitted) return
     this.markQuestionStatus('mastered')
@@ -605,6 +693,22 @@ Page({
 
   markAsDontKnow: function() {
     if (this.data.isSubmitted) return
+    if (this.data.currentQuestion.qtype === '主观题') {
+      this.setData({
+        'currentQuestion.gradingVerdict': 'incorrect',
+        'currentQuestion.gradingScore': 0,
+        'currentQuestion.gradingFeedback': '未作答，请结合参考答案复习。',
+        isSubmitted: true,
+        isCorrect: false,
+        mascotSrc: PETS.review
+      })
+      var subjectiveStates = this.captureCurrentQuestionState()
+      this.setData({ questionStates: subjectiveStates })
+      this.saveProgress(this.data.currentIndex, this.data.questions, subjectiveStates)
+      this.markQuestionStatus('dontknow')
+      this.saveToWrongBook()
+      return
+    }
     var items = this.data.currentQuestion.optionItems
     var answerLabels = normalizeAnswer(this.data.currentQuestion.answer).split('')
     items = items.map(function(o) {
@@ -660,6 +764,9 @@ Page({
         knowledgePoint: cur.knowledgePoint,
         sourceType: cur.sourceType,
         sourceLabel: cur.sourceLabel,
+        type: cur.type,
+        qtype: cur.qtype,
+        userAnswer: cur.userAnswer || '',
         wrongTime: new Date().toISOString(),
         wrongCount: 1
       })
@@ -674,6 +781,9 @@ Page({
       wrongQuestions[exists].knowledgePoint = cur.knowledgePoint
       wrongQuestions[exists].sourceType = cur.sourceType
       wrongQuestions[exists].sourceLabel = cur.sourceLabel
+      wrongQuestions[exists].type = cur.type
+      wrongQuestions[exists].qtype = cur.qtype
+      wrongQuestions[exists].userAnswer = cur.userAnswer || ''
     }
     wx.setStorageSync('wrongQuestions', wrongQuestions)
     getApp().globalData.wrongQuestions = wrongQuestions

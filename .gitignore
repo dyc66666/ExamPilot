@@ -12,3 +12,6 @@ project.private.config.json
 .claude/
 .agents/
 .DS_Store
+rag-staging/
+__pycache__/
+*.pyc

@@ -23,7 +23,12 @@ Page({
   },
 
   loadQuestions: function(name) {
-    var all = wx.getStorageSync('questions') || []
+    var normalized = questionUtils.ensureUniqueQuestionIds(wx.getStorageSync('questions') || [])
+    var all = normalized.questions
+    if (normalized.changed) {
+      wx.setStorageSync('questions', all)
+      getApp().globalData.questions = all
+    }
     var filtered = all.filter(function(q) {
       return (q.knowledgePoint || '未分类题库') === name
     })
@@ -71,11 +76,10 @@ Page({
 
   toggleSelect: function(e) {
     if (!this.data.editMode) return
-    var id = e.currentTarget.dataset.id
-    var qs = this.data.filteredQuestions.map(function(q) {
-      if (q.id === id) q._selected = !q._selected
-      return q
-    })
+    var index = Number(e.currentTarget.dataset.index)
+    if (!Number.isInteger(index) || !this.data.filteredQuestions[index]) return
+    var qs = this.data.filteredQuestions.slice()
+    qs[index]._selected = !qs[index]._selected
     this.setData({
       filteredQuestions: qs,
       selectedCount: qs.filter(function(q) { return q._selected }).length

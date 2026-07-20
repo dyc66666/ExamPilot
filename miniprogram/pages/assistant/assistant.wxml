@@ -12,7 +12,6 @@
       <text class="assistant-nav-title">AI学习助手</text>
       <text class="assistant-nav-subtitle">问答、上传资料、整理入库</text>
     </view>
-    <view class="nav-new-btn" bindtap="clearChat">+</view>
   </view>
 
   <!-- 主卡片（含IP角色） -->
@@ -83,19 +82,29 @@
   </scroll-view>
 
   <!-- 底部输入栏 -->
-  <view class="composer-bar">
-    <button class="add-btn" bindtap="chooseFiles">+</button>
-    <input
-      class="composer-input"
-      value="{{inputValue}}"
-      placeholder="输入问题或资料整理需求..."
-      confirm-type="send"
-      bindinput="onInput"
-      bindconfirm="sendMessage"
-    />
-    <button class="send-btn" bindtap="sendMessage">
-      <text class="send-icon">↑</text>
-    </button>
+  <view class="composer-area">
+    <scroll-view class="attachment-strip" scroll-x wx:if="{{attachedFiles.length}}">
+      <view class="attachment-list">
+        <view class="attachment-chip" wx:for="{{attachedFiles}}" wx:key="fileID">
+          <text class="attachment-name">{{item.name}}</text>
+          <button class="attachment-remove" data-index="{{index}}" bindtap="removeFile">×</button>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="composer-bar">
+      <button class="add-btn" bindtap="chooseFiles" disabled="{{uploadingFiles || sending}}">{{uploadingFiles ? '…' : '+'}}</button>
+      <input
+        class="composer-input"
+        value="{{inputValue}}"
+        placeholder="输入问题或资料整理需求..."
+        confirm-type="send"
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+      />
+      <button class="send-btn" bindtap="sendMessage" disabled="{{uploadingFiles || sending}}">
+        <text class="send-icon">↑</text>
+      </button>
+    </view>
   </view>
 
   <!-- 选择题库弹窗（居中） -->

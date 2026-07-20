@@ -22,6 +22,43 @@ function seededRandom(seed) {
   }
 }
 
+function ensureUniqueQuestionIds(questions) {
+  var list = questions || []
+  var seen = {}
+  var changed = false
+  var timestamp = Date.now().toString(36)
+
+  for (var i = 0; i < list.length; i++) {
+    var question = list[i] || {}
+    var id = question.id === undefined || question.id === null
+      ? ''
+      : String(question.id).trim()
+
+    if (!id || seen[id]) {
+      var fingerprint = hashText(
+        String(question.stem || '') + '|' +
+        (question.options || []).join('|') + '|' + i
+      ).toString(36)
+      var baseId = 'q_' + timestamp + '_' + i.toString(36) + '_' + fingerprint
+      id = baseId
+      var suffix = 1
+      while (seen[id]) {
+        id = baseId + '_' + suffix
+        suffix++
+      }
+      changed = true
+    } else if (question.id !== id) {
+      changed = true
+    }
+
+    question.id = id
+    seen[id] = true
+    list[i] = question
+  }
+
+  return { questions: list, changed: changed }
+}
+
 function randomizeQuestionOptions(question, sequenceIndex) {
   var q = Object.assign({}, question || {})
   var options = (q.options || []).map(function(option) {
@@ -239,6 +276,9 @@ function duplicateTextSimilarity(left, right) {
 }
 
 function areLikelyDuplicateQuestions(left, right) {
+  var leftType = left && left.type === 'subjective' ? 'subjective' : 'choice'
+  var rightType = right && right.type === 'subjective' ? 'subjective' : 'choice'
+  if (leftType !== rightType) return false
   var leftStem = normalizeDuplicateText(left && left.stem).slice(0, 180)
   var rightStem = normalizeDuplicateText(right && right.stem).slice(0, 180)
   if (!leftStem || !rightStem) return false
@@ -275,6 +315,7 @@ function findDuplicateQuestionIndexes(questions) {
 module.exports = {
   formatMathText: formatMathText,
   normalizeAnswer: normalizeAnswer,
+  ensureUniqueQuestionIds: ensureUniqueQuestionIds,
   randomizeQuestionOptions: randomizeQuestionOptions,
   toMathHtml: toMathHtml,
   areLikelyDuplicateQuestions: areLikelyDuplicateQuestions,

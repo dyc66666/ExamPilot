@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@xmldom/xmldom": "^0.8.13",
+    "jszip": "^3.10.1",
     "wx-server-sdk": "latest",
+    "ws": "^8.18.0",
     "pdf-parse": "^1.1.1",
     "mammoth": "^1.6.0"
   }

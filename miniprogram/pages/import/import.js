@@ -31,7 +31,7 @@ Page({
     importSavedCount: 0,
     editMode: false,
     selectedCount: 0,
-    newQuestion: { stem: '', options: ['', '', '', ''], answer: '', explanation: '', knowledgePoint: '' },
+    newQuestion: { type: 'choice', stem: '', options: ['', '', '', ''], answer: '', explanation: '', knowledgePoint: '' },
     showForm: false,
     bankSummary: { total: 0, masteredRate: 0, learnedToday: 0 },
     bankDecks: [],
@@ -42,6 +42,7 @@ Page({
     importBankName: '',
     useNewImportBank: false,
     importNewBankName: '',
+    canCreateImportBank: false,
     showCreateBankPanel: false,
     newBankName: '',
     newBankNameLen: 0,
@@ -175,6 +176,7 @@ Page({
       parseProgress: 0,
       useNewImportBank: false,
       importNewBankName: '',
+      canCreateImportBank: false,
       importBankName: this.getDefaultImportBank(this.data.bankDecks)
     })
   },
@@ -217,19 +219,76 @@ Page({
     this.setData({
       importBankName: e.currentTarget.dataset.name,
       useNewImportBank: false,
-      importNewBankName: ''
+      importNewBankName: '',
+      canCreateImportBank: false
     })
   },
 
   useNewBankForImport: function() {
     this.setData({
       useNewImportBank: true,
-      importBankName: ''
+      importNewBankName: '',
+      canCreateImportBank: false
     })
   },
 
   onImportNewBankInput: function(e) {
-    this.setData({ importNewBankName: e.detail.value })
+    var value = e.detail.value || ''
+    this.setData({
+      importNewBankName: value,
+      canCreateImportBank: value.trim().length > 0
+    })
+  },
+
+  cancelImportNewBank: function() {
+    this.setData({
+      useNewImportBank: false,
+      importNewBankName: '',
+      canCreateImportBank: false,
+      importBankName: this.data.importBankName || this.getDefaultImportBank(this.data.bankDecks)
+    })
+  },
+
+  confirmImportNewBank: function() {
+    var name = (this.data.importNewBankName || '').trim()
+    if (!name) {
+      wx.showToast({ title: '请输入题库名称', icon: 'none' })
+      return
+    }
+
+    var existingDeck = this.data.bankDecks.some(function(deck) {
+      return deck.name === name
+    })
+    if (existingDeck) {
+      this.setData({
+        useNewImportBank: false,
+        importNewBankName: '',
+        canCreateImportBank: false,
+        importBankName: name
+      })
+      wx.showToast({ title: '题库已存在，已选中', icon: 'none' })
+      return
+    }
+
+    var createdBanks = wx.getStorageSync('createdBanks') || []
+    createdBanks.push({
+      name: name,
+      colorClass: 'deck-color-' + (createdBanks.length % 6)
+    })
+    wx.setStorageSync('createdBanks', createdBanks)
+
+    var decks = this.buildBankDecks(this.data.questions || [], this.data.favoriteDecks, createdBanks)
+    var createdIndex = decks.findIndex(function(deck) { return deck.name === name })
+    if (createdIndex > 0) decks.unshift(decks.splice(createdIndex, 1)[0])
+    this.setData({
+      createdBanks: createdBanks,
+      bankDecks: decks,
+      useNewImportBank: false,
+      importNewBankName: '',
+      canCreateImportBank: false,
+      importBankName: name
+    })
+    wx.showToast({ title: '题库创建成功', icon: 'success' })
   },
 
   openManualEntry: function() {
@@ -344,12 +403,16 @@ Page({
           wx.showToast({ title: '旧版 .doc 请另存为 .docx', icon: 'none' })
           return
         }
-        if (name && !name.endsWith('.pdf') && !name.endsWith('.docx')) {
-          wx.showToast({ title: '请选择 PDF 或 .docx 文件', icon: 'none' })
+        if (name && name.endsWith('.ppt') && !name.endsWith('.pptx')) {
+          wx.showToast({ title: '旧版 .ppt 请另存为 .pptx', icon: 'none' })
           return
         }
-        if (file.size > 20 * 1024 * 1024) {
-          wx.showToast({ title: '文件大小超限', icon: 'none' })
+        if (name && !name.endsWith('.pdf') && !name.endsWith('.docx') && !name.endsWith('.pptx')) {
+          wx.showToast({ title: '请选择 PDF、.docx 或 .pptx', icon: 'none' })
+          return
+        }
+        if (file.size > 50 * 1024 * 1024) {
+          wx.showToast({ title: '文件不能超过 50MB', icon: 'none' })
           return
         }
         that.processFile(file)
@@ -498,7 +561,7 @@ Page({
       showMaterialDecision: false,
       isParsing: true,
       errorMsg: '',
-      parseWarning: ''
+      parseWarning: (this._pendingImport && this._pendingImport.extractionWarning) || ''
     })
     try {
       if (mode === 'generate') {
@@ -580,8 +643,11 @@ Page({
     var targetCount = generationBatches.reduce(function(total, batch) { return total + batch.targetCount }, 0)
     var totalBatches = generationBatches.length
     var allQuestions = []
+    var ragNeighborsUsed = {}
+    var ragCorpusSize = 0
+    var ragCourseMatched = true
     var materialText = this.getPendingMaterialText(18000)
-    this.setData({ progress: 'AI 正在按「' + levelConfig.label + '」识别章节和考点...', parseProgress: 35 })
+    this.setData({ progress: '正在本地真题库中执行 KNN 检索...', parseProgress: 35 })
     try {
       for (var i = 0; i < totalBatches; i++) {
         var currentBatch = generationBatches[i]
@@ -639,6 +705,12 @@ Page({
         if (!res || !res.result || !res.result.success) {
           throw new Error((res && res.result && res.result.error) || '生成题目失败')
         }
+        var batchRag = res.result.rag || {}
+        ragCorpusSize = Number(batchRag.eligibleCorpusSize || batchRag.corpusSize) || ragCorpusSize
+        if (batchRag.courseMatched === false) ragCourseMatched = false
+        ;(batchRag.neighbors || []).forEach(function(neighbor) {
+          if (neighbor && neighbor.id) ragNeighborsUsed[neighbor.id] = neighbor
+        })
         var batchQuestions = res.result.questions || []
         for (var j = 0; j < batchQuestions.length; j++) {
           if (allQuestions.length >= targetCount) break
@@ -648,8 +720,14 @@ Page({
       if (!allQuestions.length) {
         throw new Error('AI 未生成可用题目')
       }
+      var ragNeighborCount = Object.keys(ragNeighborsUsed).length
+      var ragMessage = ragNeighborCount
+        ? '，从 ' + (ragCorpusSize || 0) + ' 道本地往年题中检索并参考 ' + ragNeighborCount + ' 道近邻题的考法'
+        : (ragCourseMatched
+          ? '，本地真题库没有检索到相关近邻，未强行套用无关题目'
+          : '，公共 RAG 暂无该科目语料，本次未使用其他科目的题目')
       this.setData({
-        parseWarning: '已按「' + levelConfig.label + '」生成题目：原文例题优先加入，缺少例题的考点由 AI 补题；预计约 ' + targetCount + ' 题，实际生成 ' + allQuestions.length + ' 题，请核对后再入库'
+        parseWarning: '已按「' + levelConfig.label + '」生成题目：PPT 限定知识范围' + ragMessage + '；预计约 ' + targetCount + ' 题，实际生成 ' + allQuestions.length + ' 题，请核对后再入库'
       })
       this.finishParsedQuestions(allQuestions)
     } catch (err) {
@@ -1301,22 +1379,31 @@ Page({
 
   normalizeParsedQuestion: function(question) {
     var q = question || {}
+    var subjective = q.type === 'subjective' || q.type === '主观题' || q.qtype === '主观题' || q.questionType === 'subjective' || q.questionType === '主观题'
+    q.type = subjective ? 'subjective' : 'choice'
+    q.qtype = subjective ? '主观题' : ''
     q.stem = String(q.stem || '').trim()
-    q.options = (q.options || []).map(function(option) {
+    q.options = (subjective ? [] : (q.options || [])).map(function(option) {
       return this.stripOptionLabel(String(option || '')).trim()
     }, this).filter(function(option) {
       return option
     })
-    q.answer = this.normalizeAnswerLetters(q.answer)
-    if (!q.answer && question && question.stem) {
+    q.answer = subjective
+      ? String(q.referenceAnswer || q.answer || '').trim()
+      : this.normalizeAnswerLetters(q.answer)
+    if (!subjective && !q.answer && question && question.stem) {
       q.answer = this.getInlineAnswer(question.stem)
     }
     q.explanation = String(q.explanation || '').trim()
     q.knowledgePoint = String(q.knowledgePoint || '').trim()
     q.difficulty = String(q.difficulty || '').trim()
     q.questionStyle = String(q.questionStyle || '').trim()
-    q.sourceType = q.sourceType === 'original' ? 'original' : (q.sourceType === 'generated' ? 'generated' : '')
-    q.sourceLabel = q.sourceLabel || (q.sourceType === 'original' ? '原题' : (q.sourceType === 'generated' ? 'AI生成' : ''))
+    q.sourceType = q.sourceType === 'original' ? 'original' : (q.sourceType === 'rag' ? 'rag' : (q.sourceType === 'generated' ? 'generated' : ''))
+    q.sourceLabel = q.sourceLabel || (q.sourceType === 'original' ? '原题' : (q.sourceType === 'rag' ? '真题考法' : (q.sourceType === 'generated' ? 'AI生成' : '')))
+    q.ragSourceId = String(q.ragSourceId || '').trim()
+    q.ragReference = String(q.ragReference || '').trim()
+    q.ragSimilarity = Number(q.ragSimilarity) || 0
+    q.ragSimilarityText = q.ragSimilarity ? Math.round(q.ragSimilarity * 100) + '%' : ''
     q.sourceText = String(q.sourceText || '').trim()
     return q
   },
@@ -1604,6 +1691,7 @@ Page({
       // marked it otherwise; validation and duplicate checks can deselect it.
       if (typeof allQuestions[i]._checked !== 'boolean') allQuestions[i]._checked = true
     }
+    allQuestions = questionUtils.ensureUniqueQuestionIds(allQuestions).questions
     allQuestions = this.validateQuestions(allQuestions)
     allQuestions = this.markDuplicateQuestions(allQuestions)
     var display = this.sortParsedQuestions(allQuestions)
@@ -1624,36 +1712,101 @@ Page({
 
   processExtractedFile: async function(fileID, fileName) {
     var lowerName = (fileName || '').toLowerCase()
-    if (lowerName.endsWith('.pdf')) {
-      await this.processPDF(fileID, fileName)
+    if (lowerName.endsWith('.pdf') || lowerName.endsWith('.pptx')) {
+      await this.processPagedFile(fileID, fileName)
     } else {
       await this.processChunked(fileID, fileName)
     }
   },
 
-  processPDF: async function(fileID, fileName) {
+  processPagedFile: async function(fileID, fileName) {
+    var lowerName = (fileName || '').toLowerCase()
+    var isPptx = lowerName.endsWith('.pptx')
     wx.showLoading({ title: '提取页面...' })
-    var pagesRes = await wx.cloud.callFunction({
-      name: 'aiParse',
-      data: { fileID: fileID, fileName: fileName, mode: 'extractPages' }
-    })
+    if (isPptx) {
+      var capabilityRes
+      try {
+        capabilityRes = await wx.cloud.callFunction({
+          name: 'aiParse',
+          data: { mode: 'capabilities' }
+        })
+      } catch (capabilityError) {
+        wx.hideLoading()
+        this.setData({
+          isUploading: false,
+          isParsing: false,
+          errorMsg: '无法连接新版 PPTX 解析服务。请右键 cloudfunctions/aiParse，选择“上传并部署：云端安装依赖”，等待部署成功后再重试。'
+        })
+        return
+      }
+      var capabilities = capabilityRes.result || {}
+      var supportedTypes = capabilities.supportedFileTypes || []
+      if (!capabilities.success || supportedTypes.indexOf('pptx') === -1) {
+        wx.hideLoading()
+        this.setData({
+          isUploading: false,
+          isParsing: false,
+          errorMsg: '线上 aiParse 云函数仍是旧版本。请右键 cloudfunctions/aiParse，选择“上传并部署：云端安装依赖”，顶部的小程序“上传”按钮不会部署云函数。'
+        })
+        return
+      }
+    }
+    var pagesRes
+    try {
+      pagesRes = await wx.cloud.callFunction({
+        name: 'aiParse',
+        data: { fileID: fileID, fileName: fileName, mode: 'extractPages' }
+      })
+    } catch (extractError) {
+      wx.hideLoading()
+      if (!isPptx) throw extractError
+      this.setData({
+        isUploading: false,
+        isParsing: false,
+        errorMsg: 'PPTX 提取请求超时。请先确认 aiParse 已按“云端安装依赖”重新部署；若已部署，请在云开发控制台提高该云函数的超时时间后重试。'
+      })
+      return
+    }
     wx.hideLoading()
     if (!pagesRes.result || !pagesRes.result.success) {
+      if (isPptx) {
+        this.setData({
+          isUploading: false,
+          isParsing: false,
+          errorMsg: (pagesRes.result && pagesRes.result.error) || 'PPTX 解析失败，请检查云函数日志或缩小文件后重试。'
+        })
+        return
+      }
       await this.processChunked(fileID, fileName)
       return
     }
     var pages = pagesRes.result.pages || []
     if (!pages.length) {
+      if (isPptx) {
+        this.setData({
+          isUploading: false,
+          isParsing: false,
+          errorMsg: 'PPTX 中没有提取到可复制文字。若幻灯片内容主要是图片，需要先进行 OCR 或导出为带文字的 PDF。'
+        })
+        return
+      }
       await this.processChunked(fileID, fileName)
       return
     }
 
+    var extractKind = pagesRes.result.extractKind || 'pdf'
+    var emptyPageCount = Number(pagesRes.result.emptyPageCount) || 0
+    var extractionWarning = extractKind === 'pptx' && emptyPageCount
+      ? 'PPTX 中有 ' + emptyPageCount + ' 张幻灯片未提取到文字，可能是图片内容，生成前请注意核对。'
+      : ''
     this._pendingImport = {
-      kind: 'pdf',
+      kind: extractKind,
       fileID: fileID,
       fileName: fileName,
-      pages: pages
+      pages: pages,
+      extractionWarning: extractionWarning
     }
+    if (extractionWarning) this.setData({ parseWarning: extractionWarning })
     await this.classifyPendingMaterial(this.buildMaterialSampleFromPages(pages), fileName)
   },
 
@@ -1708,10 +1861,13 @@ Page({
     for (var i = 0; i < list.length; i++) {
       var q = list[i]
       var warns = []
-      q.answer = this.normalizeAnswerLetters(q.answer)
-      if (!q.answer || !q.answer.trim()) warns.push('缺答案')
-      if (!q.options || q.options.length < 2) warns.push('选项少于2个')
-      if (q.answer && q.options && q.options.length) {
+      var subjective = q.type === 'subjective' || q.type === '主观题' || q.qtype === '主观题' || q.questionType === 'subjective' || q.questionType === '主观题'
+      q.type = subjective ? 'subjective' : 'choice'
+      q.qtype = subjective ? '主观题' : ''
+      q.answer = subjective ? String(q.answer || '').trim() : this.normalizeAnswerLetters(q.answer)
+      if (!q.answer || !q.answer.trim()) warns.push(subjective ? '缺参考答案' : '缺答案')
+      if (!subjective && (!q.options || q.options.length < 2)) warns.push('选项少于2个')
+      if (!subjective && q.answer && q.options && q.options.length) {
         var labels = 'ABCDEFGHIJ'.slice(0, q.options.length)
         var ansLetters = (q.answer || '').replace(/[^A-Z]/g, '').split('')
         for (var a = 0; a < ansLetters.length; a++) {
@@ -1740,15 +1896,18 @@ Page({
   },
 
   buildDuplicateKey: function(q) {
+    var type = q && q.type === 'subjective' ? 'subjective' : 'choice'
     var stem = this.normalizeText(q && q.stem || '')
     var options = (q && q.options || []).map(function(option) {
       return String(option || '').replace(/\s+/g, '').replace(/[，。；：、,.．:;()（）【】\[\]]/g, '').toUpperCase()
     }).sort().join('|')
-    return stem.slice(0, 120) + '||' + options
+    return type + '||' + stem.slice(0, 120) + '||' + options
   },
 
   buildDuplicateStemKey: function(q) {
-    return this.normalizeText(q && q.stem || '').replace(/^\d+/, '').slice(0, 180)
+    var type = q && q.type === 'subjective' ? 'subjective' : 'choice'
+    var stem = this.normalizeText(q && q.stem || '').replace(/^\d+/, '').slice(0, 180)
+    return type + '||' + stem
   },
 
   duplicateTextSimilarity: function(left, right) {
@@ -1771,6 +1930,9 @@ Page({
   },
 
   areLikelyDuplicateQuestions: function(left, right) {
+    var leftType = left && left.type === 'subjective' ? 'subjective' : 'choice'
+    var rightType = right && right.type === 'subjective' ? 'subjective' : 'choice'
+    if (leftType !== rightType) return false
     var leftStem = this.buildDuplicateStemKey(left)
     var rightStem = this.buildDuplicateStemKey(right)
     if (!leftStem || !rightStem) return false
@@ -1931,6 +2093,16 @@ Page({
   },
 
   onParsedStemInput: function(e) { this.setData({ 'activeParsedQuestion.stem': e.detail.value }) },
+  chooseParsedQuestionType: function(e) {
+    var type = e.currentTarget.dataset.type === 'subjective' ? 'subjective' : 'choice'
+    var current = this.data.activeParsedQuestion || {}
+    this.setData({
+      'activeParsedQuestion.type': type,
+      'activeParsedQuestion.qtype': type === 'subjective' ? '主观题' : '',
+      'activeParsedQuestion.options': type === 'subjective' ? [] : ((current.options && current.options.length) ? current.options : ['', '', '', '']),
+      'activeParsedQuestion.answer': ''
+    })
+  },
   onParsedOptionInput: function(e) {
     var i = e.currentTarget.dataset.index
     var obj = {}
@@ -1938,7 +2110,8 @@ Page({
     this.setData(obj)
   },
   onParsedAnswerInput: function(e) {
-    this.setData({ 'activeParsedQuestion.answer': this.normalizeAnswerLetters(e.detail.value) })
+    var subjective = this.data.activeParsedQuestion && this.data.activeParsedQuestion.type === 'subjective'
+    this.setData({ 'activeParsedQuestion.answer': subjective ? e.detail.value : this.normalizeAnswerLetters(e.detail.value) })
   },
   onParsedExplanationInput: function(e) { this.setData({ 'activeParsedQuestion.explanation': e.detail.value }) },
   onParsedKnowledgeInput: function(e) { this.setData({ 'activeParsedQuestion.knowledgePoint': e.detail.value }) },
@@ -2048,19 +2221,14 @@ Page({
   saveAllParsed: function() {
     var checked = this.data.parsedQuestions.filter(function(q) { return q._checked })
     if (checked.length === 0) { wx.showToast({ title: '未选中题目', icon: 'none' }); return }
-    var targetBank = this.data.useNewImportBank ? (this.data.importNewBankName || '').trim() : this.data.importBankName
+    if (this.data.useNewImportBank) {
+      wx.showToast({ title: '请先确认创建题库', icon: 'none' })
+      return
+    }
+    var targetBank = this.data.importBankName
     if (!targetBank) { wx.showToast({ title: '请选择题库', icon: 'none' }); return }
     var questions = wx.getStorageSync('questions') || []
     var createdBanks = wx.getStorageSync('createdBanks') || []
-    if (this.data.useNewImportBank) {
-      var existsBank = createdBanks.some(function(bank) { return bank.name === targetBank })
-      if (!existsBank) {
-        createdBanks.push({
-          name: targetBank,
-          colorClass: 'deck-color-' + (createdBanks.length % 6)
-        })
-      }
-    }
     checked.forEach(function(q) {
       delete q._checked
       delete q._warn
@@ -2073,6 +2241,7 @@ Page({
       q.status = 'new'
       questions.unshift(questionUtils.randomizeQuestionOptions(q, questions.length))
     })
+    questions = questionUtils.ensureUniqueQuestionIds(questions).questions
     wx.setStorageSync('questions', questions)
     wx.setStorageSync('createdBanks', createdBanks)
     wx.setStorageSync('currentBank', targetBank)
@@ -2090,6 +2259,7 @@ Page({
       importSavedCount: checked.length,
       useNewImportBank: false,
       importNewBankName: '',
+      canCreateImportBank: false,
       importBankName: targetBank,
       createdBanks: createdBanks,
       questions: questions,
@@ -2210,8 +2380,10 @@ Page({
   },
 
   toggleSelect: function(e) {
-    var id = e.currentTarget.dataset.id
-    var qs = this.data.questions.map(function(q) { if (q.id === id) q._selected = !q._selected; return q })
+    var index = Number(e.currentTarget.dataset.index)
+    if (!Number.isInteger(index) || !this.data.questions[index]) return
+    var qs = this.data.questions.slice()
+    qs[index]._selected = !qs[index]._selected
     this.setData({ questions: qs, selectedCount: qs.filter(function(q) { return q._selected }).length })
   },
 
@@ -2244,21 +2416,34 @@ Page({
   // ===== 手动添加 =====
   showForm: function() { this.setData({ showForm: true, showImportSheet: false, showUploadPanel: false }) },
   hideForm: function() {
-    this.setData({ showForm: false, newQuestion: { stem: '', options: ['', '', '', ''], answer: '', explanation: '', knowledgePoint: '' } })
+    this.setData({ showForm: false, newQuestion: { type: 'choice', stem: '', options: ['', '', '', ''], answer: '', explanation: '', knowledgePoint: '' } })
+  },
+  chooseNewQuestionType: function(e) {
+    var type = e.currentTarget.dataset.type === 'subjective' ? 'subjective' : 'choice'
+    this.setData({
+      'newQuestion.type': type,
+      'newQuestion.options': type === 'subjective' ? [] : ['', '', '', ''],
+      'newQuestion.answer': ''
+    })
   },
   onStemInput: function(e) { this.setData({ 'newQuestion.stem': e.detail.value }) },
   onOptionInput: function(e) {
     var i = e.currentTarget.dataset.index
     var o = {}; o['newQuestion.options[' + i + ']'] = e.detail.value; this.setData(o)
   },
-  onAnswerInput: function(e) { this.setData({ 'newQuestion.answer': e.detail.value.toUpperCase() }) },
+  onAnswerInput: function(e) {
+    var value = this.data.newQuestion.type === 'subjective' ? e.detail.value : e.detail.value.toUpperCase()
+    this.setData({ 'newQuestion.answer': value })
+  },
   onExplanationInput: function(e) { this.setData({ 'newQuestion.explanation': e.detail.value }) },
   onKnowledgeInput: function(e) { this.setData({ 'newQuestion.knowledgePoint': e.detail.value }) },
   saveQuestion: function() {
     var q = this.data.newQuestion
     if (!q.stem.trim() || !q.answer.trim()) { wx.showToast({ title: '请填写题干和答案', icon: 'none' }); return }
+    var options = q.type === 'subjective' ? [] : (q.options || []).map(function(option) { return String(option || '').trim() }).filter(Boolean)
+    if (q.type !== 'subjective' && options.length < 2) { wx.showToast({ title: '请至少填写2个选项', icon: 'none' }); return }
     var qs = wx.getStorageSync('questions') || []
-    qs.unshift({ id: Date.now().toString(), stem: q.stem, options: q.options, answer: q.answer, explanation: q.explanation, knowledgePoint: q.knowledgePoint, wrongCount: 0, status: 'new' })
+    qs.unshift({ id: Date.now().toString(), type: q.type, qtype: q.type === 'subjective' ? '主观题' : '', stem: q.stem, options: options, answer: q.answer, explanation: q.explanation, knowledgePoint: q.knowledgePoint, wrongCount: 0, status: 'new' })
     wx.setStorageSync('questions', qs)
     getApp().globalData.questions = qs
     wx.showToast({ title: '添加成功', icon: 'success' })
